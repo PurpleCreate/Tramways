@@ -1,0 +1,6 @@
+{
+  "parent": "tramways:block/tram_signal/base",
+  "textures": {
+    "face": "tramways:block/tram_signal/face_forward"
+  }
+}

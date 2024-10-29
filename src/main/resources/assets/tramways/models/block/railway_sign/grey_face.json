@@ -1,0 +1,6 @@
+{
+  "parent": "tramways:block/railway_sign/red_face",
+  "textures": {
+    "face": "tramways:block/railway_sign/grey_face"
+  }
+}

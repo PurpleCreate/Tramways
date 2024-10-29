@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "E": {
+      "item": "create:electron_tube"
+    },
+    "G": {
+      "item": "create:metal_girder"
+    },
+    "S": {
+      "item": "create:iron_sheet"
+    }
+  },
+  "pattern": [
+    "E",
+    "S",
+    "G"
+  ],
+  "result": {
+    "item": "tramways:tram_signal"
+  },
+  "show_notification": true
+}

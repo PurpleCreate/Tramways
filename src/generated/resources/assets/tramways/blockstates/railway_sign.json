@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "tramways:block/tram_sign/girder",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "tramways:block/tram_sign/girder"
+    },
+    "facing=south": {
+      "model": "tramways:block/tram_sign/girder",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "tramways:block/tram_sign/girder",
+      "y": 270
+    }
+  }
+}

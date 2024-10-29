@@ -1,0 +1,30 @@
+{
+  "variants": {
+    "facing=down": {
+      "model": "tramways:block/speaker",
+      "x": 180
+    },
+    "facing=east": {
+      "model": "tramways:block/speaker",
+      "x": 90,
+      "y": 90
+    },
+    "facing=north": {
+      "model": "tramways:block/speaker",
+      "x": 90
+    },
+    "facing=south": {
+      "model": "tramways:block/speaker",
+      "x": 90,
+      "y": 180
+    },
+    "facing=up": {
+      "model": "tramways:block/speaker"
+    },
+    "facing=west": {
+      "model": "tramways:block/speaker",
+      "x": 90,
+      "y": 270
+    }
+  }
+}

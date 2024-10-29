@@ -1,0 +1,11 @@
+{
+  "tramways.creative_tab.main": "Create: Tramways",
+
+  "tramways.sign_demand": "Sign Demand",
+  "tramways.sign_demand.speed": "Speed Limit",
+  "tramways.sign_demand.whistle": "Whistle",
+  "tramways.sign_demand.temporary_speed": "Temporary Speed Limit",
+  "tramways.sign_demand.temporary_end": "Temporary Speed Limit End",
+
+  "tramways.display_target.speaker": "Speaker"
+}

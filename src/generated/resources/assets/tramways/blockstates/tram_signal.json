@@ -1,0 +1,79 @@
+{
+  "variants": {
+    "facing=east,state=forward": {
+      "model": "tramways:block/tram_signal/forward",
+      "y": 90
+    },
+    "facing=east,state=invalid": {
+      "model": "tramways:block/tram_signal/invalid",
+      "y": 90
+    },
+    "facing=east,state=left": {
+      "model": "tramways:block/tram_signal/left",
+      "y": 90
+    },
+    "facing=east,state=right": {
+      "model": "tramways:block/tram_signal/right",
+      "y": 90
+    },
+    "facing=east,state=stop": {
+      "model": "tramways:block/tram_signal/stop",
+      "y": 90
+    },
+    "facing=north,state=forward": {
+      "model": "tramways:block/tram_signal/forward"
+    },
+    "facing=north,state=invalid": {
+      "model": "tramways:block/tram_signal/invalid"
+    },
+    "facing=north,state=left": {
+      "model": "tramways:block/tram_signal/left"
+    },
+    "facing=north,state=right": {
+      "model": "tramways:block/tram_signal/right"
+    },
+    "facing=north,state=stop": {
+      "model": "tramways:block/tram_signal/stop"
+    },
+    "facing=south,state=forward": {
+      "model": "tramways:block/tram_signal/forward",
+      "y": 180
+    },
+    "facing=south,state=invalid": {
+      "model": "tramways:block/tram_signal/invalid",
+      "y": 180
+    },
+    "facing=south,state=left": {
+      "model": "tramways:block/tram_signal/left",
+      "y": 180
+    },
+    "facing=south,state=right": {
+      "model": "tramways:block/tram_signal/right",
+      "y": 180
+    },
+    "facing=south,state=stop": {
+      "model": "tramways:block/tram_signal/stop",
+      "y": 180
+    },
+    "facing=west,state=forward": {
+      "model": "tramways:block/tram_signal/forward",
+      "y": 270
+    },
+    "facing=west,state=invalid": {
+      "model": "tramways:block/tram_signal/invalid",
+      "y": 270
+    },
+    "facing=west,state=left": {
+      "model": "tramways:block/tram_signal/left",
+      "y": 270
+    },
+    "facing=west,state=right": {
+      "model": "tramways:block/tram_signal/right",
+      "y": 270
+    },
+    "facing=west,state=stop": {
+      "model": "tramways:block/tram_signal/stop",
+      "y": 270
+    }
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "D": {
+      "item": "minecraft:black_dye"
+    },
+    "G": {
+      "item": "create:metal_girder"
+    },
+    "S": {
+      "item": "create:iron_sheet"
+    }
+  },
+  "pattern": [
+    "SD",
+    "G "
+  ],
+  "result": {
+    "item": "tramways:tram_sign"
+  },
+  "show_notification": true
+}
