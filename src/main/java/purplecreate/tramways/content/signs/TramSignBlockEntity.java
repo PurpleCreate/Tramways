@@ -147,7 +147,13 @@ public class TramSignBlockEntity extends SmartBlockEntity implements ITransforma
   protected void write(CompoundTag tag, boolean clientPacket) {
     super.write(tag, clientPacket);
 
-    NBTHelper.writeEnum(tag, "Overlay", overlay);
+    NBTHelper.writeEnum(
+      tag,
+      "Overlay",
+      overlay == null
+        ? SignalBlockEntity.OverlayState.SKIP
+        : overlay
+    );
 
     if (demand != null)
       NBTHelper.writeResourceLocation(tag, "Demand", demand.id);
