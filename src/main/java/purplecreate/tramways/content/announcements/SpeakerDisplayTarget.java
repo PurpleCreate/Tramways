@@ -46,8 +46,10 @@ public class SpeakerDisplayTarget extends DisplayTarget {
         GlobalTrainDisplayData.prepare(filter, 5);
 
       for (GlobalTrainDisplayData.TrainDeparturePrediction prediction : predictions) {
+
         if (
           !announced.contains(prediction.train.id)
+            && !prediction.destination.contains("*")
             && prediction.ticks >= windowMin
             && prediction.ticks <= windowMax
         ) {
