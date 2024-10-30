@@ -73,6 +73,8 @@ public class TrainInfo {
     List<String> callingAt = getCallingAt();
     Map<String, String> props = new HashMap<>();
 
+    props.put("train_name", train.name.getString());
+
     if (callingAt.isEmpty()) return props;
 
     StationInfo end = StationInfo.fromFilter(callingAt.get(callingAt.size() - 1));

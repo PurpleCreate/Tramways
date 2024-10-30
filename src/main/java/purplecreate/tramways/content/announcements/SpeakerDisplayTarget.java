@@ -11,18 +11,29 @@ import purplecreate.tramways.TNetworking;
 import purplecreate.tramways.Tramways;
 import purplecreate.tramways.config.StationMessageType;
 import purplecreate.tramways.content.announcements.info.StationInfo;
+import purplecreate.tramways.content.announcements.info.TrainInfo;
 import purplecreate.tramways.content.announcements.network.PlayVoiceS2CPacket;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.regex.Pattern;
 
 public class SpeakerDisplayTarget extends DisplayTarget {
   private static final int windowMin = 200;
   private static final int windowMax = 900;
   private final Set<UUID> announced = new HashSet<>();
+
+  private static String getPlatform(String filter, GlobalTrainDisplayData.TrainDeparturePrediction prediction) {
+    String platform = "";
+
+    if (filter.contains("*")) {
+      platform = prediction.destination;
+      for (String string : filter.split("\\*"))
+        if (!string.isEmpty())
+          platform = platform.replace(string, "");
+    }
+
+    return platform;
+  }
 
   @Override
   public void acceptText(int i, List<MutableComponent> list, DisplayLinkContext context) {
@@ -43,6 +54,8 @@ public class SpeakerDisplayTarget extends DisplayTarget {
           announced.add(prediction.train.id);
 
           StationInfo stationInfo = StationInfo.fromFilter(filter);
+          TrainInfo trainInfo = TrainInfo.fromTrain(prediction.train);
+          Map<String, String> props = trainInfo.getProperties();
           StationMessageType type = filter.contains("*")
             ? StationMessageType.WITH_PLATFORM
             : StationMessageType.WITHOUT_PLATFORM;
@@ -52,9 +65,9 @@ public class SpeakerDisplayTarget extends DisplayTarget {
             .matcher(stationInfo.getString(type))
             .replaceAll((result) ->
               switch (result.group(1)) {
-                case "train_name" -> prediction.train.name.getString();
-                case "destination" -> prediction.scheduleTitle.getString();
-                case "platform" -> prediction.destination;
+                case "train_name" -> props.get("train_name");
+                case "destination" -> props.get("end");
+                case "platform" -> getPlatform(filter, prediction);
                 default -> "";
               }
             );
