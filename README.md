@@ -1,4 +1,4 @@
-<p align="center"><img src="./src/main/resources/logo.png" width="200" /></p>
+<p align="center"><img src="./.github/logo.png" width="200" /></p>
 
 <h1 align="center">Create: Tramways</h1>
 
