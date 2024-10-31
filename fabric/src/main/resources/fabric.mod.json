@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "id": "${mod_id}",
+  "version": "${version}",
+  "name": "Create: Tramways",
+  "description": "Create: Tramways adds a bunch of tram-related features. These features mainly relate to signalling and signage used on UK tramways and railways.\n\na Purple Create mod",
+  "authors": [
+    "Purple Create",
+    "C1200"
+  ],
+  "license": "MIT",
+  "icon": "logo.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "purplecreate.tramways.fabric.TramwaysImpl"
+    ]
+  },
+  "mixins": [
+    "tramways-common.mixins.json"
+  ],
+  "depends": {
+    "minecraft": "${minecraft_version}",
+    "fabricloader": ">=${fabric_loader_version}",
+    "fabric-api": ">=${fabric_api_version}",
+    "create": "${create_version}"
+  }
+}

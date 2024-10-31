@@ -1,0 +1,44 @@
+architectury {
+  common(enabled_platforms.split(","))
+}
+
+loom {}
+
+repositories {
+  // mavens for Create Fabric and dependencies
+  maven { url = "https://api.modrinth.com/maven" } // LazyDFU
+  maven { url = "https://maven.terraformersmc.com/releases/" } // Mod Menu
+  maven { url = "https://mvn.devos.one/snapshots/" } // Create Fabric, Porting Lib, Forge Tags, Milk Lib, Registrate Fabric
+  maven { url = "https://mvn.devos.one/releases/" } // Porting Lib Releases
+  maven { url = "https://raw.githubusercontent.com/Fuzss/modresources/main/maven/" } // Forge Config API Port
+  maven { url = "https://maven.jamieswhiteshirt.com/libs-release" } // Reach Entity Attributes
+  maven { url = "https://jitpack.io/" } // Mixin Extras, Fabric ASM
+  maven { url = 'https://maven.ithundxr.dev/snapshots' } // Steam 'n' Rails
+}
+
+dependencies {
+  modImplementation("net.fabricmc:fabric-loader:${fabric_loader_version}")
+  modCompileOnly("com.simibubi.create:create-fabric-${minecraft_version}:${create_fabric_version}")
+
+  annotationProcessor(implementation("io.github.llamalad7:mixinextras-common:${mixin_extras_version}"))
+
+  // Compat
+  modCompileOnly("com.railwayteam.railways:Steam_Rails-common-${minecraft_version}:${railways_common_version}")
+}
+
+sourceSets {
+  main {
+    resources.srcDir file("src/generated/resources")
+  }
+}
+
+publishing {
+  publications {
+    mavenCommon(MavenPublication) {
+      artifactId = rootProject.mod_id
+      from components.java
+    }
+  }
+
+  repositories {}
+}

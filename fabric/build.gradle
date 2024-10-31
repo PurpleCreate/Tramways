@@ -1,0 +1,136 @@
+plugins {
+  id "com.github.johnrengelman.shadow" version "7.1.2"
+}
+
+architectury {
+  platformSetupLoomIde()
+  fabric()
+}
+
+loom {
+  runs {
+    data {
+      client()
+
+      name = "Minecraft Data"
+      vmArg("-Dfabric-api.datagen")
+      vmArg("-Dfabric-api.datagen.modid=${mod_id}")
+      vmArg("-Dfabric-api.datagen.output-dir=${project(":common").file("src/generated/resources")}")
+      vmArg("-Dporting_lib.datagen.existing_resources=${project(":common").file("src/main/resources")}")
+
+      environmentVariable("DATAGEN", "TRUE")
+    }
+  }
+}
+
+configurations {
+  common
+  shadowCommon // Don't use shadow from the shadow plugin because we don't want IDEA to index this.
+  compileClasspath.extendsFrom common
+  runtimeClasspath.extendsFrom common
+  developmentFabric.extendsFrom common
+}
+
+repositories {
+  // mavens for Fabric-exclusives
+  maven { url = "https://api.modrinth.com/maven" } // LazyDFU
+  maven { url = "https://maven.terraformersmc.com/releases/" } // Mod Menu
+  maven { url = "https://mvn.devos.one/snapshots/" } // Create Fabric, Porting Lib, Forge Tags, Milk Lib, Registrate Fabric
+  maven { url = "https://mvn.devos.one/releases/" } // Porting Lib Releases
+  maven { url = "https://raw.githubusercontent.com/Fuzss/modresources/main/maven/" } // Forge Config API Port
+  maven { url = "https://maven.jamieswhiteshirt.com/libs-release" } // Reach Entity Attributes
+  maven { url = "https://jitpack.io/" } // Mixin Extras, Fabric ASM
+  maven { url = 'https://maven.ithundxr.dev/snapshots' } // Steam 'n' Rails
+}
+
+configurations.configureEach {
+  resolutionStrategy {
+    force("net.fabricmc:fabric-loader:${fabric_loader_version}")
+  }
+}
+
+dependencies {
+  modImplementation("net.fabricmc:fabric-loader:${fabric_loader_version}")
+  common(project(path: ":common", configuration: "namedElements")) { transitive = false }
+  shadowCommon(project(path: ":common", configuration: "transformProductionFabric")) { transitive = false }
+
+  // dependencies
+  modImplementation("net.fabricmc.fabric-api:fabric-api:${fabric_api_version}")
+
+  // Create - dependencies are added transitively
+  modImplementation("com.simibubi.create:create-fabric-${minecraft_version}:${create_fabric_version}")
+
+  // Development QOL
+  modLocalRuntime("maven.modrinth:lazydfu:${lazydfu_version}")
+  modLocalRuntime("com.terraformersmc:modmenu:${modmenu_version}")
+
+  // Compat
+  //modImplementation("com.railwayteam.railways:Steam_Rails-fabric-${minecraft_version}:${railways_fabric_version}")
+
+  switch (fabric_recipe_viewer.toLowerCase(Locale.ROOT)) {
+    case "jei": modLocalRuntime("mezz.jei:jei-${minecraft_version}-fabric:${jei_version}"); break
+    case "rei": modLocalRuntime("me.shedaniel:RoughlyEnoughItems-fabric:${rei_version}"); break
+    case "emi": modLocalRuntime("dev.emi:emi:${emi_version}"); break
+    case "disabled": break
+    default: println("Unknown recipe viewer specified: ${fabric_recipe_viewer}. Must be JEI, REI, EMI, or disabled.")
+  }
+}
+
+processResources {
+  // set up properties for filling into metadata
+  Map<String, String> properties = Map.of(
+    "mod_id", mod_id,
+    "version", mod_version,
+    "fabric_loader_version", fabric_loader_version,
+    "fabric_api_version", fabric_api_version,
+    "minecraft_version", minecraft_version,
+    "create_version", create_fabric_version,
+    "railways_version", railways_fabric_version.split("\\+")[0]
+  )
+  properties.forEach((k, v) -> inputs.property(k, v))
+
+  filesMatching("fabric.mod.json") {
+    expand properties
+  }
+}
+
+shadowJar {
+  exclude "architectury.common.json"
+
+  configurations = [project.configurations.shadowCommon]
+  archiveClassifier = "dev-shadow"
+}
+
+remapJar {
+  injectAccessWidener = true
+  input.set shadowJar.archiveFile
+  dependsOn shadowJar
+  archiveClassifier = null
+}
+
+jar {
+  archiveClassifier = "dev"
+}
+
+sourcesJar {
+  def commonSources = project(":common").sourcesJar
+  dependsOn commonSources
+  from commonSources.archiveFile.map { zipTree(it) }
+}
+
+components.java {
+  withVariantsFromConfiguration(project.configurations.shadowRuntimeElements) {
+    skip()
+  }
+}
+
+publishing {
+  publications {
+    mavenFabric(MavenPublication) {
+      artifactId = rootProject.mod_id + "-" + project.name
+      from components.java
+    }
+  }
+
+  repositories {}
+}
