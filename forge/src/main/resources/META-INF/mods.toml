@@ -13,7 +13,9 @@ relate to signalling and signage used on UK tramways and railways.
 
 a Purple Create mod
 '''
-logoFile = "logo.png"
+logoFile="logo.png"
+displayURL="https://modrinth.com/mod/tramways"
+updateJSONURL="https://api.modrinth.com/updates/tramways/forge_updates.json"
 
 [[dependencies.${mod_id}]]
     modId="forge"

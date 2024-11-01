@@ -8,6 +8,10 @@
     "Purple Create",
     "C1200"
   ],
+  "contact": {
+    "homepage": "https://modrinth.com/mod/tramways",
+    "issues": "https://github.com/PurpleCreate/Tramways/issues"
+  },
   "license": "MIT",
   "icon": "logo.png",
   "environment": "*",
