@@ -20,8 +20,8 @@ idea. If you do find a bug, please report it!
 
 1. Install the mod like any other one: by dragging the downloaded `.jar` into
    your `.minecraft/mods` folder.
-2. Make sure you have [`ffmpeg`](https://ffmpeg.org/) installed and added to
-   your `PATH` (Try searching for a tutorial).
+2. Make sure you have [`ffmpeg`](https://ffmpeg.org/) installed. An installation
+   tutorial can be found [here](https://github.com/PurpleCreate/Tramways/wiki/FFMPEG-Installation).
 
 ---
 

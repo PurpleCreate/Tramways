@@ -43,9 +43,8 @@ public class Tramways {
   public static void clientSetup() {
     if (!FFMPEG.exists()) {
       throw new RuntimeException(
-        "FFMPEG is missing! Create: Tramways requires this to run properly. "
-          + "Please visit https://ffmpeg.org/download.html to download ffmpeg "
-          + "and don't forget to add the install location to your PATH."
+        "FFMPEG is missing! Create: Tramways requires this to run properly. Follow the tutorial "
+          + "at https://github.com/PurpleCreate/Tramways/wiki/FFMPEG-Installation to help you"
       );
     }
   }
