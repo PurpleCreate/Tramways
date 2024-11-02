@@ -1,7 +1,8 @@
-package purplecreate.tramways.services;
+package purplecreate.tramways.content.announcements.util;
 
 import purplecreate.tramways.Tramways;
 
+import java.io.*;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.WebSocket;
@@ -27,6 +28,38 @@ public class TTS {
     this.voice = voice;
     this.content = content;
     this.onData = onData;
+  }
+
+  public static InputStream stream(String voice, String content) {
+    PipedInputStream in;
+    PipedOutputStream out;
+
+    try {
+      in = new PipedInputStream();
+      out = new PipedOutputStream(in);
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+
+    new Thread(() ->
+      new TTS(
+        voice,
+        content,
+        (bytes) -> {
+          try {
+            if (bytes == null) {
+              out.close();
+            } else {
+              out.write(bytes);
+            }
+          } catch (IOException e) {
+            throw new RuntimeException(e);
+          }
+        }
+      ).start()
+    ).start();
+
+    return in;
   }
 
   private String generateHello() {

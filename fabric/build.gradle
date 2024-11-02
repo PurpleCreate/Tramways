@@ -57,6 +57,8 @@ dependencies {
   // dependencies
   modImplementation("net.fabricmc.fabric-api:fabric-api:${fabric_api_version}")
 
+  implementation(include("javazoom:jlayer:${jlayer_version}"))
+
   // Create - dependencies are added transitively
   modImplementation("com.simibubi.create:create-fabric-${minecraft_version}:${create_fabric_version}")
 

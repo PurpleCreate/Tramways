@@ -20,6 +20,6 @@ public class VoiceSoundInstanceImpl extends VoiceSoundInstance {
 
   @Override
   public CompletableFuture<AudioStream> getStream(SoundBufferLibrary soundBuffers, Sound sound, boolean looping) {
-    return VoiceSoundInstance.getStreamInternal(stream);
+    return getStreamInternal(stream);
   }
 }

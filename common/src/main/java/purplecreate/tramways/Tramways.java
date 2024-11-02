@@ -3,7 +3,6 @@ package purplecreate.tramways;
 import com.tterrag.registrate.Registrate;
 import purplecreate.tramways.config.Config;
 import purplecreate.tramways.datagen.DataGen;
-import purplecreate.tramways.services.FFMPEG;
 import com.mojang.logging.LogUtils;
 import com.simibubi.create.foundation.utility.Components;
 import net.minecraft.network.chat.MutableComponent;
@@ -40,14 +39,7 @@ public class Tramways {
     TExtras.registerCommon();
   }
 
-  public static void clientSetup() {
-    if (!FFMPEG.exists()) {
-      throw new RuntimeException(
-        "FFMPEG is missing! Create: Tramways requires this to run properly. Follow the tutorial "
-          + "at https://github.com/PurpleCreate/Tramways/wiki/FFMPEG-Installation to help you"
-      );
-    }
-  }
+  public static void clientSetup() {}
 
   public static MutableComponent translatable(String path, Object... o) {
     return Components.translatable(Tramways.ID + "." + path, resolveBuilders(o));

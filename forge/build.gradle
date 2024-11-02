@@ -46,6 +46,8 @@ dependencies {
   compileOnly("io.github.llamalad7:mixinextras-common:${mixin_extras_version}")
   annotationProcessor(implementation(include("io.github.llamalad7:mixinextras-forge:${mixin_extras_version}")))
 
+  forgeRuntimeLibrary(implementation(include("javazoom:jlayer:${jlayer_version}")))
+
   // Create and its dependencies
   modImplementation("com.simibubi.create:create-${minecraft_version}:${create_forge_version}:slim") { transitive = false }
   modImplementation("com.tterrag.registrate:Registrate:${registrate_forge_version}")

@@ -6,7 +6,6 @@ import net.minecraft.client.sounds.SoundBufferLibrary;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import purplecreate.tramways.content.announcements.sound.MovingVoiceSoundInstance;
-import purplecreate.tramways.content.announcements.sound.VoiceSoundInstance;
 
 import java.io.InputStream;
 import java.util.concurrent.CompletableFuture;
@@ -22,6 +21,6 @@ public class MovingVoiceSoundInstanceImpl extends MovingVoiceSoundInstance {
 
   @Override
   public CompletableFuture<AudioStream> getAudioStream(SoundBufferLibrary loader, ResourceLocation id, boolean repeatInstantly) {
-    return VoiceSoundInstance.getStreamInternal(stream);
+    return getStreamInternal(stream);
   }
 }

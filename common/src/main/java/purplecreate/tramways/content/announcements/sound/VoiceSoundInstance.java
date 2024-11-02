@@ -1,6 +1,5 @@
 package purplecreate.tramways.content.announcements.sound;
 
-import com.mojang.blaze3d.audio.OggAudioStream;
 import dev.architectury.injectables.annotations.ExpectPlatform;
 import net.minecraft.Util;
 import net.minecraft.client.resources.sounds.AbstractSoundInstance;
@@ -36,10 +35,10 @@ public class VoiceSoundInstance extends AbstractSoundInstance {
     throw new AssertionError();
   }
 
-  public static CompletableFuture<AudioStream> getStreamInternal(InputStream stream) {
+  protected CompletableFuture<AudioStream> getStreamInternal(InputStream stream) {
     return CompletableFuture.supplyAsync(() -> {
       try {
-        return new OggAudioStream(stream);
+        return new MP3AudioStream(stream);
       } catch (IOException e) {
         throw new RuntimeException(e);
       }

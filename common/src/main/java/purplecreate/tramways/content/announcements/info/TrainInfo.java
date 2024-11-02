@@ -23,14 +23,14 @@ public class TrainInfo {
     return new TrainInfo(train);
   }
 
-  private List<String> getCallingAt() {
+  private List<StationInfo> getCallingAt() {
     return getCallingAt(train.runtime.currentEntry);
   }
 
-  private List<String> getCallingAt(int startAt) {
+  private List<StationInfo> getCallingAt(int startAt) {
     ScheduleRuntime rt = train.runtime;
     Schedule schedule = rt.getSchedule();
-    List<String> callingAt = new ArrayList<>();
+    List<StationInfo> callingAt = new ArrayList<>();
 
     if (schedule == null) return callingAt;
 
@@ -40,8 +40,11 @@ public class TrainInfo {
 
     for (int i = startAt; i < entries.size(); i++) {
       if (entries.get(i).instruction instanceof DestinationInstruction instruction) {
-        String destination = instruction.getFilter();
-        if (schedule.cyclic && callingAt.contains(destination)) break;
+        StationInfo destination = StationInfo.fromFilter(instruction.getFilter());
+        if (
+          schedule.cyclic
+            && callingAt.stream().anyMatch((e) -> Objects.equals(e.getAlias(), destination.getAlias()))
+        ) break;
         callingAt.add(destination);
       }
     }
@@ -49,8 +52,8 @@ public class TrainInfo {
     return callingAt;
   }
 
-  private Couple<String> getTermini() {
-    List<String> callingAt = getCallingAt(0);
+  private Couple<StationInfo> getTermini() {
+    List<StationInfo> callingAt = getCallingAt(0);
     if (callingAt.isEmpty()) return Couple.create(null, null);
     return Couple.create(callingAt.get(0), callingAt.get(callingAt.size() - 1));
   }
@@ -70,17 +73,17 @@ public class TrainInfo {
   }
 
   public Map<String, String> getProperties() {
-    List<String> callingAt = getCallingAt();
+    List<StationInfo> callingAt = getCallingAt();
     Map<String, String> props = new HashMap<>();
 
     props.put("train_name", train.name.getString());
 
     if (callingAt.isEmpty()) return props;
 
-    StationInfo end = StationInfo.fromFilter(callingAt.get(callingAt.size() - 1));
-    for (String terminus : getTermini()) {
-      if (callingAt.get(0).equals(terminus)) {
-        end = StationInfo.fromFilter(terminus);
+    StationInfo end = callingAt.get(callingAt.size() - 1);
+    for (StationInfo terminus : getTermini()) {
+      if (Objects.equals(callingAt.get(0).getAlias(), terminus.getAlias())) {
+        end = terminus;
         break;
       }
     }
@@ -88,15 +91,15 @@ public class TrainInfo {
     props.put("end_extra", end.getExtra());
 
     if (train.runtime.state == ScheduleRuntime.State.POST_TRANSIT) {
-      StationInfo current = StationInfo.fromFilter(callingAt.get(0));
+      StationInfo current = callingAt.get(0);
       props.put("current", current.getAlias());
       props.put("current_extra", current.getExtra());
 
-      StationInfo next = StationInfo.fromFilter(callingAt.get(1));
+      StationInfo next = callingAt.get(1);
       props.put("next", next.getAlias());
       props.put("next_extra", next.getExtra());
     } else {
-      StationInfo next = StationInfo.fromFilter(callingAt.get(0));
+      StationInfo next = callingAt.get(0);
       props.put("next", next.getAlias());
       props.put("next_extra", next.getExtra());
     }

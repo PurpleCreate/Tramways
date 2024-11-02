@@ -2,7 +2,6 @@ package purplecreate.tramways.content.announcements.network;
 
 import purplecreate.tramways.Tramways;
 import purplecreate.tramways.content.announcements.sound.MovingVoiceSoundInstance;
-import purplecreate.tramways.content.announcements.util.TTSFileManager;
 import com.simibubi.create.Create;
 import com.simibubi.create.content.trains.entity.Carriage;
 import com.simibubi.create.content.trains.entity.Train;
@@ -10,14 +9,14 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.level.Level;
+import purplecreate.tramways.content.announcements.util.TTSFileManager;
 import purplecreate.tramways.util.Env;
 import purplecreate.tramways.util.S2CPacket;
-import purplecreate.tramways.util.QueuedPacket;
 
 import java.io.InputStream;
 import java.util.UUID;
 
-public class PlayMovingVoiceS2CPacket extends QueuedPacket implements S2CPacket {
+public class PlayMovingVoiceS2CPacket implements S2CPacket {
   final String voice;
   final String content;
   final BlockPos localPos;
@@ -55,33 +54,25 @@ public class PlayMovingVoiceS2CPacket extends QueuedPacket implements S2CPacket 
   }
 
   public void handle(Minecraft mc) {
-    Env.unsafeRunWhenOn(Env.CLIENT, () -> () ->
-      addToQueue(trainId + "," + carriageId + "," + localPos)
-    );
-  }
+    Env.unsafeRunWhenOn(Env.CLIENT, () -> () -> {
+      Level level = mc.level;
 
-  public long handleQueued() {
-    Minecraft mc = Minecraft.getInstance();
-    Level level = mc.level;
+      Train train = Create.RAILWAYS.sided(level).trains.get(trainId);
+      if (train == null) {
+        Tramways.LOGGER.warn("Couldn't play voice: Requested train is null");
+        return;
+      }
 
-    Train train = Create.RAILWAYS.sided(level).trains.get(trainId);
-    if (train == null) {
-      Tramways.LOGGER.warn("Couldn't play voice: Requested train is null");
-      return 0;
-    }
+      Carriage carriage = train.carriages.get(carriageId);
+      if (carriage == null) {
+        Tramways.LOGGER.warn("Couldn't play voice: Requested carriage is null");
+        return;
+      }
 
-    Carriage carriage = train.carriages.get(carriageId);
-    if (carriage == null) {
-      Tramways.LOGGER.warn("Couldn't play voice: Requested carriage is null");
-      return 0;
-    }
-
-    InputStream stream = TTSFileManager.instance.getFile(voice, content);
-    mc.getSoundManager().play(
-      MovingVoiceSoundInstance.create(stream, carriage, localPos)
-    );
-
-    float duration = TTSFileManager.instance.getFileDuration(voice, content);
-    return (long)Math.ceil(duration < 0 ? 10 : duration);
+      InputStream stream = TTSFileManager.instance.cachedStream(voice, content);
+      mc.getSoundManager().play(
+        MovingVoiceSoundInstance.create(stream, carriage, localPos)
+      );
+    });
   }
 }

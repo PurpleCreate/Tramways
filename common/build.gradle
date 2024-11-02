@@ -20,6 +20,8 @@ dependencies {
   modImplementation("net.fabricmc:fabric-loader:${fabric_loader_version}")
   modCompileOnly("com.simibubi.create:create-fabric-${minecraft_version}:${create_fabric_version}")
 
+  implementation("javazoom:jlayer:${jlayer_version}")
+
   annotationProcessor(implementation("io.github.llamalad7:mixinextras-common:${mixin_extras_version}"))
 
   // Compat
