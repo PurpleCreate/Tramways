@@ -14,15 +14,6 @@ idea. If you do find a bug, please report it!
 - Tram and Railway Sign - speed limits and more for automatic trains
 - Speaker - TTS on-board and station announcements
 
-## Installation
-
-**Important:** The game ***WILL CRASH*** if you do not install `ffmpeg`.
-
-1. Install the mod like any other one: by dragging the downloaded `.jar` into
-   your `.minecraft/mods` folder.
-2. Make sure you have [`ffmpeg`](https://ffmpeg.org/) installed. An installation
-   tutorial can be found [here](https://github.com/PurpleCreate/Tramways/wiki/FFMPEG-Installation).
-
 ---
 
 <p align="center">a Purple Create mod</p>
