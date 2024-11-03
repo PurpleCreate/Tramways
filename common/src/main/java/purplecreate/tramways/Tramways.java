@@ -24,7 +24,6 @@ public class Tramways {
     TBlocks.register();
     TBlockEntities.register();
     TTags.register();
-    DataGen.register();
 
     try {
       Config.read().write();

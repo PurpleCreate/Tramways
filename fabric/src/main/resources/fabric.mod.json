@@ -18,6 +18,9 @@
   "entrypoints": {
     "main": [
       "purplecreate.tramways.fabric.TramwaysImpl"
+    ],
+    "fabric-datagen": [
+      "purplecreate.tramways.fabric.DataGenEntry"
     ]
   },
   "mixins": [

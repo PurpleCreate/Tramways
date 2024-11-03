@@ -1,4 +1,5 @@
 {
+  "replace": false,
   "values": [
     "tramways:tram_signal",
     "tramways:tram_sign",
