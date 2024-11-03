@@ -1,5 +1,7 @@
 package purplecreate.tramways.content.announcements.network;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import purplecreate.tramways.Tramways;
 import purplecreate.tramways.content.announcements.sound.MovingVoiceSoundInstance;
 import com.simibubi.create.Create;
@@ -53,6 +55,7 @@ public class PlayMovingVoiceS2CPacket implements S2CPacket {
     buffer.writeVarInt(carriageId);
   }
 
+  @Environment(EnvType.CLIENT)
   public void handle(Minecraft mc) {
     Env.unsafeRunWhenOn(Env.CLIENT, () -> () -> {
       Level level = mc.level;

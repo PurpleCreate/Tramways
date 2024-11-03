@@ -1,5 +1,7 @@
 package purplecreate.tramways.content.signs;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import purplecreate.tramways.TBlockEntities;
 import com.simibubi.create.AllShapes;
 import com.simibubi.create.content.equipment.wrench.IWrenchable;
@@ -63,6 +65,7 @@ public class TramSignBlock extends HorizontalDirectionalBlock implements IBE<Tra
   }
 
   @Override
+  @Environment(EnvType.CLIENT)
   public InteractionResult onWrenched(BlockState state, UseOnContext context) {
     Env.unsafeRunWhenOn(Env.CLIENT, () -> () ->
       withBlockEntityDo(context.getLevel(), context.getClickedPos(), (be) ->

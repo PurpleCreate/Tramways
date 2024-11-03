@@ -1,5 +1,7 @@
 package purplecreate.tramways.content.signs;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import purplecreate.tramways.TNetworking;
 import purplecreate.tramways.Tramways;
 import purplecreate.tramways.content.signs.demands.SignDemand;
@@ -24,6 +26,7 @@ import net.minecraft.world.item.ItemStack;
 import java.util.ArrayList;
 import java.util.List;
 
+@Environment(EnvType.CLIENT)
 public class TramSignSettingsScreen extends AbstractSimiScreen {
   final AllGuiTextures background = AllGuiTextures.SCHEDULE_EDITOR;
 

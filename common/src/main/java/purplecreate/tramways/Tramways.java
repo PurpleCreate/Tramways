@@ -24,7 +24,6 @@ public class Tramways {
     TBlocks.register();
     TBlockEntities.register();
     TTags.register();
-    TPonders.register();
     DataGen.register();
 
     try {
@@ -39,7 +38,9 @@ public class Tramways {
     TExtras.registerCommon();
   }
 
-  public static void clientSetup() {}
+  public static void clientSetup() {
+    TPonders.register();
+  }
 
   public static MutableComponent translatable(String path, Object... o) {
     return Components.translatable(Tramways.ID + "." + path, resolveBuilders(o));

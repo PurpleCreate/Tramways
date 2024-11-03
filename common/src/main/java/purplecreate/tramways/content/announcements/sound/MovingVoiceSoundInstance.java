@@ -5,6 +5,8 @@ import com.simibubi.create.content.contraptions.StructureTransform;
 import com.simibubi.create.content.trains.entity.Carriage;
 import com.simibubi.create.content.trains.entity.CarriageContraptionEntity;
 import dev.architectury.injectables.annotations.ExpectPlatform;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.sounds.TickableSoundInstance;
 import net.minecraft.core.BlockPos;
@@ -14,6 +16,7 @@ import net.minecraft.world.phys.Vec3;
 
 import java.io.InputStream;
 
+@Environment(EnvType.CLIENT)
 public class MovingVoiceSoundInstance extends VoiceSoundInstance implements TickableSoundInstance {
   final Carriage carriage;
   final BlockPos localPos;
