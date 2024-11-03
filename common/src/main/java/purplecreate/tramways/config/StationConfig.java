@@ -1,15 +1,24 @@
 package purplecreate.tramways.config;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Random;
+import java.util.*;
 
 public class StationConfig {
   private String alias = null;
   private String extra = null;
   private String announcer = null;
   private Map<StationMessageType, List<String>> messages = null;
+
+  public static StationConfig getInitial() {
+    StationConfig stationConfig = new StationConfig();
+
+    stationConfig.announcer = stationConfig.getAnnouncer();
+    stationConfig.messages = new HashMap<>();
+
+    for (StationMessageType type : StationMessageType.class.getEnumConstants())
+      stationConfig.messages.put(type, stationConfig.getMessages(type));
+
+    return stationConfig;
+  }
 
   public String getAlias() {
     return alias;

@@ -6,6 +6,18 @@ public class TrainConfig {
   private String announcer = null;
   private Map<TrainMessageType, List<String>> messages = null;
 
+  public static TrainConfig getInitial() {
+    TrainConfig trainConfig = new TrainConfig();
+
+    trainConfig.announcer = trainConfig.getAnnouncer();
+    trainConfig.messages = new HashMap<>();
+
+    for (TrainMessageType type : TrainMessageType.class.getEnumConstants())
+      trainConfig.messages.put(type, trainConfig.getMessages(type));
+
+    return trainConfig;
+  }
+
   public String getAnnouncer() {
     if (Objects.isNull(announcer))
       return "en-GB-SoniaNeural";

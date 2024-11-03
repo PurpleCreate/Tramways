@@ -4,6 +4,7 @@ import com.google.gson.*;
 import purplecreate.tramways.Tramways;
 
 import java.io.*;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Supplier;
@@ -53,10 +54,25 @@ public class Config {
   }
 
   public static Config read() {
+    Config config;
+
     try (FileReader reader = new FileReader(file)) {
-      return gson.fromJson(reader, Config.class);
+      config = gson.fromJson(reader, Config.class);
     } catch (IOException e) {
-      return new Config();
+      config = new Config();
     }
+
+    // generate initial config
+    if (config.trains == null) {
+      config.trains = new HashMap<>();
+      config.trains.put("*", TrainConfig.getInitial());
+    }
+
+    if (config.stations == null) {
+      config.stations = new HashMap<>();
+      config.stations.put("*", StationConfig.getInitial());
+    }
+
+    return config;
   }
 }
