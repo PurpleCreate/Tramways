@@ -92,6 +92,9 @@ publishMods {
     accessToken = System.getenv("CURSEFORGE_TOKEN")
     minecraftVersions.add(minecraft_version)
     modLoaders.add("forge")
+
+    requires("create")
+    optional("create-steam-n-rails")
   }
 
   modrinth("modrinthForge") {
@@ -101,6 +104,9 @@ publishMods {
     accessToken = System.getenv("MODRINTH_TOKEN")
     minecraftVersions.add(minecraft_version)
     modLoaders.add("forge")
+
+    requires("create")
+    optional("create-steam-n-rails")
   }
 
   curseforge("curseforgeFabric") {
@@ -110,6 +116,9 @@ publishMods {
     accessToken = System.getenv("CURSEFORGE_TOKEN")
     minecraftVersions.add(minecraft_version)
     modLoaders.add("fabric")
+
+    requires("create-fabric")
+    optional("create-steam-n-rails")
   }
 
   modrinth("modrinthFabric") {
@@ -119,5 +128,8 @@ publishMods {
     accessToken = System.getenv("MODRINTH_TOKEN")
     minecraftVersions.add(minecraft_version)
     modLoaders.add("fabric")
+
+    requires("create-fabric")
+    optional("create-steam-n-rails")
   }
 }
