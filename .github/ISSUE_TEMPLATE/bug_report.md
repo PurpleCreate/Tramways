@@ -24,8 +24,9 @@ If applicable, add screenshots to help explain your problem.
 
 
 **Technical Information:**
- - OS: 
- - Mod Version (check mod's file name or the mods tab ingame if unsure): 
+ - OS: windows / mac / linux
+ - Mod Loader: forge / fabric
+ - Mod Version:
 
 **Additional context**
 Add any other context about the problem here.
