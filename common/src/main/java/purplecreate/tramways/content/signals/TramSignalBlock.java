@@ -1,5 +1,6 @@
 package purplecreate.tramways.content.signals;
 
+import com.simibubi.create.content.equipment.wrench.IWrenchable;
 import purplecreate.tramways.TBlockEntities;
 import com.simibubi.create.AllShapes;
 import com.simibubi.create.foundation.block.IBE;
@@ -17,7 +18,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
-public class TramSignalBlock extends HorizontalDirectionalBlock implements IBE<TramSignalBlockEntity> {
+public class TramSignalBlock extends HorizontalDirectionalBlock implements IBE<TramSignalBlockEntity>, IWrenchable {
   public static final EnumProperty<TramSignalState> STATE = EnumProperty.create("state", TramSignalState.class);
 
   public TramSignalBlock(Properties properties) {
