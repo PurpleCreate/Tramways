@@ -1,5 +1,7 @@
 package purplecreate.tramways.content.announcements;
 
+import net.minecraft.world.level.block.Mirror;
+import net.minecraft.world.level.block.Rotation;
 import purplecreate.tramways.TNetworking;
 import purplecreate.tramways.content.announcements.network.PlayVoiceS2CPacket;
 import com.simibubi.create.AllShapes;
@@ -43,6 +45,16 @@ public class SpeakerBlock extends DirectionalBlock implements IWrenchable {
   @Override
   public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
     return SHAPE.get(state.getValue(FACING));
+  }
+
+  @Override
+  public BlockState rotate(BlockState state, Rotation rotation) {
+    return state.setValue(FACING, rotation.rotate(state.getValue(FACING)));
+  }
+
+  @Override
+  public BlockState mirror(BlockState state, Mirror mirror) {
+    return state.rotate(mirror.getRotation(state.getValue(FACING)));
   }
 
   @Override
