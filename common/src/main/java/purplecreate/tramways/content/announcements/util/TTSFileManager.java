@@ -72,6 +72,6 @@ public class TTSFileManager {
 
   private String getFileName(String voice, String content) {
     String contentHash = HexFormat.of().formatHex(getDigest().digest(content.getBytes(StandardCharsets.UTF_8)));
-    return voice + "-" + contentHash + ".ogg";
+    return voice + "-" + contentHash + ".mp3";
   }
 }
