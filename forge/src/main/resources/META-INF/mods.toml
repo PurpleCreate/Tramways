@@ -1,5 +1,6 @@
 modLoader="javafml"
 loaderVersion = "[${forge_version},)"
+issueTrackerURL="https://github.com/PurpleCreate/Tramways"
 license="MIT"
 
 [[mods]]
