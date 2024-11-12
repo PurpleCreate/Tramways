@@ -2,6 +2,7 @@ package purplecreate.tramways;
 
 import com.tterrag.registrate.util.entry.BlockEntityEntry;
 
+import purplecreate.tramways.content.requestStop.station.RequestStopButtonBlockEntity;
 import purplecreate.tramways.content.signals.TramSignalBlockEntity;
 import purplecreate.tramways.content.signs.TramSignBlockEntity;
 import purplecreate.tramways.content.signs.TramSignRenderer;
@@ -16,6 +17,11 @@ public class TBlockEntities {
     Tramways.REGISTRATE.blockEntity("tram_sign", TramSignBlockEntity::new)
       .validBlocks(TBlocks.TRAM_SIGN, TBlocks.RAILWAY_SIGN)
       .renderer(() -> TramSignRenderer::new)
+      .register();
+
+  public static final BlockEntityEntry<RequestStopButtonBlockEntity> REQUEST_STOP_BUTTON =
+    Tramways.REGISTRATE.blockEntity("request_stop_button", RequestStopButtonBlockEntity::new)
+      .validBlocks(TBlocks.REQUEST_STOP_BUTTON)
       .register();
 
   public static void register() {}

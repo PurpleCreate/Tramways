@@ -2,10 +2,27 @@ package purplecreate.tramways;
 
 import com.simibubi.create.content.trains.graph.EdgePointType;
 
+import com.simibubi.create.content.trains.schedule.destination.ScheduleInstruction;
+import com.simibubi.create.foundation.utility.Pair;
+import purplecreate.tramways.content.requestStop.train.RequestStopInstruction;
 import purplecreate.tramways.content.signs.TramSignPoint;
 import purplecreate.tramways.content.signs.demands.*;
 
+import java.util.function.Supplier;
+
+import static com.simibubi.create.content.trains.schedule.Schedule.INSTRUCTION_TYPES;
+
 public class TExtras {
+  public static class Schedule {
+    private static void registerInstruction(String path, Supplier<? extends ScheduleInstruction> factory) {
+      INSTRUCTION_TYPES.add(Pair.of(Tramways.rl(path), factory));
+    }
+
+    public static void register() {
+      registerInstruction("request_stop", RequestStopInstruction::new);
+    }
+  }
+
   public static class EdgePointTypes {
     public static final EdgePointType<TramSignPoint> TRAM_SIGN =
       EdgePointType.register(Tramways.rl("tram_sign"), TramSignPoint::new);
@@ -24,6 +41,7 @@ public class TExtras {
 
   // runs in Tramways#commonSetup
   public static void registerCommon() {
+    Schedule.register();
     EdgePointTypes.register();
     SignDemands.register();
   }

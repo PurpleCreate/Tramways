@@ -59,5 +59,12 @@ public class GenRecipes {
       .pattern("S")
       .pattern("G")
       .save(provider);
+
+    ShapelessRecipeBuilder
+      .shapeless(RecipeCategory.TRANSPORTATION, TBlocks.REQUEST_STOP_BUTTON)
+      .unlockedBy("has_item", unlockedByItem(AllItems.BRASS_NUGGET))
+      .requires(AllItems.BRASS_NUGGET)
+      .requires(Items.STONE_BUTTON)
+      .save(provider);
   }
 }

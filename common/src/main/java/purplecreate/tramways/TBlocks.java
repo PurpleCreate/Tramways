@@ -1,11 +1,14 @@
 package purplecreate.tramways;
 
+import com.simibubi.create.Create;
 import com.simibubi.create.content.trains.track.TrackTargetingBlockItem;
 import com.tterrag.registrate.providers.DataGenContext;
 import com.tterrag.registrate.providers.RegistrateBlockstateProvider;
 import com.tterrag.registrate.util.entry.BlockEntry;
 import dev.architectury.injectables.annotations.ExpectPlatform;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.ButtonBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.material.MapColor;
 import com.simibubi.create.foundation.data.SharedProperties;
@@ -16,6 +19,8 @@ import static com.simibubi.create.foundation.data.ModelGen.customItemModel;
 
 import purplecreate.tramways.content.announcements.SpeakerDisplayTarget;
 import purplecreate.tramways.content.announcements.SpeakerMovementBehaviour;
+import purplecreate.tramways.content.requestStop.station.RequestStopButtonBlock;
+import purplecreate.tramways.content.requestStop.station.RequestStopButtonItem;
 import purplecreate.tramways.content.signals.TramSignalBlock;
 import purplecreate.tramways.content.signs.TramSignBlock;
 import purplecreate.tramways.content.announcements.SpeakerBlock;
@@ -25,8 +30,7 @@ public class TBlocks {
     Tramways.REGISTRATE.block("tram_signal", TramSignalBlock::new)
       .initialProperties(SharedProperties::softMetal)
       .properties(properties -> properties.mapColor(MapColor.COLOR_GRAY).sound(SoundType.NETHERITE_BLOCK))
-      .blockstate(TBlocks::complexTramSignal
-      )
+      .blockstate(TBlocks::complexTramSignal)
       .lang("Tram Signal")
       .item()
       .transform(customItemModel())
@@ -69,9 +73,20 @@ public class TBlocks {
       .simpleItem()
       .register();
 
+  public static final BlockEntry<RequestStopButtonBlock> REQUEST_STOP_BUTTON =
+    Tramways.REGISTRATE.block("request_stop_button", RequestStopButtonBlock::new)
+      .initialProperties(SharedProperties::stone)
+      .blockstate((context, provider) ->
+        buttonBlock(context, provider, Tramways.rl("block/request_stop_button"))
+      )
+      .lang("Request Stop Button")
+      .item(RequestStopButtonItem::new)
+      .transform(customItemModel())
+      .register();
+
   @ExpectPlatform
   public static <T extends Block> void complexTramSignal(
-    DataGenContext<T, ?> context,
+    DataGenContext<Block, T> context,
     RegistrateBlockstateProvider provider
   ) {
     throw new AssertionError();
@@ -79,7 +94,7 @@ public class TBlocks {
 
   @ExpectPlatform
   public static <T extends Block> void simpleHorizontalBlock(
-    DataGenContext<T, ?> context,
+    DataGenContext<Block, T> context,
     RegistrateBlockstateProvider provider,
     String existingModelPath
   ) {
@@ -88,9 +103,18 @@ public class TBlocks {
 
   @ExpectPlatform
   public static <T extends Block> void simpleDirectionalBlock(
-    DataGenContext<T, ?> context,
+    DataGenContext<Block, T> context,
     RegistrateBlockstateProvider provider,
     String existingModelPath
+  ) {
+    throw new AssertionError();
+  }
+
+  @ExpectPlatform
+  public static <T extends ButtonBlock> void buttonBlock(
+    DataGenContext<Block, T> context,
+    RegistrateBlockstateProvider provider,
+    ResourceLocation texture
   ) {
     throw new AssertionError();
   }

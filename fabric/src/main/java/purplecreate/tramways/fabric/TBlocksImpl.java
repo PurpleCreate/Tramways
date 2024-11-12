@@ -2,13 +2,19 @@ package purplecreate.tramways.fabric;
 
 import com.tterrag.registrate.providers.DataGenContext;
 import com.tterrag.registrate.providers.RegistrateBlockstateProvider;
+import io.github.fabricators_of_create.porting_lib.models.generators.ConfiguredModel;
+import io.github.fabricators_of_create.porting_lib.models.generators.ModelFile;
+import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.ButtonBlock;
+import net.minecraft.world.level.block.state.properties.AttachFace;
 import purplecreate.tramways.Tramways;
 import purplecreate.tramways.content.signals.TramSignalBlock;
 
 public class TBlocksImpl {
   public static <T extends Block> void complexTramSignal(
-    DataGenContext<T, ?> context,
+    DataGenContext<Block, T> context,
     RegistrateBlockstateProvider provider
   ) {
     provider.horizontalBlock(context.getEntry(), state -> {
@@ -22,7 +28,7 @@ public class TBlocksImpl {
   }
 
   public static <T extends Block> void simpleHorizontalBlock(
-    DataGenContext<T, ?> context,
+    DataGenContext<Block, T> context,
     RegistrateBlockstateProvider provider,
     String existingModelPath
   ) {
@@ -37,7 +43,7 @@ public class TBlocksImpl {
   }
 
   public static <T extends Block> void simpleDirectionalBlock(
-    DataGenContext<T, ?> context,
+    DataGenContext<Block, T> context,
     RegistrateBlockstateProvider provider,
     String existingModelPath
   ) {
@@ -49,5 +55,37 @@ public class TBlocksImpl {
           provider.modLoc(existingModelPath)
         )
     );
+  }
+
+  public static <T extends ButtonBlock> void buttonBlock(
+    DataGenContext<Block, T> context,
+    RegistrateBlockstateProvider provider,
+    ResourceLocation texture
+  ) {
+    ModelFile button = provider
+      .models()
+      .withExistingParent(
+        "block/" + context.getName() + "/normal",
+        provider.mcLoc("block/button")
+      )
+      .texture("texture", texture);
+    ModelFile buttonPressed = provider
+      .models()
+      .withExistingParent(
+        "block/" + context.getName() + "/pressed",
+        provider.mcLoc("block/button_pressed")
+      )
+      .texture("texture", texture);
+
+    provider.getVariantBuilder(context.getEntry()).forAllStates((state) -> {
+      Direction facing = state.getValue(ButtonBlock.FACING);
+      AttachFace face = state.getValue(ButtonBlock.FACE);
+      boolean powered = state.getValue(ButtonBlock.POWERED);
+      return ConfiguredModel.builder()
+        .modelFile(powered ? buttonPressed : button)
+        .rotationX(face == AttachFace.FLOOR ? 0 : (face == AttachFace.WALL ? 90 : 180))
+        .rotationY((int)(face == AttachFace.CEILING ? facing : facing.getOpposite()).toYRot())
+        .build();
+    });
   }
 }

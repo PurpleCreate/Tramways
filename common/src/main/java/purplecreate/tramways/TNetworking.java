@@ -12,6 +12,8 @@ import net.minecraft.world.phys.Vec3;
 
 import purplecreate.tramways.content.announcements.network.PlayVoiceS2CPacket;
 import purplecreate.tramways.content.announcements.network.PlayMovingVoiceS2CPacket;
+import purplecreate.tramways.content.requestStop.network.RequestStopC2SPacket;
+import purplecreate.tramways.content.requestStop.network.StoppingBroadcastS2CPacket;
 import purplecreate.tramways.content.signs.network.SaveSignSettingsC2SPacket;
 import purplecreate.tramways.util.C2SPacket;
 import purplecreate.tramways.util.S2CPacket;
@@ -151,6 +153,16 @@ public class TNetworking {
     registerC2S(
       SaveSignSettingsC2SPacket.class,
       SaveSignSettingsC2SPacket::read
+    );
+
+    registerC2S(
+      RequestStopC2SPacket.class,
+      RequestStopC2SPacket::read
+    );
+
+    registerS2C(
+      StoppingBroadcastS2CPacket.class,
+      StoppingBroadcastS2CPacket::read
     );
   }
 }

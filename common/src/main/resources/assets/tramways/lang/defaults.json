@@ -7,5 +7,16 @@
   "tramways.sign_demand.temporary_speed": "Temporary Speed Limit",
   "tramways.sign_demand.temporary_end": "Temporary Speed Limit End",
 
-  "tramways.display_target.speaker": "Speaker"
+  "tramways.display_target.speaker": "Speaker",
+
+  "tramways.request_stop.stopping": "Stopping!",
+  "tramways.request_stop.countdown": "Press %1$s to request stop at %2$s",
+  "tramways.request_stop.next_train.title": "Next Train:",
+  "tramways.request_stop.next_train.info": "%1$s to %2$s",
+  "tramways.request_stop.next_train.no_trains": "No requestable trains nearby",
+  "tramways.request_stop.targeting.clear": "Cleared targeted station",
+  "tramways.request_stop.targeting.set": "Set targeted station",
+  "tramways.request_stop.targeting.no_tag": "You must target a station first",
+  "tramways.schedule.instruction.request_stop": "Travel to Request Stop",
+  "tramways.schedule.instruction.request_stop.summary": "Request Stop:"
 }
