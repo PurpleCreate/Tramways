@@ -18,7 +18,7 @@ public class StationInfo {
 
   public String getAlias() {
     String alias = Config
-      .read()
+      .getInstance()
       .findStation(filter)
       .getAlias();
 
@@ -32,7 +32,7 @@ public class StationInfo {
 
   public String getExtra() {
     String extra = Config
-      .read()
+      .getInstance()
       .findStation(filter)
       .getExtra();
 
@@ -43,14 +43,14 @@ public class StationInfo {
 
   public String getAnnouncer() {
     return Config
-      .read()
+      .getInstance()
       .findStation(filter)
       .getAnnouncer();
   }
 
   public String getString(StationMessageType type) {
     return Config
-      .read()
+      .getInstance()
       .findStation(filter)
       .getRandomMessage(type);
   }

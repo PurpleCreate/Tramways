@@ -10,6 +10,8 @@ import java.util.Objects;
 import java.util.function.Supplier;
 
 public class Config {
+  private static Config instance;
+
   public static final Gson gson =
     new GsonBuilder()
       .setPrettyPrinting()
@@ -20,6 +22,12 @@ public class Config {
 
   private Map<String, TrainConfig> trains = null;
   private Map<String, StationConfig> stations = null;
+
+  public static Config getInstance() {
+    if (instance == null)
+      return reload();
+    return instance;
+  }
 
   private <T> T find(Supplier<T> create, Map<String, T> map, String name) {
     if (!Objects.isNull(map))
@@ -53,11 +61,14 @@ public class Config {
     }
   }
 
-  public static Config read() {
+  public static Config reload() {
     Config config;
 
     try (FileReader reader = new FileReader(file)) {
       config = gson.fromJson(reader, Config.class);
+
+      if (config == null)
+        config = new Config();
     } catch (IOException e) {
       config = new Config();
     }
@@ -73,6 +84,7 @@ public class Config {
       config.stations.put("*", StationConfig.getInitial());
     }
 
+    instance = config;
     return config;
   }
 }

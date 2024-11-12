@@ -1,5 +1,6 @@
 package purplecreate.tramways;
 
+import com.google.gson.JsonSyntaxException;
 import com.tterrag.registrate.Registrate;
 import purplecreate.tramways.config.Config;
 import purplecreate.tramways.datagen.DataGen;
@@ -26,9 +27,11 @@ public class Tramways {
     TTags.register();
 
     try {
-      Config.read().write();
+      Config.getInstance().write();
     } catch (IOException e) {
       throw new RuntimeException(e);
+    } catch (JsonSyntaxException e) {
+      throw new RuntimeException("Config for Tramways is malformed!", e);
     }
   }
 

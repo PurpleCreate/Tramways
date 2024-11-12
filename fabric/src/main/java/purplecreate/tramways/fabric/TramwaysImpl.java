@@ -13,6 +13,7 @@ public class TramwaysImpl implements ModInitializer {
     Tramways.init();
     Tramways.REGISTRATE.register();
     Tramways.commonSetup();
+    TCommandsImpl.init();
     TCreativeTabsImpl.register();
     TNetworkingImpl.init();
     CommonEventsImpl.register();

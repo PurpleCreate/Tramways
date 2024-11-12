@@ -60,14 +60,14 @@ public class TrainInfo {
 
   public String getAnnouncer() {
     return Config
-      .read()
+      .getInstance()
       .findTrain(train.name.getString())
       .getAnnouncer();
   }
 
   public String getString(TrainMessageType type) {
     return Config
-      .read()
+      .getInstance()
       .findTrain(train.name.getString())
       .getRandomMessage(type);
   }
