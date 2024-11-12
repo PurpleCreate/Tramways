@@ -57,7 +57,7 @@ public class SpeakerDisplayTarget extends DisplayTarget {
 
           StationInfo stationInfo = StationInfo.fromFilter(filter);
           TrainInfo trainInfo = TrainInfo.fromTrain(prediction.train);
-          Map<String, String> props = trainInfo.getProperties();
+          Map<String, String> props = trainInfo.getProperties(false);
           StationMessageType type = filter.contains("*")
             ? StationMessageType.WITH_PLATFORM
             : StationMessageType.WITHOUT_PLATFORM;

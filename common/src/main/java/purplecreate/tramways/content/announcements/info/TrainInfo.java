@@ -73,6 +73,10 @@ public class TrainInfo {
   }
 
   public Map<String, String> getProperties() {
+    return getProperties(true);
+  }
+
+  public Map<String, String> getProperties(boolean fixEnd) {
     List<StationInfo> callingAt = getCallingAt();
     Map<String, String> props = new HashMap<>();
 
@@ -81,12 +85,13 @@ public class TrainInfo {
     if (callingAt.isEmpty()) return props;
 
     StationInfo end = callingAt.get(callingAt.size() - 1);
-    for (StationInfo terminus : getTermini()) {
-      if (Objects.equals(callingAt.get(0).getAlias(), terminus.getAlias())) {
-        end = terminus;
-        break;
+    if (fixEnd)
+      for (StationInfo terminus : getTermini()) {
+        if (Objects.equals(callingAt.get(0).getAlias(), terminus.getAlias())) {
+          end = terminus;
+          break;
+        }
       }
-    }
     props.put("end", end.getAlias());
     props.put("end_extra", end.getExtra());
 
