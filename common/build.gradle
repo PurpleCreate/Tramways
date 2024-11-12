@@ -2,7 +2,9 @@ architectury {
   common(enabled_platforms.split(","))
 }
 
-loom {}
+loom {
+  accessWidenerPath = file("src/main/resources/tramways.accesswidener")
+}
 
 repositories {
   // mavens for Create Fabric and dependencies
@@ -25,7 +27,7 @@ dependencies {
   annotationProcessor(implementation("io.github.llamalad7:mixinextras-common:${mixin_extras_version}"))
 
   // Compat
-  modCompileOnly("com.railwayteam.railways:Steam_Rails-common-${minecraft_version}:${railways_common_version}")
+  modCompileOnly("com.railwayteam.railways:Steam_Rails-common-${minecraft_version}:${railways_common_version}") { transitive = false }
 }
 
 sourceSets {

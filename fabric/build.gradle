@@ -8,6 +8,8 @@ architectury {
 }
 
 loom {
+  accessWidenerPath = project(":common").loom.accessWidenerPath
+
   runs {
     data {
       client()
@@ -67,7 +69,8 @@ dependencies {
   modLocalRuntime("com.terraformersmc:modmenu:${modmenu_version}")
 
   // Compat
-  //modImplementation("com.railwayteam.railways:Steam_Rails-fabric-${minecraft_version}:${railways_fabric_version}")
+  modCompileOnly("com.railwayteam.railways:Steam_Rails-fabric-${minecraft_version}:${railways_fabric_version}") { transitive = false }
+  //modLocalRuntime("com.railwayteam.railways:Steam_Rails-fabric-${minecraft_version}:${railways_fabric_version}") { transitive = false }
 
   switch (fabric_recipe_viewer.toLowerCase(Locale.ROOT)) {
     case "jei": modLocalRuntime("mezz.jei:jei-${minecraft_version}-fabric:${jei_version}"); break

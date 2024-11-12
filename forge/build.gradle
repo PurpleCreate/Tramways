@@ -8,11 +8,11 @@ architectury {
 }
 
 loom {
-  //accessWidenerPath = project(":common").loom.accessWidenerPath
+  accessWidenerPath = project(":common").loom.accessWidenerPath
 
   forge {
-    //convertAccessWideners = true
-    //extraAccessWideners.add loom.accessWidenerPath.get().asFile.name
+    convertAccessWideners = true
+    extraAccessWideners.add loom.accessWidenerPath.get().asFile.name
   }
 }
 
@@ -57,7 +57,8 @@ dependencies {
   modLocalRuntime("mezz.jei:jei-${minecraft_version}-forge:${jei_version}") { transitive = false }
 
   // Compat
-  //modImplementation("com.railwayteam.railways:Steam_Rails-forge-${minecraft_version}:${railways_forge_version}")
+  modCompileOnly("com.railwayteam.railways:Steam_Rails-forge-${minecraft_version}:${railways_forge_version}") { transitive = false }
+  //modLocalRuntime("com.railwayteam.railways:Steam_Rails-forge-${minecraft_version}:${railways_forge_version}") { transitive = false }
 }
 
 processResources {
@@ -91,6 +92,7 @@ shadowJar {
 }
 
 remapJar {
+  injectAccessWidener = true
   input.set shadowJar.archiveFile
   dependsOn shadowJar
   archiveClassifier = null
