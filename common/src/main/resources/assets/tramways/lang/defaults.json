@@ -18,5 +18,5 @@
   "tramways.request_stop.targeting.set": "Set targeted station",
   "tramways.request_stop.targeting.no_tag": "You must target a station first",
   "tramways.schedule.instruction.request_stop": "Travel to Request Stop",
-  "tramways.schedule.instruction.request_stop.summary": "Request Stop:"
+  "create.schedule.instruction.request_stop.summary": "Request Stop:"
 }

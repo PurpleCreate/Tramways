@@ -1,4 +1,4 @@
-// 1.20.1	2024-11-12T15:27:03.2791663	Create: Tramways/Registrate Provider for tramways [Recipes, Advancements, Loot Tables, Tags (blocks), Tags (items), Tags (fluids), Tags (entity_types), Blockstates, Item models, Lang (en_us/en_ud)]
+// 1.20.1	2024-11-12T16:20:24.3527751	Create: Tramways/Registrate Provider for tramways [Recipes, Advancements, Loot Tables, Tags (blocks), Tags (items), Tags (fluids), Tags (entity_types), Blockstates, Item models, Lang (en_us/en_ud)]
 5ddaf153f3f34b919768a54235ee6898ce3d4a6f data\railways\tags\blocks\semaphore_poles.json
 5e60957a022b1acf291c83682247909b91604bca assets\tramways\models\item\speaker.json
 59ac5d75e33afb57442aa32530b14d101588c701 assets\tramways\blockstates\railway_sign.json
@@ -19,7 +19,7 @@ e327be1aaabdefad6bf3b157cef7f552d89bb90c assets\tramways\blockstates\request_sto
 68f0de2616a722732db0ae4b3cb310e47b411781 data\tramways\loot_tables\blocks\tram_signal.json
 8b3796c3b9caf36b525eea7e9de53c177c8d10c2 data\tramways\tags\blocks\signal_pole.json
 15a146d46ceb91820c15c3688fb5c8338627030f data\tramways\recipes\tram_signal.json
-09d7d687ce0d39aadc941202d739ab95c25175c8 assets\tramways\lang\en_us.json
+569c6de2e6a3a25ab32771a9bceb39e123ff64e4 assets\tramways\lang\en_us.json
 8849df4bc2791b3ec6af59ea1caec949c68bfd8c data\tramways\recipes\speaker.json
 9beb0678bf44b146f9c04138c4480bf2b8398c18 data\tramways\recipes\tram_sign.json
 59ac5d75e33afb57442aa32530b14d101588c701 assets\tramways\blockstates\tram_sign.json
@@ -34,4 +34,4 @@ df09fdef452a80245a6710c034d4c7999632baa4 assets\tramways\models\block\tram_signa
 c105eca9c2035e53eefed7130ef09c08b1b9682a data\tramways\advancements\recipes\transportation\tram_sign.json
 e811acc15e9dc36465c23302f7fa9f68a36e2d36 assets\tramways\models\block\request_stop_button\pressed.json
 7fb207ac4058112516ca600c9084bc1d8565777a data\tramways\recipes\request_stop_button.json
-304457c0d0c3ad70892d8e7dcb1283a9684f1713 assets\tramways\lang\en_ud.json
+eed7fa70bca47e1cf10de656462f0ba541761cb5 assets\tramways\lang\en_ud.json
