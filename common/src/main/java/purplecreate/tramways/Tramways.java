@@ -42,6 +42,7 @@ public class Tramways {
 
   public static void clientSetup() {
     TPonders.register();
+    TPartialModels.register();
   }
 
   public static MutableComponent translatable(String path, Object... o) {

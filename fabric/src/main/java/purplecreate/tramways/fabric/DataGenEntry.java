@@ -17,7 +17,9 @@ public class DataGenEntry implements DataGeneratorEntrypoint {
     ExistingFileHelper helper = new ExistingFileHelper(
       Set.of(resources), Set.of("create"), false, null, null
     );
-    Tramways.REGISTRATE.setupDatagen(gen.createPack(), helper);
+    FabricDataGenerator.Pack pack = gen.createPack();
+    Tramways.REGISTRATE.setupDatagen(pack, helper);
     DataGen.register();
+    DataGen.registerNonRegistrate(pack::addProvider);
   }
 }

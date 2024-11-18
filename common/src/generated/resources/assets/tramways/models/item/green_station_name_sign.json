@@ -1,0 +1,6 @@
+{
+  "parent": "tramways:block/station_name_sign/item_base",
+  "textures": {
+    "texture": "tramways:block/station_name_sign/green"
+  }
+}

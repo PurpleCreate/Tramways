@@ -15,6 +15,7 @@ import purplecreate.tramways.content.announcements.network.PlayMovingVoiceS2CPac
 import purplecreate.tramways.content.requestStop.network.RequestStopC2SPacket;
 import purplecreate.tramways.content.requestStop.network.StoppingBroadcastS2CPacket;
 import purplecreate.tramways.content.signs.network.SaveSignSettingsC2SPacket;
+import purplecreate.tramways.content.stationDeco.nameSign.network.UpdateNameSignC2SPacket;
 import purplecreate.tramways.util.C2SPacket;
 import purplecreate.tramways.util.S2CPacket;
 
@@ -163,6 +164,11 @@ public class TNetworking {
     registerS2C(
       StoppingBroadcastS2CPacket.class,
       StoppingBroadcastS2CPacket::read
+    );
+
+    registerC2S(
+      UpdateNameSignC2SPacket.class,
+      UpdateNameSignC2SPacket::read
     );
   }
 }

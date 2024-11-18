@@ -2,11 +2,14 @@ package purplecreate.tramways;
 
 import com.simibubi.create.Create;
 import com.simibubi.create.content.trains.track.TrackTargetingBlockItem;
+import com.simibubi.create.foundation.block.DyedBlockList;
 import com.tterrag.registrate.providers.DataGenContext;
 import com.tterrag.registrate.providers.RegistrateBlockstateProvider;
+import com.tterrag.registrate.providers.RegistrateItemModelProvider;
 import com.tterrag.registrate.util.entry.BlockEntry;
 import dev.architectury.injectables.annotations.ExpectPlatform;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.ButtonBlock;
 import net.minecraft.world.level.block.SoundType;
@@ -24,6 +27,8 @@ import purplecreate.tramways.content.requestStop.station.RequestStopButtonItem;
 import purplecreate.tramways.content.signals.TramSignalBlock;
 import purplecreate.tramways.content.signs.TramSignBlock;
 import purplecreate.tramways.content.announcements.SpeakerBlock;
+import purplecreate.tramways.content.stationDeco.nameSign.NameSignBlock;
+import purplecreate.tramways.content.stationDeco.nameSign.NameSignItem;
 
 public class TBlocks {
   public static final BlockEntry<TramSignalBlock> TRAM_SIGNAL =
@@ -84,10 +89,46 @@ public class TBlocks {
       .transform(customItemModel())
       .register();
 
+  public static final DyedBlockList<NameSignBlock> STATION_NAME_SIGNS = new DyedBlockList<>(color -> {
+    String colorId = color.getName();
+    String id = colorId + "_station_name_sign";
+
+    return Tramways.REGISTRATE.block(id, NameSignBlock::new)
+      .initialProperties(SharedProperties::wooden)
+      .blockstate((context, provider) ->
+        complexStationNameSign(context, provider, colorId)
+      )
+      .item(NameSignItem::new)
+      .model((context, provider) ->
+        complexStationNameSignItem(context, provider, colorId)
+      )
+      .tag(TTags.NAME_SIGN)
+      .build()
+      .register();
+  });
+
   @ExpectPlatform
   public static <T extends Block> void complexTramSignal(
     DataGenContext<Block, T> context,
     RegistrateBlockstateProvider provider
+  ) {
+    throw new AssertionError();
+  }
+
+  @ExpectPlatform
+  public static <T extends Block> void complexStationNameSign(
+    DataGenContext<Block, T> context,
+    RegistrateBlockstateProvider provider,
+    String color
+  ) {
+    throw new AssertionError();
+  }
+
+  @ExpectPlatform
+  public static <T extends Item> void complexStationNameSignItem(
+    DataGenContext<Item, T> context,
+    RegistrateItemModelProvider provider,
+    String color
   ) {
     throw new AssertionError();
   }

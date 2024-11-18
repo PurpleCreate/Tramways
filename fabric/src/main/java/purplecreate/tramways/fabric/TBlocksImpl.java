@@ -2,10 +2,12 @@ package purplecreate.tramways.fabric;
 
 import com.tterrag.registrate.providers.DataGenContext;
 import com.tterrag.registrate.providers.RegistrateBlockstateProvider;
+import com.tterrag.registrate.providers.RegistrateItemModelProvider;
 import io.github.fabricators_of_create.porting_lib.models.generators.ConfiguredModel;
 import io.github.fabricators_of_create.porting_lib.models.generators.ModelFile;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.ButtonBlock;
 import net.minecraft.world.level.block.state.properties.AttachFace;
@@ -25,6 +27,29 @@ public class TBlocksImpl {
         .withExistingParent(basePath + "/" + sigState, Tramways.rl(basePath + "/base"))
         .texture("face", Tramways.rl(basePath + "/face_" + sigState));
     });
+  }
+
+  public static <T extends Block> void complexStationNameSign(
+    DataGenContext<Block, T> context,
+    RegistrateBlockstateProvider provider,
+    String color
+  ) {
+    provider.horizontalBlock(context.getEntry(), state ->
+      provider
+        .models()
+        .withExistingParent("block/station_name_sign/" + color, Tramways.rl("block/station_name_sign/base"))
+        .texture("texture", Tramways.rl("block/station_name_sign/" + color))
+    );
+  }
+
+  public static <T extends Item> void complexStationNameSignItem(
+    DataGenContext<Item, T> context,
+    RegistrateItemModelProvider provider,
+    String color
+  ) {
+    provider
+      .withExistingParent(context.getName(), Tramways.rl("block/station_name_sign/item_base"))
+      .texture("texture", Tramways.rl("block/station_name_sign/" + color));
   }
 
   public static <T extends Block> void simpleHorizontalBlock(

@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "D": {
+      "item": "minecraft:white_dye"
+    },
+    "F": {
+      "tag": "minecraft:fences"
+    },
+    "P": {
+      "tag": "minecraft:planks"
+    }
+  },
+  "pattern": [
+    "PD",
+    "F "
+  ],
+  "result": {
+    "item": "tramways:white_station_name_sign"
+  },
+  "show_notification": true
+}

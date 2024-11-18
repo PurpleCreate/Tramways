@@ -12,7 +12,7 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
-import purplecreate.tramways.Tramways;
+import purplecreate.tramways.TPartialModels;
 import purplecreate.tramways.content.signs.TramSignBlock;
 
 import java.util.HashMap;
@@ -25,10 +25,10 @@ public abstract class SignDemand {
    */
   public static final Map<ResourceLocation, SignDemand> demands = new HashMap<>();
 
-  public static final PartialModel TRAM_FACE = new PartialModel(Tramways.rl("block/tram_sign/face"));
-  public static final PartialModel RED_RAILWAY_FACE = new PartialModel(Tramways.rl("block/railway_sign/red_face"));
-  public static final PartialModel GREY_RAILWAY_FACE = new PartialModel(Tramways.rl("block/railway_sign/grey_face"));
-  public static final PartialModel TSR_RAILWAY_FACE = new PartialModel(Tramways.rl("block/railway_sign/tsr_face"));
+  public static final PartialModel TRAM_FACE = TPartialModels.TRAM_FACE;
+  public static final PartialModel RED_RAILWAY_FACE = TPartialModels.RED_RAILWAY_FACE;
+  public static final PartialModel GREY_RAILWAY_FACE = TPartialModels.GREY_RAILWAY_FACE;
+  public static final PartialModel TSR_RAILWAY_FACE = TPartialModels.TSR_RAILWAY_FACE;
 
   /**
    * Use this to register a demand. You should probably use this

@@ -3,15 +3,26 @@ package purplecreate.tramways.datagen;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllItems;
 import com.tterrag.registrate.providers.RegistrateRecipeProvider;
+import com.tterrag.registrate.util.entry.BlockEntry;
 import net.minecraft.advancements.critereon.InventoryChangeTrigger;
 import net.minecraft.advancements.critereon.ItemPredicate;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.data.recipes.ShapelessRecipeBuilder;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.ItemTags;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
 import purplecreate.tramways.TBlocks;
+import purplecreate.tramways.TTags;
+import purplecreate.tramways.Tramways;
+import purplecreate.tramways.content.stationDeco.nameSign.NameSignBlock;
+
 import static com.tterrag.registrate.providers.RegistrateRecipeProvider.inventoryTrigger;
 
 public class GenRecipes {
@@ -20,6 +31,15 @@ public class GenRecipes {
       ItemPredicate.Builder
         .item()
         .of(item)
+        .build()
+    );
+  }
+
+  private static InventoryChangeTrigger.TriggerInstance unlockedByItemTag(TagKey<Item> tag) {
+    return inventoryTrigger(
+      ItemPredicate.Builder
+        .item()
+        .of(tag)
         .build()
     );
   }
@@ -66,5 +86,28 @@ public class GenRecipes {
       .requires(AllItems.BRASS_NUGGET)
       .requires(Items.STONE_BUTTON)
       .save(provider);
+
+    ShapedRecipeBuilder
+      .shaped(RecipeCategory.DECORATIONS, TBlocks.STATION_NAME_SIGNS.get(DyeColor.WHITE))
+      .unlockedBy("has_item", unlockedByItemTag(ItemTags.FENCES))
+      .define('D', Items.WHITE_DYE)
+      .define('P', ItemTags.PLANKS)
+      .define('F', ItemTags.FENCES)
+      .pattern("PD")
+      .pattern("F ")
+      .save(provider);
+
+    for (BlockEntry<NameSignBlock> block : TBlocks.STATION_NAME_SIGNS) {
+      String name = block.getId().getPath();
+      String color = name.substring(0, name.length() - 18);
+      ResourceLocation dye = new ResourceLocation(color + "_dye");
+
+      ShapelessRecipeBuilder
+        .shapeless(RecipeCategory.DECORATIONS, block)
+        .unlockedBy("has_item", unlockedByItem(TBlocks.STATION_NAME_SIGNS.get(DyeColor.WHITE)))
+        .requires(TTags.NAME_SIGN)
+        .requires(BuiltInRegistries.ITEM.get(dye))
+        .save(provider, Tramways.rl(block.getId().getPath() + "__dyed"));
+    }
   }
 }

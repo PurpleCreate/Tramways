@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "tramways:block/station_name_sign/light_gray",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "tramways:block/station_name_sign/light_gray"
+    },
+    "facing=south": {
+      "model": "tramways:block/station_name_sign/light_gray",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "tramways:block/station_name_sign/light_gray",
+      "y": 270
+    }
+  }
+}

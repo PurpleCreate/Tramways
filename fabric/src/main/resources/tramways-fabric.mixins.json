@@ -1,0 +1,12 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "purplecreate.tramways.mixins.fabric",
+  "compatibilityLevel": "JAVA_17",
+  "mixins": [
+    "NameSignInfoFabricMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
