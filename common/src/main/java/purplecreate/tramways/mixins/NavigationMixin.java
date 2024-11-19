@@ -1,6 +1,5 @@
 package purplecreate.tramways.mixins;
 
-import com.simibubi.create.content.trains.graph.DiscoveredPath;
 import com.simibubi.create.content.trains.schedule.Schedule;
 import com.simibubi.create.content.trains.schedule.ScheduleEntry;
 import com.simibubi.create.content.trains.schedule.ScheduleRuntime;
@@ -84,7 +83,10 @@ public abstract class NavigationMixin implements IStopRequestableNavigation {
 
     ScheduleEntry currentEntry = schedule.entries.get(train.runtime.currentEntry);
 
-    if (!(currentEntry.instruction instanceof RequestStopInstruction))
+    if (
+      !(currentEntry.instruction instanceof RequestStopInstruction)
+        || distanceToDestination < 1
+    )
       return;
 
     if (distanceToDestination <= brakingDistance) {
