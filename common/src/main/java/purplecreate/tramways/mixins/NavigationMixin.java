@@ -24,12 +24,13 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import purplecreate.tramways.mixinInterfaces.IStopRequestableNavigation;
 
 import java.util.List;
 import java.util.UUID;
 
 @Mixin(value = Navigation.class, remap = false)
-public abstract class NavigationMixin {
+public abstract class NavigationMixin implements IStopRequestableNavigation {
   @Unique private boolean tramways$routeCancelled;
   @Shadow public Train train;
   @Shadow public double distanceToDestination;
@@ -49,6 +50,10 @@ public abstract class NavigationMixin {
     train.runtime.currentEntry++;
   }
 
+  public void tramways$resetRouteCancelled() {
+    tramways$routeCancelled = false;
+  }
+
   @Inject(method = "lambda$tick$0", at = @At("HEAD"))
   private void tramways$lambda$tick$0(MutableObject<Pair<UUID, Boolean>> trackingCrossSignal,
                                      double scanDistance,
@@ -61,12 +66,6 @@ public abstract class NavigationMixin {
       TrackNode node = couple.getSecond().getSecond();
       sign.updateTrain(train, node, distance);
     }
-  }
-
-  @Inject(method = "startNavigation", at = @At("HEAD"))
-  private void tramways$startNavigation(DiscoveredPath pathTo, CallbackInfoReturnable<Double> cir) {
-    RequestStopServer.removeRequest(train);
-    tramways$routeCancelled = false;
   }
 
   @Inject(method = "tick", at = @At("HEAD"))
