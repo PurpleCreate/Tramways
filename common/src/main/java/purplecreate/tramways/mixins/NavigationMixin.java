@@ -30,12 +30,24 @@ import java.util.UUID;
 
 @Mixin(value = Navigation.class, remap = false)
 public abstract class NavigationMixin {
-  @Unique private boolean tramways$cancelTick = false;
+  @Unique private boolean tramways$routeCancelled;
   @Shadow public Train train;
   @Shadow public double distanceToDestination;
   @Shadow public double distanceStartedAt;
   @Shadow private List<Couple<TrackNode>> currentPath;
   @Shadow public GlobalStation destination;
+
+  @Unique
+  private void tramways$cancelRoute() {
+    currentPath.clear();
+    if (destination != null) {
+      destination.cancelReservation(train);
+      destination = null;
+    }
+
+    train.runtime.state = ScheduleRuntime.State.PRE_TRANSIT;
+    train.runtime.currentEntry++;
+  }
 
   @Inject(method = "lambda$tick$0", at = @At("HEAD"))
   private void tramways$lambda$tick$0(MutableObject<Pair<UUID, Boolean>> trackingCrossSignal,
@@ -54,7 +66,7 @@ public abstract class NavigationMixin {
   @Inject(method = "startNavigation", at = @At("HEAD"))
   private void tramways$startNavigation(DiscoveredPath pathTo, CallbackInfoReturnable<Double> cir) {
     RequestStopServer.removeRequest(train);
-    tramways$cancelTick = false;
+    tramways$routeCancelled = false;
   }
 
   @Inject(method = "tick", at = @At("HEAD"))
@@ -62,8 +74,7 @@ public abstract class NavigationMixin {
     Schedule schedule = train.runtime.getSchedule();
 
     if (
-      tramways$cancelTick
-        || train.runtime.paused
+      train.runtime.paused
         || schedule == null
         || train.runtime.currentEntry >= schedule.entries.size()
     )
@@ -77,29 +88,19 @@ public abstract class NavigationMixin {
     if (!(currentEntry.instruction instanceof RequestStopInstruction))
       return;
 
-    if (distanceToDestination == 0) {
-      RequestStopServer.removeCountdown(train);
-      return;
-    }
-
-    if (!RequestStopServer.shouldStop(train)) {
-      if (brakingDistance < distanceToDestination) {
-        float progress = (float) ((distanceToDestination - brakingDistance) / (distanceStartedAt - brakingDistance));
-        RequestStopServer.updateCountdown(train, progress);
-      } else {
-        RequestStopServer.removeCountdown(train);
-
-        currentPath.clear();
-        if (destination != null) {
-          destination.cancelReservation(train);
-          destination = null;
-        }
-
-        train.runtime.state = ScheduleRuntime.State.PRE_TRANSIT;
-        train.runtime.currentEntry++;
-
-        tramways$cancelTick = true;
+    if (distanceToDestination <= brakingDistance) {
+      if (!RequestStopServer.shouldStop(train) && !tramways$routeCancelled) {
+        tramways$cancelRoute();
+        tramways$routeCancelled = true;
       }
+
+      RequestStopServer.removeCountdown(train);
+    } else if (!RequestStopServer.shouldStop(train)) {
+      RequestStopServer.updateCountdown(
+        train,
+        (float) ((distanceToDestination - brakingDistance)
+          / (distanceStartedAt - brakingDistance))
+      );
     }
   }
 }
