@@ -49,12 +49,13 @@ public abstract class NavigationMixin implements IStopRequestableNavigation {
     train.runtime.currentEntry++;
   }
 
+  @Unique
   public void tramways$resetRouteCancelled() {
     tramways$routeCancelled = false;
   }
 
   @Inject(method = "lambda$tick$0", at = @At("HEAD"))
-  private void tramways$lambda$tick$0(MutableObject<Pair<UUID, Boolean>> trackingCrossSignal,
+  private void tramways$tickSign(MutableObject<Pair<UUID, Boolean>> trackingCrossSignal,
                                      double scanDistance,
                                      MutableDouble crossSignalDistanceTracker,
                                      double brakingDistanceNoFlicker,
@@ -68,7 +69,7 @@ public abstract class NavigationMixin implements IStopRequestableNavigation {
   }
 
   @Inject(method = "tick", at = @At("HEAD"))
-  private void tramways$tick(Level level, CallbackInfo ci) {
+  private void tramways$tickRequestStop(Level level, CallbackInfo ci) {
     Schedule schedule = train.runtime.getSchedule();
 
     if (

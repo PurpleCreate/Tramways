@@ -27,7 +27,7 @@ public class TrackTargetingClientMixin {
   @Shadow private static EdgePointType<?> lastType;
 
   @Inject(method = "render", at = @At(value = "INVOKE", target = "Lcom/simibubi/create/content/trains/track/TrackTargetingBehaviour;render(Lnet/minecraft/world/level/LevelAccessor;Lnet/minecraft/core/BlockPos;Lnet/minecraft/core/Direction$AxisDirection;Lcom/simibubi/create/content/trains/track/BezierTrackPointLocation;Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;IILcom/simibubi/create/content/trains/track/TrackTargetingBehaviour$RenderedTrackOverlayType;F)V"), cancellable = true)
-  private static void tramways$render(PoseStack ms, SuperRenderTypeBuffer buffer, Vec3 camera, CallbackInfo ci) {
+  private static void tramways$renderTramSignIcon(PoseStack ms, SuperRenderTypeBuffer buffer, Vec3 camera, CallbackInfo ci) {
     if (lastType == TExtras.EdgePointTypes.TRAM_SIGN) {
       Minecraft mc = Minecraft.getInstance();
       TrackTargetingBehaviour.render(

@@ -18,7 +18,7 @@ public class TrainMixin implements ITemporarySpeedLimitTrain {
   @Unique private Double tempSpeedLimit$actual;
 
   @Inject(method = "frontSignalListener", at = @At("RETURN"), cancellable = true)
-  private void tramways$frontSignalListener(CallbackInfoReturnable<TravellingPoint.IEdgePointListener> cir) {
+  private void tramways$approachTramSign(CallbackInfoReturnable<TravellingPoint.IEdgePointListener> cir) {
     TravellingPoint.IEdgePointListener originalListener = cir.getReturnValue();
     cir.setReturnValue((distance, couple) -> {
       if (couple.getFirst() instanceof TramSignPoint sign) {
@@ -32,7 +32,7 @@ public class TrainMixin implements ITemporarySpeedLimitTrain {
   }
 
   @Inject(method = "backSignalListener", at = @At("RETURN"), cancellable = true)
-  private void tramways$backSignalListener(CallbackInfoReturnable<TravellingPoint.IEdgePointListener> cir) {
+  private void tramways$passedTramSign(CallbackInfoReturnable<TravellingPoint.IEdgePointListener> cir) {
     TravellingPoint.IEdgePointListener originalListener = cir.getReturnValue();
     cir.setReturnValue((distance, couple) -> {
       if (couple.getFirst() instanceof TramSignPoint sign) {
@@ -45,6 +45,7 @@ public class TrainMixin implements ITemporarySpeedLimitTrain {
     });
   }
 
+  @Unique
   @Override
   public void tempSpeedLimit$set(double limit, boolean manual) {
     if (tempSpeedLimit$actual == null) {
@@ -56,6 +57,7 @@ public class TrainMixin implements ITemporarySpeedLimitTrain {
     }
   }
 
+  @Unique
   @Override
   public void tempSpeedLimit$restore(boolean manual) {
     if (tempSpeedLimit$actual != null && !manual) {
@@ -65,6 +67,7 @@ public class TrainMixin implements ITemporarySpeedLimitTrain {
     tempSpeedLimit$actual = null;
   }
 
+  @Unique
   @Override
   public boolean tempSpeedLimit$has() {
     return tempSpeedLimit$actual != null;

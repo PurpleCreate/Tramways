@@ -19,10 +19,10 @@ public class ScheduleRuntimeMixin {
   @Shadow public int currentEntry;
 
   @Inject(method = "startCurrentInstruction", at = @At("HEAD"))
-  private void tramways$startCurrentInstruction(CallbackInfoReturnable<DiscoveredPath> cir) {
+  private void tramways$resetRequestStop(CallbackInfoReturnable<DiscoveredPath> cir) {
     if (tramways$lastEntry == currentEntry)
       return;
-    
+
     tramways$lastEntry = currentEntry;
 
     RequestStopServer.removeRequest(train);
