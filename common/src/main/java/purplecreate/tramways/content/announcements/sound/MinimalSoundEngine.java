@@ -18,7 +18,7 @@ import java.util.ListIterator;
 import java.util.concurrent.CompletableFuture;
 
 public class MinimalSoundEngine {
-  private static List<Instance> tickables = new ArrayList<>();
+  private static List<Instance> records = new ArrayList<>();
 
   @ExpectPlatform
   private static CompletableFuture<AudioStream> getStream(SoundInstance instance) {
@@ -59,31 +59,48 @@ public class MinimalSoundEngine {
       channel.play();
     });
 
-    if (instance instanceof TickableSoundInstance) {
-      tickables.add(new Instance(instance, channel));
-    }
+    records.add(new Instance(instance, channel));
   }
 
   public static void tick() {
-    ListIterator<Instance> iter = tickables.listIterator();
+    ListIterator<Instance> iter = records.listIterator();
 
     while (iter.hasNext()) {
       Instance rec = iter.next();
       SoundInstance instance = rec.instance;
       Channel channel = rec.channel;
 
-      if (
-        !(instance instanceof TickableSoundInstance tickable)
-          || channel.stopped()
-          || tickable.isStopped()
-      ) {
+      if (channel.stopped()) {
         iter.remove();
         continue;
       }
 
-      tickable.tick();
-      setPosition(instance, channel);
+      if (instance instanceof TickableSoundInstance tickable) {
+        if (tickable.isStopped()) {
+          iter.remove();
+          channel.stop();
+          continue;
+        }
+
+        tickable.tick();
+        setPosition(instance, channel);
+      }
     }
+  }
+
+  public static void pauseAll() {
+    for (Instance rec : records)
+      rec.channel.pause();
+  }
+
+  public static void resumeAll() {
+    for (Instance rec : records)
+      rec.channel.unpause();
+  }
+
+  public static void stopAll() {
+    for (Instance rec : records)
+      rec.channel.stop();
   }
 
   record Instance(SoundInstance instance, Channel channel) {}

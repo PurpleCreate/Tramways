@@ -2,6 +2,7 @@ package purplecreate.tramways.events.forge;
 
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
 import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -15,6 +16,11 @@ public class ClientEventsImpl {
   public static void onClientTick(TickEvent.ClientTickEvent event) {
     if (event.phase == TickEvent.Phase.START)
       ClientEvents.onClientTickStart(Minecraft.getInstance());
+  }
+
+  @SubscribeEvent
+  public static void onLeave(ClientPlayerNetworkEvent.LoggingOut event) {
+    ClientEvents.onLeave();
   }
 
   @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
