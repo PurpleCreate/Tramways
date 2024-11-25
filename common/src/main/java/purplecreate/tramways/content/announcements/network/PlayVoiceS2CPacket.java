@@ -2,6 +2,7 @@ package purplecreate.tramways.content.announcements.network;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import purplecreate.tramways.content.announcements.sound.MinimalSoundEngine;
 import purplecreate.tramways.content.announcements.sound.VoiceSoundInstance;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
@@ -40,7 +41,7 @@ public class PlayVoiceS2CPacket implements S2CPacket {
   public void handle(Minecraft mc) {
     Env.unsafeRunWhenOn(Env.CLIENT, () -> () -> {
       InputStream stream = TTSFileManager.instance.cachedStream(voice, content);
-      Minecraft.getInstance().getSoundManager().play(
+      MinimalSoundEngine.play(
         VoiceSoundInstance.create(stream, pos)
       );
     });

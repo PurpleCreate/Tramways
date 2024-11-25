@@ -3,6 +3,7 @@ package purplecreate.tramways.content.announcements.network;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import purplecreate.tramways.Tramways;
+import purplecreate.tramways.content.announcements.sound.MinimalSoundEngine;
 import purplecreate.tramways.content.announcements.sound.MovingVoiceSoundInstance;
 import com.simibubi.create.Create;
 import com.simibubi.create.content.trains.entity.Carriage;
@@ -73,7 +74,7 @@ public class PlayMovingVoiceS2CPacket implements S2CPacket {
       }
 
       InputStream stream = TTSFileManager.instance.cachedStream(voice, content);
-      mc.getSoundManager().play(
+      MinimalSoundEngine.play(
         MovingVoiceSoundInstance.create(stream, carriage, localPos)
       );
     });
