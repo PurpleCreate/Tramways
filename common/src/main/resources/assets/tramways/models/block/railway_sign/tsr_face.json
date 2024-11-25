@@ -1,21 +1,6 @@
 {
-	"credit": "Made with Blockbench",
+	"parent": "tramways:block/railway_sign/red_face",
 	"textures": {
-		"0": "tramways:block/railway_sign/tsr_face"
-	},
-	"elements": [
-		{
-			"from": [3, 3, 3],
-			"to": [13, 13, 4],
-			"rotation": {"angle": 0, "axis": "y", "origin": [7, 7, 2]},
-			"faces": {
-				"north": {"uv": [0, 0, 10, 10], "texture": "#0"},
-				"east": {"uv": [0, 0, 1, 10], "texture": "#0"},
-				"south": {"uv": [0, 0, 10, 10], "texture": "#0"},
-				"west": {"uv": [0, 0, 1, 10], "texture": "#0"},
-				"up": {"uv": [10, 1, 0, 0], "texture": "#0"},
-				"down": {"uv": [10, 0, 0, 1], "texture": "#0"}
-			}
-		}
-	]
+		"face": "tramways:block/railway_sign/tsr_face"
+	}
 }

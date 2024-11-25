@@ -81,11 +81,7 @@ public class SpeedSignDemand extends SignDemand {
   @Override
   @Environment(EnvType.CLIENT)
   public void render(TramSignBlock.SignType signType, CompoundTag tag, PoseStack ms, MultiBufferSource buffer, int light, int overlay) {
-    float fontSize = signType == TramSignBlock.SignType.RAILWAY
-      ? .6f/16f
-      : .4f/16f;
-
-    SignDemand.renderTextInCenter(tag.getInt("Throttle") + "", 0, fontSize, ms, buffer, light);
+    SignDemand.renderTextInCenter(tag.getInt("Throttle") + "", 0, .4f/16f, ms, buffer, light);
 
     if (tag.getBoolean("Overridden")) {
       ms.translate(0, 0, .001);
