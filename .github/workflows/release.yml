@@ -12,6 +12,7 @@ jobs:
       options: --user root
     steps:
       - uses: actions/checkout@v4
+      - run: chmod +x ./gradlew
       - run: ./gradlew build publishMods
         env:
           CURSEFORGE_TOKEN: ${{ secrets.CURSEFORGE_TOKEN }}
