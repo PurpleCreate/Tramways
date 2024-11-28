@@ -13,6 +13,8 @@ idea. If you do find a bug, please report it!
 - Tram Signal - shows signal (or Steam 'n' Rails switch) state
 - Tram and Railway Sign - speed limits and more for automatic trains
 - Speaker - TTS on-board and station announcements
+- Request Stops - only stop at a station on request
+- Station Name Signs - with many sign variants
 
 ---
 
