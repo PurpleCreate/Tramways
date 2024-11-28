@@ -16,7 +16,7 @@ import purplecreate.tramways.TBlocks;
 
 @Mixin(value = StationBlock.class, remap = false)
 public class StationBlockMixin {
-  @Inject(method = "use", at = @At("HEAD"), cancellable = true)
+  @Inject(method = "use", at = @At("HEAD"), cancellable = true, remap = true)
   private void tramways$cancelScreenOpening(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit, CallbackInfoReturnable<InteractionResult> cir) {
     if (TBlocks.REQUEST_STOP_BUTTON.isIn(pPlayer.getItemInHand(pHand))) {
       cir.setReturnValue(InteractionResult.PASS);

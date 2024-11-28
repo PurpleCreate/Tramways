@@ -1,9 +1,12 @@
 package purplecreate.tramways.mixins;
 
+import com.jozufozu.flywheel.util.transform.TransformStack;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.simibubi.create.content.trains.graph.EdgePointType;
+import com.simibubi.create.content.trains.graph.TrackGraphLocation;
 import com.simibubi.create.content.trains.track.BezierTrackPointLocation;
 import com.simibubi.create.content.trains.track.TrackTargetingBehaviour;
+import com.simibubi.create.content.trains.track.TrackTargetingBlockItem;
 import com.simibubi.create.content.trains.track.TrackTargetingClient;
 import com.simibubi.create.foundation.render.SuperRenderTypeBuffer;
 import net.minecraft.client.Minecraft;
@@ -25,11 +28,22 @@ public class TrackTargetingClientMixin {
   @Shadow private static boolean lastDirection;
   @Shadow private static BezierTrackPointLocation lastHoveredBezierSegment;
   @Shadow private static EdgePointType<?> lastType;
+  @Shadow private static TrackGraphLocation lastLocation;
+  @Shadow private static TrackTargetingBlockItem.OverlapResult lastResult;
 
-  @Inject(method = "render", at = @At(value = "INVOKE", target = "Lcom/simibubi/create/content/trains/track/TrackTargetingBehaviour;render(Lnet/minecraft/world/level/LevelAccessor;Lnet/minecraft/core/BlockPos;Lnet/minecraft/core/Direction$AxisDirection;Lcom/simibubi/create/content/trains/track/BezierTrackPointLocation;Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;IILcom/simibubi/create/content/trains/track/TrackTargetingBehaviour$RenderedTrackOverlayType;F)V"), cancellable = true)
+  @Inject(method = "render", at = @At("HEAD"), cancellable = true)
   private static void tramways$renderTramSignIcon(PoseStack ms, SuperRenderTypeBuffer buffer, Vec3 camera, CallbackInfo ci) {
-    if (lastType == TExtras.EdgePointTypes.TRAM_SIGN) {
+    if (
+      lastLocation != null
+        && lastResult.feedback == null
+        && lastType == TExtras.EdgePointTypes.TRAM_SIGN
+    ) {
       Minecraft mc = Minecraft.getInstance();
+      BlockPos pos = lastHovered;
+
+      ms.pushPose();
+      TransformStack.cast(ms)
+        .translate(Vec3.atLowerCornerOf(pos).subtract(camera));
       TrackTargetingBehaviour.render(
         mc.level,
         lastHovered,
@@ -43,6 +57,7 @@ public class TrackTargetingClientMixin {
         1 + 1 / 16f
       );
       ms.popPose();
+
       ci.cancel();
     }
   }
