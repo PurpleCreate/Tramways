@@ -124,3 +124,32 @@ publishing {
 
   repositories {}
 }
+
+publishMods {
+  type = STABLE
+  file = tasks.remapJar.archiveFile
+  version.set(mod_version)
+  changelog = rootProject.file("CHANGELOG.md").text
+
+  curseforge {
+    displayName = "${mod_version} Forge"
+    projectId = curseforge_id
+    accessToken = System.getenv("CURSEFORGE_TOKEN")
+    minecraftVersions.add(minecraft_version)
+    modLoaders.add("forge")
+
+    requires("create")
+    optional("create-steam-n-rails")
+  }
+
+  modrinth {
+    displayName = "Create: Tramways ${mod_version} Forge"
+    projectId = modrinth_id
+    accessToken = System.getenv("MODRINTH_TOKEN")
+    minecraftVersions.add(minecraft_version)
+    modLoaders.add("forge")
+
+    requires("create")
+    optional("create-steam-n-rails")
+  }
+}

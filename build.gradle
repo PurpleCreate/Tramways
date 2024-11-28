@@ -2,7 +2,7 @@ plugins {
   id "architectury-plugin" version "3.4-SNAPSHOT"
   id "dev.architectury.loom" version "1.7-SNAPSHOT" apply false
   id "io.github.p03w.machete" version "1.+" // automatic jar compressing on build
-  id "me.modmuss50.mod-publish-plugin" version "0.7.4"
+  id "me.modmuss50.mod-publish-plugin" version "0.7.4" apply false
 }
 
 architectury {
@@ -11,6 +11,7 @@ architectury {
 
 subprojects {
   apply plugin: "dev.architectury.loom"
+  apply plugin: "me.modmuss50.mod-publish-plugin"
 
   loom {
     silentMojangMappingsLicense()
@@ -68,65 +69,6 @@ allprojects {
   }
 }
 
-publishMods {
-  type = STABLE
-  version.set(mod_version)
-  changelog = rootProject.file("CHANGELOG.md").text
-
-  github {
-    file = project(":forge").remapJar.archiveFile.get()
-    additionalFiles.from(project(":fabric").remapJar.archiveFile)
-    displayName = "Release ${mod_version}"
-    repository = github_repo
-    commitish = github_branch
-    accessToken = System.getenv("GITHUB_TOKEN")
-  }
-
-  curseforge("curseforgeForge") {
-    file = project(":forge").remapJar.archiveFile.get()
-    displayName = "${mod_version} Forge"
-    projectId = curseforge_id
-    accessToken = System.getenv("CURSEFORGE_TOKEN")
-    minecraftVersions.add(minecraft_version)
-    modLoaders.add("forge")
-
-    requires("create")
-    optional("create-steam-n-rails")
-  }
-
-  modrinth("modrinthForge") {
-    file = project(":forge").remapJar.archiveFile.get()
-    displayName = "Create: Tramways ${mod_version} Forge"
-    projectId = modrinth_id
-    accessToken = System.getenv("MODRINTH_TOKEN")
-    minecraftVersions.add(minecraft_version)
-    modLoaders.add("forge")
-
-    requires("create")
-    optional("create-steam-n-rails")
-  }
-
-  curseforge("curseforgeFabric") {
-    file = project(":fabric").remapJar.archiveFile
-    displayName = "${mod_version} Fabric"
-    projectId = curseforge_id
-    accessToken = System.getenv("CURSEFORGE_TOKEN")
-    minecraftVersions.add(minecraft_version)
-    modLoaders.add("fabric")
-
-    requires("create-fabric")
-    optional("create-steam-n-rails")
-  }
-
-  modrinth("modrinthFabric") {
-    file = project(":fabric").remapJar.archiveFile
-    displayName = "Create: Tramways ${mod_version} Fabric"
-    projectId = modrinth_id
-    accessToken = System.getenv("MODRINTH_TOKEN")
-    minecraftVersions.add(minecraft_version)
-    modLoaders.add("fabric")
-
-    requires("create-fabric")
-    optional("create-steam-n-rails")
-  }
+tasks.create("publishTramways") {
+  dependsOn tasks.build, ":fabric:publishMods", ":forge:publishMods"
 }
