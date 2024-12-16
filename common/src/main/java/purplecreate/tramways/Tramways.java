@@ -9,6 +9,7 @@ import com.simibubi.create.foundation.utility.Components;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import org.slf4j.Logger;
+import purplecreate.tramways.util.Env;
 
 import java.io.IOException;
 
@@ -26,6 +27,10 @@ public class Tramways {
     TBlockEntities.register();
     TTags.register();
 
+    Env.unsafeRunWhenOn(Env.CLIENT, () ->
+      TPartialModels::register
+    );
+
     try {
       Config.getInstance().write();
     } catch (IOException e) {
@@ -42,7 +47,6 @@ public class Tramways {
 
   public static void clientSetup() {
     TPonders.register();
-    TPartialModels.register();
   }
 
   public static MutableComponent translatable(String path, Object... o) {
