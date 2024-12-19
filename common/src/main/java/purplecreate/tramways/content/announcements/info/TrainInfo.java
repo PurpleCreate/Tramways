@@ -100,7 +100,7 @@ public class TrainInfo {
       props.put("current", current.getAlias());
       props.put("current_extra", current.getExtra());
 
-      StationInfo next = callingAt.get(1);
+      StationInfo next = callingAt.get(callingAt.size() > 1 ? 1 : 0);
       props.put("next", next.getAlias());
       props.put("next_extra", next.getExtra());
     } else {
