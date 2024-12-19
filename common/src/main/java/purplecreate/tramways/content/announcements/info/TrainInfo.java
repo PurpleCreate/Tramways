@@ -81,6 +81,7 @@ public class TrainInfo {
     Map<String, String> props = new HashMap<>();
 
     props.put("train_name", train.name.getString());
+    props.put("train_length", "" + train.carriages.size());
 
     if (callingAt.isEmpty()) return props;
 

@@ -56,8 +56,10 @@ public class SpeakerDisplayTarget extends DisplayTarget {
           announced.add(prediction.train.id);
 
           StationInfo stationInfo = StationInfo.fromFilter(filter);
-          TrainInfo trainInfo = TrainInfo.fromTrain(prediction.train);
-          Map<String, String> props = trainInfo.getProperties(false);
+          Map<String, String> props = stationInfo.getProperties(
+            prediction.train,
+            getPlatform(filter, prediction)
+          );
           StationMessageType type = filter.contains("*")
             ? StationMessageType.WITH_PLATFORM
             : StationMessageType.WITHOUT_PLATFORM;
@@ -65,14 +67,7 @@ public class SpeakerDisplayTarget extends DisplayTarget {
           String announcement = Pattern
             .compile("\\$([a-z_]+)")
             .matcher(stationInfo.getString(type))
-            .replaceAll((result) ->
-              switch (result.group(1)) {
-                case "train_name" -> props.get("train_name");
-                case "destination" -> props.get("end");
-                case "platform" -> getPlatform(filter, prediction);
-                default -> "";
-              }
-            );
+            .replaceAll((result) -> props.getOrDefault(result.group(1), ""));
 
           TNetworking.sendToNear(
             new PlayVoiceS2CPacket(

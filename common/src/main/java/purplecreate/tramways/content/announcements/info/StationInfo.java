@@ -1,8 +1,11 @@
 package purplecreate.tramways.content.announcements.info;
 
+import com.simibubi.create.content.trains.entity.Train;
 import purplecreate.tramways.config.Config;
 import purplecreate.tramways.config.StationMessageType;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 public class StationInfo {
@@ -53,5 +56,17 @@ public class StationInfo {
       .getInstance()
       .findStation(filter)
       .getRandomMessage(type);
+  }
+
+  public Map<String, String> getProperties(Train train, String platform) {
+    TrainInfo trainInfo = TrainInfo.fromTrain(train);
+    Map<String, String> props = trainInfo.getProperties(false);
+
+    if (props.containsKey("end"))
+      props.put("destination", props.get("end"));
+
+    props.put("platform", platform);
+
+    return props;
   }
 }
