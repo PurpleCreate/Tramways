@@ -32,7 +32,8 @@ import java.util.List;
 
 @Environment(EnvType.CLIENT)
 public class NameSignRenderer extends SmartBlockEntityRenderer<NameSignBlockEntity> {
-  private static final PartialModel woodenInner = TPartialModels.SIGN_WOODEN_INNER;
+  private static final PartialModel woodenInnerA = TPartialModels.SIGN_WOODEN_INNER_A;
+  private static final PartialModel woodenInnerB = TPartialModels.SIGN_WOODEN_INNER_B;
 
   public NameSignRenderer(BlockEntityRendererProvider.Context context) {
     super(context);
@@ -118,6 +119,16 @@ public class NameSignRenderer extends SmartBlockEntityRenderer<NameSignBlockEnti
     PoseStack ms,
     MultiBufferSource buffer
   ) {
+    // a (fence, not rotated)
+    BakedModel modelA = BakedModelHelper.generateModel(
+      woodenInnerA.get(),
+      s -> getSpriteOnSide(wood, Direction.UP)
+    );
+    BakedModelRenderHelper.standardModelRender(modelA, ref)
+      .light(light)
+      .renderInto(ms, buffer.getBuffer(RenderType.solid()));
+
+    // b (block, rotated)
     ms.pushPose();
 
     TransformStack.cast(ms)
@@ -125,11 +136,11 @@ public class NameSignRenderer extends SmartBlockEntityRenderer<NameSignBlockEnti
       .rotateY(AngleHelper.horizontalAngle(direction))
       .unCentre();
 
-    BakedModel model = BakedModelHelper.generateModel(
-      woodenInner.get(),
+    BakedModel modelB = BakedModelHelper.generateModel(
+      woodenInnerB.get(),
       s -> getSpriteOnSide(wood, Direction.UP)
     );
-    BakedModelRenderHelper.standardModelRender(model, ref)
+    BakedModelRenderHelper.standardModelRender(modelB, ref)
       .light(light)
       .renderInto(ms, buffer.getBuffer(RenderType.solid()));
 

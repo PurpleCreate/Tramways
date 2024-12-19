@@ -8,7 +8,8 @@ public class TPartialModels {
   public static final PartialModel GREY_RAILWAY_FACE = load("block/railway_sign/grey_face");
   public static final PartialModel TSR_RAILWAY_FACE = load("block/railway_sign/tsr_face");
 
-  public static final PartialModel SIGN_WOODEN_INNER = load("block/station_name_sign/wooden_inner");
+  public static final PartialModel SIGN_WOODEN_INNER_A = load("block/station_name_sign/wooden_inner_a");
+  public static final PartialModel SIGN_WOODEN_INNER_B = load("block/station_name_sign/wooden_inner_b");
 
   private static PartialModel load(String path) {
     return new PartialModel(Tramways.rl(path));

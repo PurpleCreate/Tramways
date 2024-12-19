@@ -1,0 +1,17 @@
+{
+	"credit": "Made with Blockbench",
+	"textures": {
+		"wood": "minecraft:block/oak_planks"
+	},
+	"elements": [
+		{
+			"from": [1, 5, 6],
+			"to": [15, 11, 10],
+			"rotation": {"angle": 0, "axis": "y", "origin": [1, 9, 6]},
+			"faces": {
+				"up": {"uv": [1, 1, 15, 5], "texture": "#wood"},
+				"down": {"uv": [1, 1, 15, 5], "texture": "#wood"}
+			}
+		}
+	]
+}
