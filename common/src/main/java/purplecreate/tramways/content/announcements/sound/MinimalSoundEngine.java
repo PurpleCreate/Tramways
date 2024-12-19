@@ -70,6 +70,8 @@ public class MinimalSoundEngine {
       SoundInstance instance = rec.instance;
       Channel channel = rec.channel;
 
+      channel.updateStream();
+
       if (channel.stopped()) {
         iter.remove();
         continue;
