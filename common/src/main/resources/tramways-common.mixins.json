@@ -4,6 +4,7 @@
   "package": "purplecreate.tramways.mixins",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
+    "GirderCTBehaviourMixin",
     "NavigationMixin",
     "ScheduleRuntimeMixin",
     "StationBlockMixin",

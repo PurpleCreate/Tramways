@@ -1,8 +1,10 @@
 package purplecreate.tramways;
 
 import com.simibubi.create.Create;
+import com.simibubi.create.content.decoration.girder.ConnectedGirderModel;
 import com.simibubi.create.content.trains.track.TrackTargetingBlockItem;
 import com.simibubi.create.foundation.block.DyedBlockList;
+import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.tterrag.registrate.providers.DataGenContext;
 import com.tterrag.registrate.providers.RegistrateBlockstateProvider;
 import com.tterrag.registrate.providers.RegistrateItemModelProvider;
@@ -36,6 +38,7 @@ public class TBlocks {
       .initialProperties(SharedProperties::softMetal)
       .properties(properties -> properties.mapColor(MapColor.COLOR_GRAY).sound(SoundType.NETHERITE_BLOCK))
       .blockstate(TBlocks::complexTramSignal)
+      .onRegister(CreateRegistrate.blockModel(() -> ConnectedGirderModel::new))
       .lang("Tram Signal")
       .item()
       .transform(customItemModel())
@@ -48,6 +51,7 @@ public class TBlocks {
       .blockstate((context, provider) ->
         simpleHorizontalBlock(context, provider, "block/tram_sign/girder")
       )
+      .onRegister(CreateRegistrate.blockModel(() -> ConnectedGirderModel::new))
       .lang("Tram Sign")
       .item(TrackTargetingBlockItem.ofType(TExtras.EdgePointTypes.TRAM_SIGN))
       .transform(customItemModel())
@@ -60,6 +64,7 @@ public class TBlocks {
       .blockstate((context, provider) ->
         simpleHorizontalBlock(context, provider, "block/tram_sign/girder")
       )
+      .onRegister(CreateRegistrate.blockModel(() -> ConnectedGirderModel::new))
       .lang("Railway Sign")
       .item(TrackTargetingBlockItem.ofType(TExtras.EdgePointTypes.TRAM_SIGN))
       .transform(customItemModel())
