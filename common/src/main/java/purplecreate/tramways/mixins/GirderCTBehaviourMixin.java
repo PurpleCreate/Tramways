@@ -2,6 +2,7 @@ package purplecreate.tramways.mixins;
 
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllSpriteShifts;
+import com.simibubi.create.content.decoration.girder.GirderBlock;
 import com.simibubi.create.content.decoration.girder.GirderCTBehaviour;
 import com.simibubi.create.foundation.block.connected.CTSpriteShiftEntry;
 import com.tterrag.registrate.util.entry.BlockEntry;
@@ -58,6 +59,10 @@ public class GirderCTBehaviourMixin {
       return; // don't handle this
 
     if (tramways$allowed(state) && tramways$allowed(other))
-      cir.setReturnValue(true);
+      cir.setReturnValue(
+        AllBlocks.METAL_GIRDER.has(other)
+          ? !other.getValue(GirderBlock.X) && !other.getValue(GirderBlock.Z)
+          : true
+      );
   }
 }
