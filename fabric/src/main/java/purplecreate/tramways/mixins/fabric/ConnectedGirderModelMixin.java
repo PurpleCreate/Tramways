@@ -23,6 +23,7 @@ public class ConnectedGirderModelMixin {
       target = "Lcom/simibubi/create/foundation/block/connected/CTModel;emitBlockQuads(Lnet/minecraft/world/level/BlockAndTintGetter;Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/core/BlockPos;Ljava/util/function/Supplier;Lnet/fabricmc/fabric/api/renderer/v1/render/RenderContext;)V",
       shift = At.Shift.AFTER
     ),
+    remap = true,
     cancellable = true
   )
   private void tramways$noBracketsOnGirderLikes(
