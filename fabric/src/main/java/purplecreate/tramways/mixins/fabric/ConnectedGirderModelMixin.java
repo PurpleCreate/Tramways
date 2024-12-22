@@ -19,8 +19,9 @@ public class ConnectedGirderModelMixin {
   @Inject(
     method = "emitBlockQuads",
     at = @At(
-      value = "INVOKE_ASSIGN",
-      target = "Lcom/simibubi/create/foundation/block/connected/CTModel;emitBlockQuads(Lnet/minecraft/world/level/BlockAndTintGetter;Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/core/BlockPos;Ljava/util/function/Supplier;Lnet/fabricmc/fabric/api/renderer/v1/render/RenderContext;)V"
+      value = "INVOKE",
+      target = "Lcom/simibubi/create/foundation/block/connected/CTModel;emitBlockQuads(Lnet/minecraft/world/level/BlockAndTintGetter;Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/core/BlockPos;Ljava/util/function/Supplier;Lnet/fabricmc/fabric/api/renderer/v1/render/RenderContext;)V",
+      shift = At.Shift.AFTER
     ),
     cancellable = true
   )
