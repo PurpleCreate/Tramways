@@ -79,7 +79,7 @@ processResources {
 
 loom {
   forge {
-    mixinConfig("tramways-common.mixins.json")
+    mixinConfig("tramways-common.mixins.json", "tramways-forge.mixins.json")
   }
 }
 

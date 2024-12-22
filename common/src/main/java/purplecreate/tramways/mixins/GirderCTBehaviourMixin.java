@@ -17,23 +17,12 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import purplecreate.tramways.TBlocks;
+import purplecreate.tramways.util.GirderLikeUtil;
 
 import java.util.List;
 
 @Mixin(value = GirderCTBehaviour.class, remap = false)
 public class GirderCTBehaviourMixin {
-  @Unique private static List<BlockEntry> tramways$allowed = List.of(
-    TBlocks.TRAM_SIGN,
-    TBlocks.RAILWAY_SIGN,
-    TBlocks.TRAM_SIGNAL,
-    AllBlocks.METAL_GIRDER
-  );
-
-  @Unique
-  private static boolean tramways$allowed(BlockState state) {
-    return tramways$allowed.stream().anyMatch(entry -> entry.has(state));
-  }
-
   @Inject(method = "getShift", at = @At("HEAD"), cancellable = true)
   private void tramways$girderShift(
     BlockState state,
@@ -41,7 +30,7 @@ public class GirderCTBehaviourMixin {
     TextureAtlasSprite sprite,
     CallbackInfoReturnable<CTSpriteShiftEntry> cir
   ) {
-    if (tramways$allowed(state) && !AllBlocks.METAL_GIRDER.has(state))
+    if (GirderLikeUtil.allowed(state, false))
       cir.setReturnValue(AllSpriteShifts.GIRDER_POLE);
   }
 
@@ -58,7 +47,7 @@ public class GirderCTBehaviourMixin {
     if (AllBlocks.METAL_GIRDER.has(state) && state.getBlock() == other.getBlock())
       return; // don't handle this
 
-    if (tramways$allowed(state) && tramways$allowed(other))
+    if (GirderLikeUtil.allowed(state, true) && GirderLikeUtil.allowed(other, true))
       cir.setReturnValue(
         AllBlocks.METAL_GIRDER.has(other)
           ? !other.getValue(GirderBlock.X) && !other.getValue(GirderBlock.Z)

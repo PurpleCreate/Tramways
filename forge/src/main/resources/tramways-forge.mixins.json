@@ -1,11 +1,10 @@
 {
   "required": true,
   "minVersion": "0.8",
-  "package": "purplecreate.tramways.mixins.fabric",
+  "package": "purplecreate.tramways.mixins.forge",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
-    "ConnectedGirderModelMixin",
-    "NameSignInfoFabricMixin"
+    "ConnectedGirderModelMixin"
   ],
   "injectors": {
     "defaultRequire": 1
