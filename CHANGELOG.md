@@ -1,8 +1,17 @@
+## ✨ Features
+
+- Add `train_length` placeholder
+- All train placeholders are now available for station announcements
+- Connected textures for girder-like blocks (signs & signals)
+
 ## ♻️ Changes
 
-- Bump version to Create 0.5.1j
-- Bump version to SnR 1.6.9 (fabric) 1.6.7 (forge)
+- Bump version to Fabric Loader 0.16.3
+- Bump version to Fabric API 0.92.2
 
 ## 🔨 Fixes
 
-- Fixed conflict with other mods during load (e.g Cobblemon)
+- Fix crash when schedule contains only one stop
+  ([#1](https://github.com/PurpleCreate/Tramways/issues/1))
+- Stop announcements from getting cut off
+- Don't rotate name sign pole with the rest of the name sign
