@@ -3,7 +3,6 @@ package purplecreate.tramways;
 import com.google.gson.JsonSyntaxException;
 import com.tterrag.registrate.Registrate;
 import purplecreate.tramways.config.Config;
-import purplecreate.tramways.datagen.DataGen;
 import com.mojang.logging.LogUtils;
 import com.simibubi.create.foundation.utility.Components;
 import net.minecraft.network.chat.MutableComponent;

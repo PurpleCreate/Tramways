@@ -4,7 +4,6 @@ import com.simibubi.create.content.trains.entity.Train;
 import purplecreate.tramways.config.Config;
 import purplecreate.tramways.config.StationMessageType;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 

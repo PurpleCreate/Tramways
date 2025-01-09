@@ -1,6 +1,5 @@
 package purplecreate.tramways;
 
-import com.simibubi.create.Create;
 import com.simibubi.create.content.decoration.girder.ConnectedGirderModel;
 import com.simibubi.create.content.trains.track.TrackTargetingBlockItem;
 import com.simibubi.create.foundation.block.DyedBlockList;

@@ -5,21 +5,16 @@ import com.simibubi.create.AllSpriteShifts;
 import com.simibubi.create.content.decoration.girder.GirderBlock;
 import com.simibubi.create.content.decoration.girder.GirderCTBehaviour;
 import com.simibubi.create.foundation.block.connected.CTSpriteShiftEntry;
-import com.tterrag.registrate.util.entry.BlockEntry;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.block.state.BlockState;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import purplecreate.tramways.TBlocks;
 import purplecreate.tramways.util.GirderLikeUtil;
-
-import java.util.List;
 
 @Mixin(value = GirderCTBehaviour.class, remap = false)
 public class GirderCTBehaviourMixin {

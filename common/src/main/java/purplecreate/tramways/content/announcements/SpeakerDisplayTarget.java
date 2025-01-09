@@ -11,7 +11,6 @@ import purplecreate.tramways.TNetworking;
 import purplecreate.tramways.Tramways;
 import purplecreate.tramways.config.StationMessageType;
 import purplecreate.tramways.content.announcements.info.StationInfo;
-import purplecreate.tramways.content.announcements.info.TrainInfo;
 import purplecreate.tramways.content.announcements.network.PlayVoiceS2CPacket;
 
 import java.util.*;
