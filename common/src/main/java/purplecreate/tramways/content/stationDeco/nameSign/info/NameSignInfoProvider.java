@@ -61,7 +61,6 @@ public abstract class NameSignInfoProvider implements DataProvider {
   public class Builder {
     private Align align = NameSignInfo.Entry.DEFAULT.align();
     private int offset = NameSignInfo.Entry.DEFAULT.offset();
-    private int width = NameSignInfo.Entry.DEFAULT.width();
     private DyeColor color = NameSignInfo.Entry.DEFAULT.color();
 
     public Builder align(Align align) {
@@ -74,18 +73,13 @@ public abstract class NameSignInfoProvider implements DataProvider {
       return this;
     }
 
-    public Builder width(int width) {
-      this.width = width;
-      return this;
-    }
-
     public Builder color(DyeColor color) {
       this.color = color;
       return this;
     }
 
     public NameSignInfo.Entry build() {
-      return new NameSignInfo.Entry(align, offset, width, color);
+      return new NameSignInfo.Entry(align, offset, color);
     }
 
     public void register(BlockEntry<?>... blockEntries) {

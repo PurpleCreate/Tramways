@@ -7,25 +7,35 @@ import net.minecraft.world.level.Level;
 import purplecreate.tramways.content.stationDeco.nameSign.NameSignBlockEntity;
 import purplecreate.tramways.util.C2SPacket;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class UpdateNameSignC2SPacket implements C2SPacket {
   BlockPos pos;
-  String text;
+  List<String> lines;
 
-  public UpdateNameSignC2SPacket(BlockPos pos, String text) {
+  public UpdateNameSignC2SPacket(BlockPos pos, List<String> lines) {
     this.pos = pos;
-    this.text = text;
+    this.lines = lines;
   }
 
   public static UpdateNameSignC2SPacket read(FriendlyByteBuf buf) {
     BlockPos pos = buf.readBlockPos();
-    String text = buf.readUtf();
-    return new UpdateNameSignC2SPacket(pos, text);
+
+    int length = buf.readVarInt();
+    List<String> lines = new ArrayList<>();
+    for (int i = 0; i < length; i++)
+      lines.add(buf.readUtf());
+
+    return new UpdateNameSignC2SPacket(pos, lines);
   }
 
   @Override
   public void write(FriendlyByteBuf buf) {
     buf.writeBlockPos(pos);
-    buf.writeUtf(text);
+    buf.writeVarInt(lines.size());
+    for (String line : lines)
+      buf.writeUtf(line);
   }
 
   @Override
@@ -36,7 +46,7 @@ public class UpdateNameSignC2SPacket implements C2SPacket {
     if (!pos.closerThan(player.blockPosition(), 20)) return;
 
     if (level.getBlockEntity(pos) instanceof NameSignBlockEntity be) {
-      be.text = text;
+      be.lines = lines;
       be.notifyUpdate();
     }
   }

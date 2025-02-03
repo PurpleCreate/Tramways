@@ -20,7 +20,6 @@ public class GenNameSignInfo extends NameSignInfoProvider {
     builder()
       .align(Align.LEFT)
       .offset(5)
-      .width(60)
       .color(DyeColor.WHITE)
       .register(
         map.get(DyeColor.BLUE),
@@ -33,7 +32,6 @@ public class GenNameSignInfo extends NameSignInfoProvider {
     builder()
       .align(Align.LEFT)
       .offset(5)
-      .width(60)
       .register(map.get(DyeColor.YELLOW));
 
     builder()

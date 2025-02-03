@@ -12,26 +12,20 @@ import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.font.TextFieldHelper;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.locale.Language;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.FormattedText;
-import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.level.block.Block;
+import org.lwjgl.glfw.GLFW;
 import purplecreate.tramways.TBlocks;
 import purplecreate.tramways.TNetworking;
 import purplecreate.tramways.Tramways;
 import purplecreate.tramways.content.stationDeco.nameSign.info.NameSignInfo;
 import purplecreate.tramways.content.stationDeco.nameSign.network.UpdateNameSignC2SPacket;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
 
 @Environment(EnvType.CLIENT)
 public class NameSignScreen extends AbstractSimiScreen {
@@ -56,7 +50,8 @@ public class NameSignScreen extends AbstractSimiScreen {
   private final ResourceLocation background;
   private final NameSignInfo.Entry nameSignInfo;
 
-  private String text;
+  private List<String> lines;
+  private int currentLine = 0;
   private TextFieldHelper field;
 
   public NameSignScreen(NameSignBlockEntity be) {
@@ -64,7 +59,7 @@ public class NameSignScreen extends AbstractSimiScreen {
 
     Block block = be.getBlockState().getBlock();
     this.be = be;
-    this.text = be.text;
+    this.lines = be.getLinesSafe();
     this.background = textureMap.get(BuiltInRegistries.BLOCK.getKey(block));
     this.nameSignInfo = NameSignInfo.get(RegisteredObjects.getKeyOrThrow(block));
   }
@@ -79,23 +74,14 @@ public class NameSignScreen extends AbstractSimiScreen {
         .bounds(guiLeft, windowHeight - 40 - 20, windowWidth, 20).build()
     );
     this.field = new TextFieldHelper(
-      () -> this.text,
+      () -> lines.get(currentLine),
       (text) -> {
-        this.text = text;
-        TNetworking.sendToServer(new UpdateNameSignC2SPacket(be.getBlockPos(), text));
+        lines.set(currentLine, text);
+        TNetworking.sendToServer(new UpdateNameSignC2SPacket(be.getBlockPos(), lines));
       },
       TextFieldHelper.createClipboardGetter(minecraft),
       TextFieldHelper.createClipboardSetter(minecraft),
-      (text) -> {
-        FormattedText formattedText = Component.literal(this.text);
-        List<FormattedCharSequence> lines = minecraft.font.split(formattedText, nameSignInfo.width());
-        boolean valid = lines.size() <= 4;
-
-        if (valid && lines.size() == 4)
-          valid = minecraft.font.width(lines.get(3)) <= nameSignInfo.width();
-
-        return valid;
-      }
+      (text) -> minecraft.font.width(text) <= be.textWidth
     );
   }
 
@@ -106,8 +92,17 @@ public class NameSignScreen extends AbstractSimiScreen {
 
   @Override
   public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-    if (keyCode != 256)
+    if (keyCode == GLFW.GLFW_KEY_UP) {
+      currentLine = currentLine - 1 & 3;
+      field.setCursorToEnd();
+      return true;
+    } else if (keyCode == GLFW.GLFW_KEY_DOWN) {
+      currentLine = currentLine + 1 & 3;
+      field.setCursorToEnd();
+      return true;
+    } else if (keyCode != GLFW.GLFW_KEY_ESCAPE) {
       return field.keyPressed(keyCode);
+    }
     return super.keyPressed(keyCode, scanCode, modifiers);
   }
 
@@ -137,31 +132,9 @@ public class NameSignScreen extends AbstractSimiScreen {
     graphics.drawCenteredString(fontRenderer, title, guiLeft + (windowWidth / 2), 40, 16777215);
 
     // text
-    List<FormattedText> lines = new ArrayList<>();
-    int cursorPos = field.getCursorPos();
-    AtomicInteger cursorRow = new AtomicInteger();
-    AtomicInteger cursorCol = new AtomicInteger();
-    AtomicBoolean foundCursorPos = new AtomicBoolean(false);
+    int cursorRow = currentLine;
+    int cursorCol = field.getCursorPos();
     boolean showCursor = ticks / 6 % 2 != 0;
-
-    fontRenderer.getSplitter().splitLines(
-      this.text,
-      nameSignInfo.width(),
-      Style.EMPTY,
-      false,
-      (style, from, to) -> {
-        String line = this.text.substring(from, to);
-
-        if (cursorPos >= from && cursorPos <= to) {
-          cursorCol.set(cursorPos - from);
-          foundCursorPos.set(true);
-        } else if (!foundCursorPos.get()) {
-          cursorRow.incrementAndGet();
-        }
-
-        lines.add(FormattedText.of(line, style));
-      }
-    );
 
     float tx = switch (nameSignInfo.align()) {
       case LEFT -> 0f;
@@ -174,8 +147,7 @@ public class NameSignScreen extends AbstractSimiScreen {
     ms.translate(windowWidth * tx, windowHeight / 2f, 0);
     NameSignRenderer.renderText(
       nameSignInfo,
-      Language.getInstance().getVisualOrder(lines),
-      fontRenderer,
+      lines,
       ms,
       graphics.bufferSource(),
       LightTexture.FULL_BRIGHT,
@@ -184,22 +156,18 @@ public class NameSignScreen extends AbstractSimiScreen {
 
     // cursor
     if (showCursor) {
-      FormattedText line = lines.isEmpty()
-        ? FormattedText.of("")
-        : lines.get(cursorRow.get());
+      String line = lines.isEmpty()
+        ? ""
+        : lines.get(cursorRow);
 
       int x = switch (nameSignInfo.align()) {
         case LEFT -> nameSignInfo.offset();
         case RIGHT -> -nameSignInfo.offset();
         case CENTER -> (fontRenderer.width(line) / -2) + nameSignInfo.offset();
       };
-      int y = (int) (cursorRow.get() * fontRenderer.lineHeight - (lines.size() * fontRenderer.lineHeight / 2f));
+      int y = (int) (cursorRow * fontRenderer.lineHeight - (lines.size() * fontRenderer.lineHeight / 2f));
 
-      x += fontRenderer.width(
-        line
-          .getString()
-          .substring(0, cursorCol.get())
-      );
+      x += fontRenderer.width(line.substring(0, cursorCol));
 
       graphics.fill(
         x,

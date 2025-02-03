@@ -54,13 +54,12 @@ public class NameSignInfo implements ResourceManagerReloadListener {
     return infoMap.getOrDefault(location, Entry.DEFAULT);
   }
 
-  public record Entry(Align align, int offset, int width, DyeColor color) {
-    public static final Entry DEFAULT = new Entry(Align.CENTER, 0, 80, DyeColor.BLACK);
+  public record Entry(Align align, int offset, DyeColor color) {
+    public static final Entry DEFAULT = new Entry(Align.CENTER, 0, DyeColor.BLACK);
     public static final Codec<Entry> CODEC = RecordCodecBuilder.create(instance ->
       instance.group(
         Align.CODEC.fieldOf("align").forGetter(Entry::align),
         Codec.INT.fieldOf("offset").forGetter(Entry::offset),
-        Codec.INT.fieldOf("width").forGetter(Entry::width),
         DyeColor.CODEC.fieldOf("color").forGetter(Entry::color)
       ).apply(instance, Entry::new)
     );

@@ -19,9 +19,6 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.Direction;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.FormattedText;
-import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.state.BlockState;
 import purplecreate.tramways.TPartialModels;
@@ -67,13 +64,14 @@ public class NameSignRenderer extends SmartBlockEntityRenderer<NameSignBlockEnti
 
   public static void renderText(
     NameSignInfo.Entry nameSignInfo,
-    List<FormattedCharSequence> lines,
-    Font fontRenderer,
+    List<String> lines,
     PoseStack ms,
     MultiBufferSource buffer,
     int light,
     boolean renderOnBlock
   ) {
+    Font fontRenderer = Minecraft.getInstance().font;
+
     if (renderOnBlock) {
       float scale = 0.01f;
       float tx = switch (nameSignInfo.align()) {
@@ -88,7 +86,7 @@ public class NameSignRenderer extends SmartBlockEntityRenderer<NameSignBlockEnti
     }
 
     for (int i = 0; i < lines.size(); i++) {
-      FormattedCharSequence line = lines.get(i);
+      String line = lines.get(i);
       float x = switch (nameSignInfo.align()) {
         case LEFT -> nameSignInfo.offset();
         case RIGHT -> -nameSignInfo.offset();
@@ -163,10 +161,6 @@ public class NameSignRenderer extends SmartBlockEntityRenderer<NameSignBlockEnti
       RegisteredObjects.getKeyOrThrow(be.getBlockState().getBlock())
     );
 
-    Font fontRenderer = Minecraft.getInstance().font;
-    FormattedText text = Component.literal(be.text);
-    List<FormattedCharSequence> lines = fontRenderer.split(text, nameSignInfo.width());
-
     renderWoodenInner(be.wood, be.getBlockState(), facing, light, ms, buffer);
 
     for (Direction direction : List.of(facing, facing.getOpposite())) {
@@ -176,7 +170,7 @@ public class NameSignRenderer extends SmartBlockEntityRenderer<NameSignBlockEnti
         .rotateY(AngleHelper.horizontalAngle(direction))
         .unCentre()
         .translate(0, 0, 11.01 / 16f);
-      renderText(nameSignInfo, lines, fontRenderer, ms, buffer, light, true);
+      renderText(nameSignInfo, be.getLinesSafe(), ms, buffer, light, true);
       ms.popPose();
     }
   }
