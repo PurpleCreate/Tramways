@@ -18,7 +18,7 @@ import purplecreate.tramways.mixinInterfaces.PrimaryThrottleAccessor;
 public class TrainMixin implements ITemporarySpeedLimitTrain, PrimaryThrottleAccessor {
   @Shadow public double throttle;
   @Unique private Double tempSpeedLimit$actual;
-  @Unique private float primaryThrottle;
+  @Unique private float tramways$primaryThrottle;
 
   @Inject(method = "frontSignalListener", at = @At("RETURN"), cancellable = true)
   private void tramways$approachTramSign(CallbackInfoReturnable<TravellingPoint.IEdgePointListener> cir) {
@@ -77,12 +77,12 @@ public class TrainMixin implements ITemporarySpeedLimitTrain, PrimaryThrottleAcc
   }
 
   @Override
-  public void setPrimaryThrottle(float throttle) {
-    this.primaryThrottle = throttle;
+  public void tramways$setPrimaryThrottle(float throttle) {
+    this.tramways$primaryThrottle = throttle;
   }
 
   @Override
-  public float getPrimaryThrottle() {
-    return this.primaryThrottle;
+  public float tramways$getPrimaryThrottle() {
+    return this.tramways$primaryThrottle;
   }
 }

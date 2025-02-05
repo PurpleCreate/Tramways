@@ -67,7 +67,7 @@ public class SpeedSignDemand extends SignDemand {
 
     // Ensure the throttle does not exceed the primary throttle
     if (train instanceof PrimaryThrottleAccessor primaryThrottleAccessor) {
-      double primaryThrottle = primaryThrottleAccessor.getPrimaryThrottle();
+      double primaryThrottle = primaryThrottleAccessor.tramways$getPrimaryThrottle();
       if (nextThrottle > primaryThrottle) {
         nextThrottle = primaryThrottle;
       }

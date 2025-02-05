@@ -3,7 +3,6 @@ package purplecreate.tramways.mixins;
 
 import com.simibubi.create.content.trains.entity.Train;
 import com.simibubi.create.content.trains.graph.DiscoveredPath;
-import com.simibubi.create.content.trains.schedule.Schedule;
 import com.simibubi.create.content.trains.schedule.ScheduleRuntime;
 import com.simibubi.create.content.trains.schedule.ScheduleEntry;
 import com.simibubi.create.content.trains.schedule.destination.ChangeThrottleInstruction;
@@ -20,13 +19,9 @@ import purplecreate.tramways.mixinInterfaces.PrimaryThrottleAccessor;
 @Mixin(value = ScheduleRuntime.class, remap = false)
 public class ScheduleRuntimeMixin {
   @Unique private int tramways$lastEntry = -1;
-  @Shadow private Train train;
+  @Shadow Train train;
   @Shadow public int currentEntry;
 
-  @Shadow
-  private Schedule getSchedule() {
-    return null;
-  }
 
   @Inject(method = "startCurrentInstruction", at = @At("HEAD"))
   private void tramways$resetRequestStop(CallbackInfoReturnable<DiscoveredPath> cir) {
@@ -46,7 +41,7 @@ public class ScheduleRuntimeMixin {
     ScheduleEntry entry = scheduleRuntime.getSchedule().entries.get(scheduleRuntime.currentEntry-1);
     if (entry.instruction instanceof ChangeThrottleInstruction) {
       if (train instanceof PrimaryThrottleAccessor primaryThrottleAccessor) {
-        primaryThrottleAccessor.setPrimaryThrottle((float) train.throttle);
+        primaryThrottleAccessor.tramways$setPrimaryThrottle((float) train.throttle);
       }
     }
   }

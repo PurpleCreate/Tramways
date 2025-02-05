@@ -37,7 +37,7 @@ public class TemporarySpeedSignDemand extends SpeedSignDemand {
     double nextThrottle = tag.getInt("Throttle") / 100d;
 
     if (train instanceof PrimaryThrottleAccessor primaryThrottleAccessor) {
-      double primaryThrottle = primaryThrottleAccessor.getPrimaryThrottle();
+      double primaryThrottle = primaryThrottleAccessor.tramways$getPrimaryThrottle();
       if (nextThrottle > primaryThrottle) {
         nextThrottle = primaryThrottle;
       }
