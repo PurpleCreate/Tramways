@@ -13,6 +13,7 @@ import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.item.alchemy.Potions;
 import purplecreate.tramways.content.signs.TramSignBlock;
 import purplecreate.tramways.mixinInterfaces.ITemporarySpeedLimitTrain;
+import purplecreate.tramways.mixinInterfaces.PrimaryThrottleAccessor;
 
 public class TemporarySpeedSignDemand extends SpeedSignDemand {
   @Override
@@ -34,6 +35,13 @@ public class TemporarySpeedSignDemand extends SpeedSignDemand {
   @Override
   public void execute(CompoundTag tag, Train train, double distance) {
     double nextThrottle = tag.getInt("Throttle") / 100d;
+
+    if (train instanceof PrimaryThrottleAccessor primaryThrottleAccessor) {
+      double primaryThrottle = primaryThrottleAccessor.getPrimaryThrottle();
+      if (nextThrottle > primaryThrottle) {
+        nextThrottle = primaryThrottle;
+      }
+    }
 
     double v = nextThrottle * train.maxSpeed(); // final velocity
     double u = Math.abs(train.speed); // initial velocity
