@@ -1,3 +1,4 @@
+// TrainMixin.java
 package purplecreate.tramways.mixins;
 
 import org.spongepowered.asm.mixin.Shadow;
@@ -11,11 +12,13 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import purplecreate.tramways.mixinInterfaces.ITemporarySpeedLimitTrain;
+import purplecreate.tramways.mixinInterfaces.PrimaryThrottleAccessor;
 
 @Mixin(value = Train.class, remap = false)
-public class TrainMixin implements ITemporarySpeedLimitTrain {
+public class TrainMixin implements ITemporarySpeedLimitTrain, PrimaryThrottleAccessor {
   @Shadow public double throttle;
   @Unique private Double tempSpeedLimit$actual;
+  @Unique private float tramways$primaryThrottle;
 
   @Inject(method = "frontSignalListener", at = @At("RETURN"), cancellable = true)
   private void tramways$approachTramSign(CallbackInfoReturnable<TravellingPoint.IEdgePointListener> cir) {
@@ -71,5 +74,15 @@ public class TrainMixin implements ITemporarySpeedLimitTrain {
   @Override
   public boolean tempSpeedLimit$has() {
     return tempSpeedLimit$actual != null;
+  }
+
+  @Override
+  public void tramways$setPrimaryThrottle(float throttle) {
+    this.tramways$primaryThrottle = throttle;
+  }
+
+  @Override
+  public float tramways$getPrimaryThrottle() {
+    return this.tramways$primaryThrottle;
   }
 }

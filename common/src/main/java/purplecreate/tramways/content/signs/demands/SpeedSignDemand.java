@@ -1,3 +1,4 @@
+// SpeedSignDemand.java
 package purplecreate.tramways.content.signs.demands;
 
 import net.fabricmc.api.EnvType;
@@ -12,6 +13,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
 import purplecreate.tramways.content.signs.TramSignBlock;
 import purplecreate.tramways.mixinInterfaces.ITemporarySpeedLimitTrain;
+import purplecreate.tramways.mixinInterfaces.PrimaryThrottleAccessor;
 
 public class SpeedSignDemand extends SignDemand {
   @Override
@@ -25,7 +27,7 @@ public class SpeedSignDemand extends SignDemand {
   public void initSettingsGUI(ModularGuiLineBuilder builder) {
     builder.addScrollInput(0, 34, (si, l) -> {
       si.titled(Tramways.translatable("sign_demand.speed"))
-        .withRange(1, 101);
+              .withRange(1, 101);
       l.withSuffix("%");
     }, "Throttle");
   }
@@ -63,6 +65,14 @@ public class SpeedSignDemand extends SignDemand {
 
     double nextThrottle = tag.getInt("Throttle") / 100d;
 
+    // Ensure the throttle does not exceed the primary throttle
+    if (train instanceof PrimaryThrottleAccessor primaryThrottleAccessor) {
+      double primaryThrottle = primaryThrottleAccessor.tramways$getPrimaryThrottle();
+      if (nextThrottle > primaryThrottle) {
+        nextThrottle = primaryThrottle;
+      }
+    }
+
     double v = nextThrottle * train.maxSpeed(); // final velocity
     double u = Math.abs(train.speed); // initial velocity
 
@@ -73,7 +83,7 @@ public class SpeedSignDemand extends SignDemand {
       float a = train.acceleration(); // acceleration
       double s = ((v * v) - (u * u)) / (2 * a); // displacement (distance)
 
-      if (distance <= -s)
+      if (distance >= s)
         train.throttle = nextThrottle;
     }
   }
