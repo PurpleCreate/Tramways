@@ -11,7 +11,7 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
 import purplecreate.tramways.content.signs.TramSignBlock;
-import purplecreate.tramways.mixinInterfaces.ITemporarySpeedLimitTrain;
+import purplecreate.tramways.mixinInterfaces.ISpeedLimitableTrain;
 
 public class SpeedSignDemand extends SignDemand {
   @Override
@@ -49,8 +49,8 @@ public class SpeedSignDemand extends SignDemand {
 
   @Override
   public void execute(CompoundTag tag, Train train, double distance) {
-    if (train instanceof ITemporarySpeedLimitTrain tempSpeedLimitTrain) {
-      if (tempSpeedLimitTrain.tempSpeedLimit$has()) {
+    if (train instanceof ISpeedLimitableTrain speedLimitableTrain) {
+      if (speedLimitableTrain.tempSpeedLimit$has()) {
         tag.putBoolean("Overridden", true);
         return;
       }
@@ -63,6 +63,14 @@ public class SpeedSignDemand extends SignDemand {
 
     double nextThrottle = tag.getInt("Throttle") / 100d;
 
+    // Ensure the throttle does not exceed the primary throttle
+    if (train instanceof ISpeedLimitableTrain speedLimitableTrain) {
+      double primaryLimit = speedLimitableTrain.primaryLimit$get();
+      if (nextThrottle > primaryLimit) {
+        nextThrottle = primaryLimit;
+      }
+    }
+
     double v = nextThrottle * train.maxSpeed(); // final velocity
     double u = Math.abs(train.speed); // initial velocity
 
@@ -73,7 +81,7 @@ public class SpeedSignDemand extends SignDemand {
       float a = train.acceleration(); // acceleration
       double s = ((v * v) - (u * u)) / (2 * a); // displacement (distance)
 
-      if (distance <= -s)
+      if (distance >= s)
         train.throttle = nextThrottle;
     }
   }

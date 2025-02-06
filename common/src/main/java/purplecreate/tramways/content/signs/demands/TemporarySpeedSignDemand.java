@@ -12,7 +12,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.item.alchemy.Potions;
 import purplecreate.tramways.content.signs.TramSignBlock;
-import purplecreate.tramways.mixinInterfaces.ITemporarySpeedLimitTrain;
+import purplecreate.tramways.mixinInterfaces.ISpeedLimitableTrain;
 
 public class TemporarySpeedSignDemand extends SpeedSignDemand {
   @Override
@@ -35,6 +35,14 @@ public class TemporarySpeedSignDemand extends SpeedSignDemand {
   public void execute(CompoundTag tag, Train train, double distance) {
     double nextThrottle = tag.getInt("Throttle") / 100d;
 
+    // Ensure the throttle does not exceed the primary throttle
+    if (train instanceof ISpeedLimitableTrain speedLimitableTrain) {
+      double primaryLimit = speedLimitableTrain.primaryLimit$get();
+      if (nextThrottle > primaryLimit) {
+        nextThrottle = primaryLimit;
+      }
+    }
+
     double v = nextThrottle * train.maxSpeed(); // final velocity
     double u = Math.abs(train.speed); // initial velocity
     float a = train.acceleration(); // acceleration
@@ -42,9 +50,9 @@ public class TemporarySpeedSignDemand extends SpeedSignDemand {
 
     if (
       distance <= -s
-        && train instanceof ITemporarySpeedLimitTrain tempSpeedLimitTrain
+        && train instanceof ISpeedLimitableTrain speedLimitableTrain
     ) {
-      tempSpeedLimitTrain.tempSpeedLimit$set(
+      speedLimitableTrain.tempSpeedLimit$set(
         nextThrottle,
         SignDemand.isManual(train)
       );
