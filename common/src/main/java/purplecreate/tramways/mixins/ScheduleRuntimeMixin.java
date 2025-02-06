@@ -1,5 +1,6 @@
 package purplecreate.tramways.mixins;
 
+import com.llamalad7.mixinextras.sugar.Local;
 import com.simibubi.create.content.trains.entity.Train;
 import com.simibubi.create.content.trains.graph.DiscoveredPath;
 import com.simibubi.create.content.trains.schedule.ScheduleRuntime;
@@ -34,14 +35,10 @@ public class ScheduleRuntimeMixin {
       nav.tramways$resetRouteCancelled();
   }
 
-  @Inject(method = "startCurrentInstruction", at = @At("RETURN"))
-  private void onThrottleChange(CallbackInfoReturnable<DiscoveredPath> cir) {
-    ScheduleRuntime scheduleRuntime = (ScheduleRuntime) (Object) this;
-    ScheduleEntry entry = scheduleRuntime.getSchedule().entries.get(scheduleRuntime.currentEntry-1);
-    if (entry.instruction instanceof ChangeThrottleInstruction) {
-      if (train instanceof ISpeedLimitableTrain speedLimitableTrain) {
-        speedLimitableTrain.primaryLimit$set(train.throttle);
-      }
+  @Inject(method = "startCurrentInstruction", at = @At(value = "INVOKE", target = "Lcom/simibubi/create/content/trains/schedule/destination/ChangeThrottleInstruction;getThrottle()F"))
+  private void tramways$setPrimaryLimit(CallbackInfoReturnable<DiscoveredPath> cir, @Local ChangeThrottleInstruction throttle) {
+    if (train instanceof ISpeedLimitableTrain speedLimitableTrain) {
+      speedLimitableTrain.primaryLimit$set(throttle.getThrottle());
     }
   }
 }

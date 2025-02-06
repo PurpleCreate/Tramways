@@ -16,7 +16,7 @@ import purplecreate.tramways.mixinInterfaces.ISpeedLimitableTrain;
 public class TrainMixin implements ISpeedLimitableTrain {
   @Shadow public double throttle;
   @Unique private Double tempSpeedLimit$actual;
-  @Unique private double primaryLimit$value;
+  @Unique private double primaryLimit$value = 1;
 
   @Inject(method = "frontSignalListener", at = @At("RETURN"), cancellable = true)
   private void tramways$approachTramSign(CallbackInfoReturnable<TravellingPoint.IEdgePointListener> cir) {

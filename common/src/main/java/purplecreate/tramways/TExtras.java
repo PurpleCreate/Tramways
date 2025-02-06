@@ -7,6 +7,7 @@ import com.simibubi.create.foundation.utility.Pair;
 import purplecreate.tramways.content.requestStop.train.RequestStopInstruction;
 import purplecreate.tramways.content.signs.TramSignPoint;
 import purplecreate.tramways.content.signs.demands.*;
+import purplecreate.tramways.content.signs.schedule.SetPrimaryLimitInstruction;
 
 import java.util.function.Supplier;
 
@@ -20,6 +21,7 @@ public class TExtras {
 
     public static void register() {
       registerInstruction("request_stop", RequestStopInstruction::new);
+      registerInstruction("set_primary_limit", SetPrimaryLimitInstruction::new);
     }
   }
 
