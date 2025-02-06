@@ -23,7 +23,6 @@ import java.util.List;
 public class NameSignBlockEntity extends SmartBlockEntity {
   public BlockState wood = Blocks.OAK_PLANKS.defaultBlockState();
   public List<String> lines = List.of("", "", "", "");
-  public int textWidth = 60;
 
   public NameSignBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
     super(type, pos, state);
@@ -31,6 +30,13 @@ public class NameSignBlockEntity extends SmartBlockEntity {
 
   @Override
   public void addBehaviours(List<BlockEntityBehaviour> list) {}
+
+  public int getTextWidth() {
+    int value = 80;
+    if (getBlockState().getValue(NameSignBlock.EXTENDED))
+      value *= 2;
+    return value;
+  }
 
   public List<String> getLinesSafe() {
     List<String> safe = new ArrayList<>(lines);
@@ -68,7 +74,7 @@ public class NameSignBlockEntity extends SmartBlockEntity {
     } else {
       // legacy
       Font fontRenderer = Minecraft.getInstance().font;
-      lines = fontRenderer.getSplitter().splitLines(tag.getString("Text"), textWidth, Style.EMPTY)
+      lines = fontRenderer.getSplitter().splitLines(tag.getString("Text"), getTextWidth(), Style.EMPTY)
         .stream()
         .map(FormattedText::getString)
         .toList();

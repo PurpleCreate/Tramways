@@ -1,0 +1,6 @@
+{
+  "parent": "tramways:block/station_name_sign/base",
+  "textures": {
+    "texture": "tramways:block/station_name_sign/magenta_extended"
+  }
+}

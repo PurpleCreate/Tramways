@@ -1,18 +1,33 @@
 {
   "variants": {
-    "facing=east": {
+    "extended=false,facing=east": {
       "model": "tramways:block/station_name_sign/light_blue",
       "y": 90
     },
-    "facing=north": {
+    "extended=false,facing=north": {
       "model": "tramways:block/station_name_sign/light_blue"
     },
-    "facing=south": {
+    "extended=false,facing=south": {
       "model": "tramways:block/station_name_sign/light_blue",
       "y": 180
     },
-    "facing=west": {
+    "extended=false,facing=west": {
       "model": "tramways:block/station_name_sign/light_blue",
+      "y": 270
+    },
+    "extended=true,facing=east": {
+      "model": "tramways:block/station_name_sign/light_blue_extended",
+      "y": 90
+    },
+    "extended=true,facing=north": {
+      "model": "tramways:block/station_name_sign/light_blue_extended"
+    },
+    "extended=true,facing=south": {
+      "model": "tramways:block/station_name_sign/light_blue_extended",
+      "y": 180
+    },
+    "extended=true,facing=west": {
+      "model": "tramways:block/station_name_sign/light_blue_extended",
       "y": 270
     }
   }

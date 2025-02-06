@@ -30,11 +30,13 @@ import java.util.Map;
 @Environment(EnvType.CLIENT)
 public class NameSignScreen extends AbstractSimiScreen {
   private static final Map<ResourceLocation, ResourceLocation> textureMap = new HashMap<>();
+  private static final Map<ResourceLocation, ResourceLocation> extendedTextureMap = new HashMap<>();
   // 1 pixel == 8 units here for some reason
   private static final int textureWidth = 16 * 8;
   private static final int textureHeight = 8 * 8;
   private static final int textureStartX = 0;
   private static final int textureStartY = 0;
+  private static final int extendedTextureStartY = 8 * 8;
   private int ticks = 0;
 
   static {
@@ -43,12 +45,14 @@ public class NameSignScreen extends AbstractSimiScreen {
       String color = name.substring(0, name.length() - 18);
 
       textureMap.put(block.getId(), Tramways.rl("textures/block/station_name_sign/" + color + ".png"));
+      extendedTextureMap.put(block.getId(), Tramways.rl("textures/block/station_name_sign/" + color + "_extended.png"));
     }
   }
 
   private final NameSignBlockEntity be;
   private final ResourceLocation background;
   private final NameSignInfo.Entry nameSignInfo;
+  private final boolean extended;
 
   private List<String> lines;
   private int currentLine = 0;
@@ -60,13 +64,16 @@ public class NameSignScreen extends AbstractSimiScreen {
     Block block = be.getBlockState().getBlock();
     this.be = be;
     this.lines = be.getLinesSafe();
-    this.background = textureMap.get(BuiltInRegistries.BLOCK.getKey(block));
-    this.nameSignInfo = NameSignInfo.get(RegisteredObjects.getKeyOrThrow(block));
+    this.extended = be.getBlockState().getValue(NameSignBlock.EXTENDED);
+    this.background =
+      (extended ? extendedTextureMap : textureMap).get(BuiltInRegistries.BLOCK.getKey(block));
+    this.nameSignInfo =
+      NameSignInfo.get(RegisteredObjects.getKeyOrThrow(block)).forceCenteredIf(extended);
   }
 
   @Override
   protected void init() {
-    setWindowSize(textureWidth, height);
+    setWindowSize(textureWidth * (extended ? 2 : 1), height);
     super.init();
 
     this.addRenderableWidget(
@@ -81,7 +88,7 @@ public class NameSignScreen extends AbstractSimiScreen {
       },
       TextFieldHelper.createClipboardGetter(minecraft),
       TextFieldHelper.createClipboardSetter(minecraft),
-      (text) -> minecraft.font.width(text) <= be.textWidth
+      (text) -> minecraft.font.width(text) <= be.getTextWidth()
     );
   }
 
@@ -127,6 +134,18 @@ public class NameSignScreen extends AbstractSimiScreen {
       textureWidth,
       textureHeight
     );
+
+    if (extended) {
+      graphics.blit(
+        background,
+        guiLeft + textureWidth,
+        guiTop + ((windowHeight / 2) - (textureHeight / 2)),
+        textureStartX,
+        extendedTextureStartY,
+        textureWidth,
+        textureHeight
+      );
+    }
 
     // title
     graphics.drawCenteredString(fontRenderer, title, guiLeft + (windowWidth / 2), 40, 16777215);

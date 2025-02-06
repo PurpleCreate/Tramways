@@ -22,7 +22,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.state.BlockState;
 import purplecreate.tramways.TPartialModels;
-import purplecreate.tramways.content.signs.TramSignBlock;
 import purplecreate.tramways.content.stationDeco.nameSign.info.NameSignInfo;
 
 import java.util.List;
@@ -154,23 +153,36 @@ public class NameSignRenderer extends SmartBlockEntityRenderer<NameSignBlockEnti
     int light,
     int overlay
   ) {
-    Direction facing = be
-      .getBlockState()
-      .getValue(TramSignBlock.FACING);
+    BlockState state = be.getBlockState();
+
+    Direction facing = state.getValue(NameSignBlock.FACING);
+    boolean extended = state.getValue(NameSignBlock.EXTENDED);
+
     NameSignInfo.Entry nameSignInfo = NameSignInfo.get(
-      RegisteredObjects.getKeyOrThrow(be.getBlockState().getBlock())
+      RegisteredObjects.getKeyOrThrow(state.getBlock())
     );
 
     renderWoodenInner(be.wood, be.getBlockState(), facing, light, ms, buffer);
 
+    if (extended && facing.getAxisDirection() == Direction.AxisDirection.NEGATIVE)
+      return;
+
     for (Direction direction : List.of(facing, facing.getOpposite())) {
       ms.pushPose();
+      float extendedTranslation = direction == facing ? 1 / 2f : -1 / 2f;
       TransformStack.cast(ms)
         .centre()
         .rotateY(AngleHelper.horizontalAngle(direction))
         .unCentre()
-        .translate(0, 0, 11.01 / 16f);
-      renderText(nameSignInfo, be.getLinesSafe(), ms, buffer, light, true);
+        .translate(extended ? extendedTranslation : 0, 0, 11.01 / 16f);
+      renderText(
+        nameSignInfo.forceCenteredIf(extended),
+        be.getLinesSafe(),
+        ms,
+        buffer,
+        light,
+        true
+      );
       ms.popPose();
     }
   }

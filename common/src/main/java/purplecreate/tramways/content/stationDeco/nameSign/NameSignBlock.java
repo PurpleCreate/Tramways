@@ -3,6 +3,7 @@ package purplecreate.tramways.content.stationDeco.nameSign;
 import com.simibubi.create.AllShapes;
 import com.simibubi.create.foundation.block.IBE;
 import com.simibubi.create.foundation.gui.ScreenOpener;
+import com.simibubi.create.foundation.utility.Iterate;
 import com.simibubi.create.foundation.utility.VoxelShaper;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -19,6 +20,8 @@ import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -26,7 +29,11 @@ import org.jetbrains.annotations.Nullable;
 import purplecreate.tramways.TBlockEntities;
 import purplecreate.tramways.util.Env;
 
+import java.util.List;
+
 public class NameSignBlock extends HorizontalDirectionalBlock implements IBE<NameSignBlockEntity> {
+  public static final BooleanProperty EXTENDED = BlockStateProperties.EXTENDED;
+
   public static final VoxelShaper shape =
     new AllShapes.Builder(Block.box(6, 0, 6, 10, 16, 10))
       .add(Block.box(0, 4, 5, 16, 12, 11))
@@ -34,6 +41,7 @@ public class NameSignBlock extends HorizontalDirectionalBlock implements IBE<Nam
 
   public NameSignBlock(Properties properties) {
     super(properties);
+
   }
 
   @Override
@@ -48,23 +56,93 @@ public class NameSignBlock extends HorizontalDirectionalBlock implements IBE<Nam
 
   @Environment(EnvType.CLIENT)
   public void openScreen(Level level, BlockPos pos) {
-    Env.unsafeRunWhenOn(Env.CLIENT, () -> () ->
-      withBlockEntityDo(level, pos, (be) ->
-        ScreenOpener.open(new NameSignScreen(be))
+    Env.unsafeRunWhenOn(Env.CLIENT, () -> () -> {
+      BlockState state = level.getBlockState(pos);
+      Direction facing = state.getValue(FACING);
+      BlockPos actualPos = pos;
+
+      if (
+        state.getValue(EXTENDED)
+          && state.getValue(FACING).getAxisDirection() == Direction.AxisDirection.NEGATIVE
       )
-    );
+        actualPos = pos.relative(facing.getCounterClockWise());
+
+      withBlockEntityDo(level, actualPos, (be) ->
+        ScreenOpener.open(new NameSignScreen(be))
+      );
+    });
+  }
+
+  @Override
+  public void neighborChanged(BlockState state, Level level, BlockPos pos, Block neighborBlock, BlockPos neighborPos, boolean movedByPiston) {
+    super.neighborChanged(state, level, pos, neighborBlock, neighborPos, movedByPiston);
+
+    if (state.getValue(EXTENDED)) {
+      BlockPos connectedPos = pos.relative(state.getValue(FACING).getCounterClockWise());
+      BlockState connectedState = level.getBlockState(connectedPos);
+
+      if (connectedState.getBlock() != state.getBlock()) {
+        level.setBlock(pos, state.setValue(EXTENDED, false), 2);
+        withBlockEntityDo(level, pos, (be) -> be.lines = List.of("", "", "", ""));
+      }
+    } else {
+      BlockState neighborState = level.getBlockState(neighborPos);
+      Direction neighborFacing = neighborState.getValue(FACING);
+
+      if (
+        neighborState.getBlock() == state.getBlock()
+          && neighborState.getValue(EXTENDED)
+          && neighborPos.relative(neighborFacing.getCounterClockWise()).equals(pos)
+      )
+        level.setBlock(
+          pos,
+          state
+            .setValue(FACING, neighborFacing.getOpposite())
+            .setValue(EXTENDED, true),
+          2
+        );
+    }
   }
 
   @Override
   protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-    builder.add(FACING);
+    builder.add(FACING).add(EXTENDED);
   }
 
   @Override
   public @Nullable BlockState getStateForPlacement(BlockPlaceContext context) {
     BlockState state = super.getStateForPlacement(context);
     if (state == null) return null;
-    return state.setValue(FACING, context.getHorizontalDirection());
+
+    BlockPos pos = context.getClickedPos();
+    Level level = context.getLevel();
+    boolean extended = false;
+    Direction facing = context.getHorizontalDirection();
+
+    for (int i : Iterate.positiveAndNegative) {
+      Direction.Axis axis = facing.getClockWise().getAxis();
+      Direction.AxisDirection axisDir = i == 1
+        ? Direction.AxisDirection.POSITIVE
+        : Direction.AxisDirection.NEGATIVE;
+
+      BlockPos checkPos = pos.relative(axis, i);
+      BlockState checkState = level.getBlockState(checkPos);
+
+      if (checkState.getBlock() == state.getBlock() && !checkState.getValue(EXTENDED)) {
+        extended = true;
+        facing = Direction.get(
+          axis == Direction.Axis.X
+            ? axisDir
+            : axisDir.opposite(),
+          facing.getAxis()
+        );
+        break;
+      }
+    }
+
+    return state
+      .setValue(EXTENDED, extended)
+      .setValue(FACING, facing);
   }
 
   @Override

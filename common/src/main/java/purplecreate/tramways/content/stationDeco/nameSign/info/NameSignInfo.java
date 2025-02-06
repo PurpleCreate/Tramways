@@ -63,5 +63,17 @@ public class NameSignInfo implements ResourceManagerReloadListener {
         DyeColor.CODEC.fieldOf("color").forGetter(Entry::color)
       ).apply(instance, Entry::new)
     );
+
+    public Entry forceCentered() {
+      return new Entry(
+        Align.CENTER,
+        this.offset,
+        this.color
+      );
+    }
+
+    public Entry forceCenteredIf(boolean value) {
+      return value ? forceCentered() : this;
+    }
   }
 }

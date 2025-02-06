@@ -13,6 +13,7 @@ import net.minecraft.world.level.block.ButtonBlock;
 import net.minecraft.world.level.block.state.properties.AttachFace;
 import purplecreate.tramways.Tramways;
 import purplecreate.tramways.content.signals.TramSignalBlock;
+import purplecreate.tramways.content.stationDeco.nameSign.NameSignBlock;
 
 public class TBlocksImpl {
   public static <T extends Block> void complexTramSignal(
@@ -34,12 +35,15 @@ public class TBlocksImpl {
     RegistrateBlockstateProvider provider,
     String color
   ) {
-    provider.horizontalBlock(context.getEntry(), state ->
-      provider
+    provider.horizontalBlock(context.getEntry(), state -> {
+      boolean extended = state.getValue(NameSignBlock.EXTENDED);
+      String fileTag =  extended ? "_extended" : "";
+
+      return provider
         .models()
-        .withExistingParent("block/station_name_sign/" + color, Tramways.rl("block/station_name_sign/base"))
-        .texture("texture", Tramways.rl("block/station_name_sign/" + color))
-    );
+        .withExistingParent("block/station_name_sign/" + color + fileTag, Tramways.rl("block/station_name_sign/base"))
+        .texture("texture", Tramways.rl("block/station_name_sign/" + color + fileTag));
+    });
   }
 
   public static <T extends Item> void complexStationNameSignItem(
