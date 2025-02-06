@@ -1,4 +1,3 @@
-// SpeedSignDemand.java
 package purplecreate.tramways.content.signs.demands;
 
 import net.fabricmc.api.EnvType;
@@ -12,8 +11,7 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
 import purplecreate.tramways.content.signs.TramSignBlock;
-import purplecreate.tramways.mixinInterfaces.ITemporarySpeedLimitTrain;
-import purplecreate.tramways.mixinInterfaces.PrimaryThrottleAccessor;
+import purplecreate.tramways.mixinInterfaces.ISpeedLimitableTrain;
 
 public class SpeedSignDemand extends SignDemand {
   @Override
@@ -27,7 +25,7 @@ public class SpeedSignDemand extends SignDemand {
   public void initSettingsGUI(ModularGuiLineBuilder builder) {
     builder.addScrollInput(0, 34, (si, l) -> {
       si.titled(Tramways.translatable("sign_demand.speed"))
-              .withRange(1, 101);
+        .withRange(1, 101);
       l.withSuffix("%");
     }, "Throttle");
   }
@@ -51,8 +49,8 @@ public class SpeedSignDemand extends SignDemand {
 
   @Override
   public void execute(CompoundTag tag, Train train, double distance) {
-    if (train instanceof ITemporarySpeedLimitTrain tempSpeedLimitTrain) {
-      if (tempSpeedLimitTrain.tempSpeedLimit$has()) {
+    if (train instanceof ISpeedLimitableTrain speedLimitableTrain) {
+      if (speedLimitableTrain.tempSpeedLimit$has()) {
         tag.putBoolean("Overridden", true);
         return;
       }
@@ -66,10 +64,10 @@ public class SpeedSignDemand extends SignDemand {
     double nextThrottle = tag.getInt("Throttle") / 100d;
 
     // Ensure the throttle does not exceed the primary throttle
-    if (train instanceof PrimaryThrottleAccessor primaryThrottleAccessor) {
-      double primaryThrottle = primaryThrottleAccessor.tramways$getPrimaryThrottle();
-      if (nextThrottle > primaryThrottle) {
-        nextThrottle = primaryThrottle;
+    if (train instanceof ISpeedLimitableTrain speedLimitableTrain) {
+      double primaryLimit = speedLimitableTrain.primaryLimit$get();
+      if (nextThrottle > primaryLimit) {
+        nextThrottle = primaryLimit;
       }
     }
 

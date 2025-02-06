@@ -1,4 +1,3 @@
-// ScheduleRuntimeMixin.java
 package purplecreate.tramways.mixins;
 
 import com.simibubi.create.content.trains.entity.Train;
@@ -13,8 +12,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import purplecreate.tramways.content.requestStop.RequestStopServer;
+import purplecreate.tramways.mixinInterfaces.ISpeedLimitableTrain;
 import purplecreate.tramways.mixinInterfaces.IStopRequestableNavigation;
-import purplecreate.tramways.mixinInterfaces.PrimaryThrottleAccessor;
 
 @Mixin(value = ScheduleRuntime.class, remap = false)
 public class ScheduleRuntimeMixin {
@@ -40,8 +39,8 @@ public class ScheduleRuntimeMixin {
     ScheduleRuntime scheduleRuntime = (ScheduleRuntime) (Object) this;
     ScheduleEntry entry = scheduleRuntime.getSchedule().entries.get(scheduleRuntime.currentEntry-1);
     if (entry.instruction instanceof ChangeThrottleInstruction) {
-      if (train instanceof PrimaryThrottleAccessor primaryThrottleAccessor) {
-        primaryThrottleAccessor.tramways$setPrimaryThrottle((float) train.throttle);
+      if (train instanceof ISpeedLimitableTrain speedLimitableTrain) {
+        speedLimitableTrain.primaryLimit$set(train.throttle);
       }
     }
   }

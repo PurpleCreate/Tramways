@@ -10,7 +10,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import purplecreate.tramways.content.signs.TramSignBlock;
-import purplecreate.tramways.mixinInterfaces.ITemporarySpeedLimitTrain;
+import purplecreate.tramways.mixinInterfaces.ISpeedLimitableTrain;
 
 public class TemporaryEndSignDemand extends SignDemand {
   @Override
@@ -33,9 +33,9 @@ public class TemporaryEndSignDemand extends SignDemand {
   public void execute(CompoundTag tag, Train train, double distance) {
     if (
       distance < 1
-        && train instanceof ITemporarySpeedLimitTrain tempSpeedLimitTrain
+        && train instanceof ISpeedLimitableTrain speedLimitableTrain
     ) {
-      tempSpeedLimitTrain.tempSpeedLimit$restore(SignDemand.isManual(train));
+      speedLimitableTrain.tempSpeedLimit$restore(SignDemand.isManual(train));
     }
   }
 
