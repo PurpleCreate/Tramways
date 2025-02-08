@@ -64,7 +64,7 @@ public class SpeakerDisplayTarget extends DisplayTarget {
             : StationMessageType.WITHOUT_PLATFORM;
 
           String announcement = Pattern
-            .compile("\\$([a-z_]+)")
+            .compile("\\$([a-z_:]+)")
             .matcher(stationInfo.getString(type))
             .replaceAll((result) -> props.getOrDefault(result.group(1), ""));
 

@@ -53,7 +53,7 @@ public class SpeakerMovementBehaviour implements MovementBehaviour {
         context.temporaryData = announcementConditions;
 
         String announcement = Pattern
-          .compile("\\$([a-z_]+)")
+          .compile("\\$([a-z_:]+)")
           .matcher(trainInfo.getString(type))
           .replaceAll((result) -> props.getOrDefault(result.group(1), ""));
 

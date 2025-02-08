@@ -7,8 +7,10 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.Locale;
+import java.util.function.Supplier;
 
 public enum Mods {
+  CREATERAILWAYSNAVIGATOR,
   RAILWAYS;
 
   public final String id;
@@ -24,6 +26,11 @@ public enum Mods {
 
   public boolean loaded() {
     return modLoaded(id);
+  }
+
+  public void ifLoadedRun(Supplier<Runnable> supplier) {
+    if (loaded())
+      supplier.get().run();
   }
 
   public ResourceLocation rl(String path) {

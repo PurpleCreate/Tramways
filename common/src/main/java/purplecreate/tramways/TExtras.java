@@ -4,6 +4,9 @@ import com.simibubi.create.content.trains.graph.EdgePointType;
 
 import com.simibubi.create.content.trains.schedule.destination.ScheduleInstruction;
 import com.simibubi.create.foundation.utility.Pair;
+import purplecreate.tramways.compat.Mods;
+import purplecreate.tramways.compat.createrailwaysnavigator.CRNTrainInfo;
+import purplecreate.tramways.content.announcements.info.TrainInfo;
 import purplecreate.tramways.content.requestStop.train.RequestStopInstruction;
 import purplecreate.tramways.content.signs.TramSignPoint;
 import purplecreate.tramways.content.signs.demands.*;
@@ -46,5 +49,9 @@ public class TExtras {
     Schedule.register();
     EdgePointTypes.register();
     SignDemands.register();
+
+    Mods.CREATERAILWAYSNAVIGATOR.ifLoadedRun(() -> () ->
+      TrainInfo.registerPropertyGetter("crn", new CRNTrainInfo())
+    );
   }
 }

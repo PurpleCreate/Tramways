@@ -1,6 +1,7 @@
 package purplecreate.tramways.content.announcements.info;
 
 import com.simibubi.create.foundation.utility.Couple;
+import purplecreate.tramways.compat.Mods;
 import purplecreate.tramways.config.Config;
 import purplecreate.tramways.config.TrainMessageType;
 import purplecreate.tramways.util.ListUtil;
@@ -110,6 +111,27 @@ public class TrainInfo {
       props.put("next_extra", next.getExtra());
     }
 
+    propertyGetters.forEach((prefix, getter) ->
+      getter.getProperties(train).forEach((pk, pv) ->
+        props.put(prefix + ":" + pk, pv)
+      )
+    );
+
     return props;
+  }
+
+  // custom property getters
+
+  private static Map<String, PropertyGetter> propertyGetters = new HashMap<>();
+
+  public interface PropertyGetter {
+    Map<String, String> getProperties(Train train);
+  }
+
+  public static void registerPropertyGetter(String prefix, PropertyGetter getter) {
+    if (propertyGetters.containsKey(prefix))
+      throw new AssertionError("Already registered a property getter with the prefix " + prefix);
+
+    propertyGetters.put(prefix, getter);
   }
 }
