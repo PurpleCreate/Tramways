@@ -14,7 +14,6 @@ import purplecreate.tramways.content.announcements.info.StationInfo;
 import purplecreate.tramways.content.announcements.network.PlayVoiceS2CPacket;
 
 import java.util.*;
-import java.util.regex.Pattern;
 
 public class SpeakerDisplayTarget extends DisplayTarget {
   private static final int windowMin = 200;
@@ -63,15 +62,12 @@ public class SpeakerDisplayTarget extends DisplayTarget {
             ? StationMessageType.WITH_PLATFORM
             : StationMessageType.WITHOUT_PLATFORM;
 
-          String announcement = Pattern
-            .compile("\\$([a-z_:]+)")
-            .matcher(stationInfo.getString(type))
-            .replaceAll((result) -> props.getOrDefault(result.group(1), ""));
-
           TNetworking.sendToNear(
             new PlayVoiceS2CPacket(
               stationInfo.getAnnouncer(),
-              announcement,
+              stationInfo
+                .getString(type)
+                .applyProperties(props),
               context.getTargetPos()
             ),
             context.getTargetPos().getCenter(),

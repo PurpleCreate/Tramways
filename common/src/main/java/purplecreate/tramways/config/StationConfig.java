@@ -6,7 +6,7 @@ public class StationConfig {
   private String alias = null;
   private String extra = null;
   private String announcer = null;
-  private Map<StationMessageType, List<String>> messages = null;
+  private Map<StationMessageType, List<MessageConfig>> messages = null;
 
   public static StationConfig getInitial() {
     StationConfig stationConfig = new StationConfig();
@@ -34,17 +34,17 @@ public class StationConfig {
     return announcer;
   }
 
-  public List<String> getMessages(StationMessageType type) {
+  public List<MessageConfig> getMessages(StationMessageType type) {
     if (Objects.isNull(messages))
-      return List.of(type.defaultString);
-    List<String> msgs = messages.getOrDefault(type, List.of());
+      return List.of(MessageConfig.simple(type.defaultString));
+    List<MessageConfig> msgs = messages.getOrDefault(type, List.of());
     if (msgs.isEmpty())
-      return List.of(type.defaultString);
+      return List.of(MessageConfig.simple(type.defaultString));
     return msgs;
   }
 
-  public String getRandomMessage(StationMessageType type) {
-    List<String> msgs = getMessages(type);
+  public MessageConfig getRandomMessage(StationMessageType type) {
+    List<MessageConfig> msgs = getMessages(type);
     return msgs.get(new Random().nextInt(msgs.size()));
   }
 }

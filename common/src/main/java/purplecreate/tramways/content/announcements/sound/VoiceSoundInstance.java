@@ -3,7 +3,6 @@ package purplecreate.tramways.content.announcements.sound;
 import dev.architectury.injectables.annotations.ExpectPlatform;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.Util;
 import net.minecraft.client.resources.sounds.AbstractSoundInstance;
 import net.minecraft.client.resources.sounds.Sound;
 import net.minecraft.client.sounds.AudioStream;
@@ -12,15 +11,11 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.concurrent.CompletableFuture;
-
 @Environment(EnvType.CLIENT)
 public class VoiceSoundInstance extends AbstractSoundInstance {
-  protected final InputStream stream;
+  protected final AudioStream stream;
 
-  protected VoiceSoundInstance(InputStream stream, BlockPos pos) {
+  protected VoiceSoundInstance(AudioStream stream, BlockPos pos) {
     super(
       new ResourceLocation("minecraft", "ambient.cave"),
       SoundSource.BLOCKS,
@@ -34,18 +29,8 @@ public class VoiceSoundInstance extends AbstractSoundInstance {
   }
 
   @ExpectPlatform
-  public static VoiceSoundInstance create(InputStream stream, BlockPos pos) {
+  public static VoiceSoundInstance create(AudioStream stream, BlockPos pos) {
     throw new AssertionError();
-  }
-
-  protected CompletableFuture<AudioStream> getStreamInternal(InputStream stream) {
-    return CompletableFuture.supplyAsync(() -> {
-      try {
-        return new MP3AudioStream(stream);
-      } catch (IOException e) {
-        throw new RuntimeException(e);
-      }
-    }, Util.backgroundExecutor());
   }
 
   @Override

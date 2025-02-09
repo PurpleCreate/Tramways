@@ -9,12 +9,11 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.sounds.TickableSoundInstance;
+import net.minecraft.client.sounds.AudioStream;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-
-import java.io.InputStream;
 
 @Environment(EnvType.CLIENT)
 public class MovingVoiceSoundInstance extends VoiceSoundInstance implements TickableSoundInstance {
@@ -23,7 +22,7 @@ public class MovingVoiceSoundInstance extends VoiceSoundInstance implements Tick
 
   boolean stopped = false;
 
-  protected MovingVoiceSoundInstance(InputStream stream, Carriage carriage, BlockPos localPos) {
+  protected MovingVoiceSoundInstance(AudioStream stream, Carriage carriage, BlockPos localPos) {
     super(stream, BlockPos.ZERO);
 
     this.carriage = carriage;
@@ -31,7 +30,7 @@ public class MovingVoiceSoundInstance extends VoiceSoundInstance implements Tick
   }
 
   @ExpectPlatform
-  public static MovingVoiceSoundInstance create(InputStream stream, Carriage carriage, BlockPos localPos) {
+  public static MovingVoiceSoundInstance create(AudioStream stream, Carriage carriage, BlockPos localPos) {
     throw new AssertionError();
   }
 

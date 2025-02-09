@@ -25,7 +25,7 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 
 public class TNetworking {
-  private static final String VERSION = "3";
+  private static final String VERSION = "4";
   private static int id = 0;
 
   private static Map<Class<? extends C2SPacket>, Integer> c2sIdentifiers = new HashMap<>();

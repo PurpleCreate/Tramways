@@ -4,7 +4,7 @@ import java.util.*;
 
 public class TrainConfig {
   private String announcer = null;
-  private Map<TrainMessageType, List<String>> messages = null;
+  private Map<TrainMessageType, List<MessageConfig>> messages = null;
 
   public static TrainConfig getInitial() {
     TrainConfig trainConfig = new TrainConfig();
@@ -24,17 +24,17 @@ public class TrainConfig {
     return announcer;
   }
 
-  public List<String> getMessages(TrainMessageType type) {
+  public List<MessageConfig> getMessages(TrainMessageType type) {
     if (Objects.isNull(messages))
-      return List.of(type.defaultString);
-    List<String> msgs = messages.getOrDefault(type, List.of());
+      return List.of(MessageConfig.simple(type.defaultString));
+    List<MessageConfig> msgs = messages.getOrDefault(type, List.of());
     if (msgs.isEmpty())
-      return List.of(type.defaultString);
+      return List.of(MessageConfig.simple(type.defaultString));
     return msgs;
   }
 
-  public String getRandomMessage(TrainMessageType type) {
-    List<String> msgs = getMessages(type);
+  public MessageConfig getRandomMessage(TrainMessageType type) {
+    List<MessageConfig> msgs = getMessages(type);
     return msgs.get(new Random().nextInt(msgs.size()));
   }
 }

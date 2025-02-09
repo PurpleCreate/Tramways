@@ -16,6 +16,7 @@ public class Config {
     new GsonBuilder()
       .setPrettyPrinting()
       .serializeNulls()
+      .registerTypeAdapter(MessageConfig.class, new MessageConfig())
       .create();
 
   private static final File file = new File("config", Tramways.ID + "-config.json");

@@ -2,7 +2,9 @@ package purplecreate.tramways.content.announcements.network;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.minecraft.client.sounds.AudioStream;
 import purplecreate.tramways.Tramways;
+import purplecreate.tramways.config.MessageConfig;
 import purplecreate.tramways.content.announcements.sound.MinimalSoundEngine;
 import purplecreate.tramways.content.announcements.sound.MovingVoiceSoundInstance;
 import com.simibubi.create.Create;
@@ -12,25 +14,23 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.level.Level;
-import purplecreate.tramways.content.announcements.util.TTSFileManager;
 import purplecreate.tramways.util.Env;
 import purplecreate.tramways.util.S2CPacket;
 
-import java.io.InputStream;
 import java.util.UUID;
 
 public class PlayMovingVoiceS2CPacket implements S2CPacket {
   final String voice;
-  final String content;
+  final MessageConfig content;
   final BlockPos localPos;
   final UUID trainId;
   final int carriageId;
 
-  public PlayMovingVoiceS2CPacket(String voice, String content, BlockPos localPos, Carriage carriage) {
+  public PlayMovingVoiceS2CPacket(String voice, MessageConfig content, BlockPos localPos, Carriage carriage) {
     this(voice, content, localPos, carriage.train.id, carriage.train.carriages.indexOf(carriage));
   }
 
-  public PlayMovingVoiceS2CPacket(String voice, String content, BlockPos localPos, UUID trainId, int carriageId) {
+  public PlayMovingVoiceS2CPacket(String voice, MessageConfig content, BlockPos localPos, UUID trainId, int carriageId) {
     this.voice = voice;
     this.content = content;
     this.localPos = localPos;
@@ -40,7 +40,7 @@ public class PlayMovingVoiceS2CPacket implements S2CPacket {
 
   public static PlayMovingVoiceS2CPacket read(FriendlyByteBuf buffer) {
     String voice = buffer.readUtf();
-    String content = buffer.readUtf();
+    MessageConfig content = MessageConfig.readBytes(buffer);
     BlockPos localPos = buffer.readBlockPos();
     UUID trainId = buffer.readUUID();
     int carriageId = buffer.readVarInt();
@@ -50,7 +50,7 @@ public class PlayMovingVoiceS2CPacket implements S2CPacket {
 
   public void write(FriendlyByteBuf buffer) {
     buffer.writeUtf(voice);
-    buffer.writeUtf(content);
+    content.writeBytes(buffer);
     buffer.writeBlockPos(localPos);
     buffer.writeUUID(trainId);
     buffer.writeVarInt(carriageId);
@@ -73,10 +73,12 @@ public class PlayMovingVoiceS2CPacket implements S2CPacket {
         return;
       }
 
-      InputStream stream = TTSFileManager.instance.cachedStream(voice, content);
-      MinimalSoundEngine.play(
-        MovingVoiceSoundInstance.create(stream, carriage, localPos)
-      );
+      AudioStream audioStream = PacketHandler.getAudioStream(voice, content);
+
+      if (audioStream != null)
+        MinimalSoundEngine.play(
+          MovingVoiceSoundInstance.create(audioStream, carriage, localPos)
+        );
     });
   }
 }

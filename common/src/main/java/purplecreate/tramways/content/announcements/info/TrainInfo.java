@@ -1,8 +1,8 @@
 package purplecreate.tramways.content.announcements.info;
 
 import com.simibubi.create.foundation.utility.Couple;
-import purplecreate.tramways.compat.Mods;
 import purplecreate.tramways.config.Config;
+import purplecreate.tramways.config.MessageConfig;
 import purplecreate.tramways.config.TrainMessageType;
 import purplecreate.tramways.util.ListUtil;
 import com.simibubi.create.content.trains.entity.Train;
@@ -66,7 +66,7 @@ public class TrainInfo {
       .getAnnouncer();
   }
 
-  public String getString(TrainMessageType type) {
+  public MessageConfig getString(TrainMessageType type) {
     return Config
       .getInstance()
       .findTrain(train.name.getString())

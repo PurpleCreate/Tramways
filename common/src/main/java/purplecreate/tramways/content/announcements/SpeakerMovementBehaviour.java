@@ -10,7 +10,6 @@ import com.simibubi.create.content.contraptions.behaviour.MovementContext;
 import com.simibubi.create.content.trains.schedule.ScheduleRuntime;
 
 import java.util.Map;
-import java.util.regex.Pattern;
 
 public class SpeakerMovementBehaviour implements MovementBehaviour {
   @Override
@@ -52,15 +51,12 @@ public class SpeakerMovementBehaviour implements MovementBehaviour {
       if (!announcementConditions.equals(context.temporaryData)) {
         context.temporaryData = announcementConditions;
 
-        String announcement = Pattern
-          .compile("\\$([a-z_:]+)")
-          .matcher(trainInfo.getString(type))
-          .replaceAll((result) -> props.getOrDefault(result.group(1), ""));
-
         TNetworking.sendToNear(
           new PlayMovingVoiceS2CPacket(
             trainInfo.getAnnouncer(),
-            announcement,
+            trainInfo
+              .getString(type)
+              .applyProperties(props),
             context.localPos,
             carriage
           ),

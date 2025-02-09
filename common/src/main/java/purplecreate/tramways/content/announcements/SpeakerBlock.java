@@ -3,6 +3,7 @@ package purplecreate.tramways.content.announcements;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
 import purplecreate.tramways.TNetworking;
+import purplecreate.tramways.config.MessageConfig;
 import purplecreate.tramways.content.announcements.network.PlayVoiceS2CPacket;
 import com.simibubi.create.AllShapes;
 import com.simibubi.create.content.equipment.wrench.IWrenchable;
@@ -61,7 +62,11 @@ public class SpeakerBlock extends DirectionalBlock implements IWrenchable {
   public InteractionResult onWrenched(BlockState state, UseOnContext context) {
     if (!context.getLevel().isClientSide) {
       TNetworking.sendToAll(
-        new PlayVoiceS2CPacket("en-GB-SoniaNeural", "This is a test!", context.getClickedPos())
+        new PlayVoiceS2CPacket(
+          "en-GB-SoniaNeural",
+          MessageConfig.simple("This is a test!"),
+          context.getClickedPos()
+        )
       );
     }
 

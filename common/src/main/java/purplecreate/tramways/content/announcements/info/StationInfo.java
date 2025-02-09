@@ -2,6 +2,7 @@ package purplecreate.tramways.content.announcements.info;
 
 import com.simibubi.create.content.trains.entity.Train;
 import purplecreate.tramways.config.Config;
+import purplecreate.tramways.config.MessageConfig;
 import purplecreate.tramways.config.StationMessageType;
 
 import java.util.Map;
@@ -50,7 +51,7 @@ public class StationInfo {
       .getAnnouncer();
   }
 
-  public String getString(StationMessageType type) {
+  public MessageConfig getString(StationMessageType type) {
     return Config
       .getInstance()
       .findStation(filter)
