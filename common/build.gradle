@@ -17,6 +17,7 @@ repositories {
   maven { url = "https://jitpack.io/" } // Mixin Extras, Fabric ASM
   maven { url = 'https://maven.ithundxr.dev/snapshots' } // Steam 'n' Rails
   maven { url = "https://api.modrinth.com/maven" } // CRN
+  maven { url = "https://raw.githubusercontent.com/MisterJulsen/modsrepo/main/maven" } // DragonLib
 }
 
 dependencies {
@@ -30,6 +31,7 @@ dependencies {
   // Compat
   modCompileOnly("com.railwayteam.railways:Steam_Rails-common-${minecraft_version}:${railways_common_version}") { transitive = false }
   modCompileOnly("maven.modrinth:create-railways-navigator:${crn_fabric_version}")
+  modCompileOnly("de.mrjulsen.mcdragonlib:dragonlib-fabric:${minecraft_version}-${dragonlib_version}")
 }
 
 sourceSets {

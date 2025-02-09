@@ -7,7 +7,7 @@ import de.mrjulsen.crn.data.TrainLine;
 import de.mrjulsen.crn.data.train.TrainData;
 import de.mrjulsen.crn.data.train.TrainListener;
 import de.mrjulsen.crn.data.train.TrainPrediction;
-import de.mrjulsen.crn.util.ModUtils;
+import de.mrjulsen.mcdragonlib.util.TimeUtils;
 import purplecreate.tramways.content.announcements.info.TrainInfo.PropertyGetter;
 
 import java.util.HashMap;
@@ -28,8 +28,15 @@ public class CRNTrainInfo implements PropertyGetter {
 
       props.put("group", group == null ? "" : group.getGroupName());
       props.put("line", line == null ? "" : line.getLineName());
-      props.put("arrival_time", trainPrediction == null ? "" : ModUtils.formatTime(trainPrediction.getScheduledArrivalTime(), false));
-      props.put("departure_time", trainPrediction == null ? "" : ModUtils.formatTime(trainPrediction.getScheduledDepartureTime(), false));
+
+      String arrivalTime = TimeUtils.formatTime(trainPrediction == null ? 0 : trainPrediction.getScheduledArrivalTime(), TimeUtils.TimeFormat.HOURS_24);
+      String departureTime = TimeUtils.formatTime(trainPrediction == null ? 0 : trainPrediction.getScheduledDepartureTime(), TimeUtils.TimeFormat.HOURS_24);
+      props.put("arrival_time", arrivalTime);
+      props.put("departure_time", departureTime);
+      props.put("arrival_time_hours", arrivalTime.split(":")[0]);
+      props.put("arrival_time_mins", arrivalTime.split(":")[1]);
+      props.put("departure_time_hours", departureTime.split(":")[0]);
+      props.put("departure_time_mins", departureTime.split(":")[1]);
     }
 
     return props;
