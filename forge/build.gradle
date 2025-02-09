@@ -140,6 +140,7 @@ publishMods {
 
     requires("create")
     optional("create-steam-n-rails")
+    optional("create-railways-navigator")
   }
 
   modrinth {
@@ -151,5 +152,6 @@ publishMods {
 
     requires("create")
     optional("create-steam-n-rails")
+    optional("create-railways-navigator")
   }
 }

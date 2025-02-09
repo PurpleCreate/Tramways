@@ -155,6 +155,7 @@ publishMods {
 
     requires("create-fabric")
     optional("create-steam-n-rails")
+    optional("create-railways-navigator")
   }
 
   modrinth {
@@ -166,5 +167,6 @@ publishMods {
 
     requires("create-fabric")
     optional("create-steam-n-rails")
+    optional("create-railways-navigator")
   }
 }
