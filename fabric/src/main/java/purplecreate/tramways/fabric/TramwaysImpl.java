@@ -15,12 +15,16 @@ public class TramwaysImpl implements ModInitializer {
     Tramways.commonSetup();
     TCommandsImpl.init();
     TCreativeTabsImpl.register();
-    TNetworkingImpl.init();
     CommonEventsImpl.register();
 
     EnvExecutor.runWhenOn(EnvType.CLIENT, () -> () -> {
       Tramways.clientSetup();
       ClientEventsImpl.register();
+      TNetworkingImpl.clientInit();
+    });
+
+    EnvExecutor.runWhenOn(EnvType.SERVER, () -> () -> {
+      TNetworkingImpl.serverInit();
     });
   }
 }

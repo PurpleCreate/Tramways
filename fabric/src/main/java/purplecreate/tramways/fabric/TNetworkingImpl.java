@@ -1,6 +1,8 @@
 package purplecreate.tramways.fabric;
 
 import io.github.fabricators_of_create.porting_lib.util.ServerLifecycleHooks;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
@@ -17,11 +19,15 @@ import purplecreate.tramways.util.S2CPacket;
 public class TNetworkingImpl {
   private static final ResourceLocation fabricChannel = Tramways.rl("net");
 
-  public static void init() {
+  @Environment(EnvType.CLIENT)
+  public static void clientInit() {
     ClientPlayNetworking.registerGlobalReceiver(fabricChannel, (mc, listener, buf, sender) ->
       TNetworking.handleInternal(buf, mc)
     );
+  }
 
+  @Environment(EnvType.SERVER)
+  public static void serverInit() {
     ServerPlayNetworking.registerGlobalReceiver(fabricChannel, (server, player, listener, buf, sender) ->
       TNetworking.handleInternal(buf, player)
     );

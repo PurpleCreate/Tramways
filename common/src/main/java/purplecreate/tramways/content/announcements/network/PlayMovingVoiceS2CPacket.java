@@ -58,27 +58,25 @@ public class PlayMovingVoiceS2CPacket implements S2CPacket {
 
   @Environment(EnvType.CLIENT)
   public void handle(Minecraft mc) {
-    Env.unsafeRunWhenOn(Env.CLIENT, () -> () -> {
-      Level level = mc.level;
+    Level level = mc.level;
 
-      Train train = Create.RAILWAYS.sided(level).trains.get(trainId);
-      if (train == null) {
-        Tramways.LOGGER.warn("Couldn't play voice: Requested train is null");
-        return;
-      }
+    Train train = Create.RAILWAYS.sided(level).trains.get(trainId);
+    if (train == null) {
+      Tramways.LOGGER.warn("Couldn't play voice: Requested train is null");
+      return;
+    }
 
-      Carriage carriage = train.carriages.get(carriageId);
-      if (carriage == null) {
-        Tramways.LOGGER.warn("Couldn't play voice: Requested carriage is null");
-        return;
-      }
+    Carriage carriage = train.carriages.get(carriageId);
+    if (carriage == null) {
+      Tramways.LOGGER.warn("Couldn't play voice: Requested carriage is null");
+      return;
+    }
 
-      AudioStream audioStream = PacketHandler.getAudioStream(voice, content);
+    AudioStream audioStream = PacketHandler.getAudioStream(voice, content);
 
-      if (audioStream != null)
-        MinimalSoundEngine.play(
-          MovingVoiceSoundInstance.create(audioStream, carriage, localPos)
-        );
-    });
+    if (audioStream != null)
+      MinimalSoundEngine.play(
+        MovingVoiceSoundInstance.create(audioStream, carriage, localPos)
+      );
   }
 }

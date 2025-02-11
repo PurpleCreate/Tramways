@@ -38,13 +38,11 @@ public class PlayVoiceS2CPacket implements S2CPacket {
 
   @Environment(EnvType.CLIENT)
   public void handle(Minecraft mc) {
-    Env.unsafeRunWhenOn(Env.CLIENT, () -> () -> {
-      AudioStream audioStream = PacketHandler.getAudioStream(voice, content);
+    AudioStream audioStream = PacketHandler.getAudioStream(voice, content);
 
-      if (audioStream != null)
-        MinimalSoundEngine.play(
-          VoiceSoundInstance.create(audioStream, pos)
-        );
-    });
+    if (audioStream != null)
+      MinimalSoundEngine.play(
+        VoiceSoundInstance.create(audioStream, pos)
+      );
   }
 }

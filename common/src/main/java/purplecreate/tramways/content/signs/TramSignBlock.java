@@ -72,12 +72,9 @@ public class TramSignBlock extends HorizontalDirectionalBlock implements IBE<Tra
   @Override
   @Environment(EnvType.CLIENT)
   public InteractionResult onWrenched(BlockState state, UseOnContext context) {
-    Env.unsafeRunWhenOn(Env.CLIENT, () -> () ->
-      withBlockEntityDo(context.getLevel(), context.getClickedPos(), (be) ->
-        ScreenOpener.open(new TramSignSettingsScreen(be))
-      )
-    );
-
+    TramSignBlockEntity be = getBlockEntity(context.getLevel(), context.getClickedPos());
+    if (be != null)
+      ScreenOpener.open(new TramSignSettingsScreen(be));
     return InteractionResult.SUCCESS;
   }
 

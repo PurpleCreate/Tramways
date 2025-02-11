@@ -56,21 +56,19 @@ public class NameSignBlock extends HorizontalDirectionalBlock implements IBE<Nam
 
   @Environment(EnvType.CLIENT)
   public void openScreen(Level level, BlockPos pos) {
-    Env.unsafeRunWhenOn(Env.CLIENT, () -> () -> {
-      BlockState state = level.getBlockState(pos);
-      Direction facing = state.getValue(FACING);
-      BlockPos actualPos = pos;
+    BlockState state = level.getBlockState(pos);
+    Direction facing = state.getValue(FACING);
+    BlockPos actualPos = pos;
 
-      if (
-        state.getValue(EXTENDED)
-          && state.getValue(FACING).getAxisDirection() == Direction.AxisDirection.NEGATIVE
-      )
-        actualPos = pos.relative(facing.getCounterClockWise());
+    if (
+      state.getValue(EXTENDED)
+        && state.getValue(FACING).getAxisDirection() == Direction.AxisDirection.NEGATIVE
+    )
+      actualPos = pos.relative(facing.getCounterClockWise());
 
-      withBlockEntityDo(level, actualPos, (be) ->
-        ScreenOpener.open(new NameSignScreen(be))
-      );
-    });
+    NameSignBlockEntity be = getBlockEntity(level, actualPos);
+    if (be != null)
+      ScreenOpener.open(new NameSignScreen(be));
   }
 
   @Override
