@@ -41,6 +41,9 @@ public class TExtras {
       SignDemand.register(Tramways.rl("whistle"), new WhistleSignDemand());
       SignDemand.register(Tramways.rl("temporary_speed"), new TemporarySpeedSignDemand());
       SignDemand.register(Tramways.rl("temporary_end"), new TemporaryEndSignDemand());
+
+      SignDemand.register(Tramways.rl("arrow_aux"), new ArrowAuxSignDemand());
+      SignDemand.register(Tramways.rl("advance_warning_aux"), new AdvanceWarningAuxSignDemand());
     }
   }
 

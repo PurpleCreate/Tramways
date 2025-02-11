@@ -69,6 +69,13 @@ public class GenRecipes {
       .requires(Items.RED_DYE)
       .save(provider);
 
+    ShapelessRecipeBuilder
+      .shapeless(RecipeCategory.TRANSPORTATION, TBlocks.AUXILIARY_SIGN)
+      .unlockedBy("has_item", unlockedByItem(AllItems.IRON_SHEET))
+      .requires(TBlocks.TRAM_SIGN)
+      .requires(Items.YELLOW_DYE)
+      .save(provider);
+
     ShapedRecipeBuilder
       .shaped(RecipeCategory.TRANSPORTATION, TBlocks.TRAM_SIGNAL)
       .unlockedBy("has_item", unlockedByItem(AllItems.IRON_SHEET))

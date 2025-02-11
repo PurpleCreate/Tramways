@@ -1,0 +1,9 @@
+{
+	"loader": "forge:obj",
+	"porting_lib:loader": "porting_lib:obj",
+	"model": "tramways:models/block/auxiliary_sign/advance_warning_face.obj",
+	"flip_v": true,
+	"textures": {
+		"0": "tramways:block/auxiliary_sign/advance_warning_face"
+	}
+}

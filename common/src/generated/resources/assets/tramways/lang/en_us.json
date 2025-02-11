@@ -1,4 +1,5 @@
 {
+  "block.tramways.auxiliary_sign": "Auxiliary Rail Sign",
   "block.tramways.black_station_name_sign": "Black Station Name Sign",
   "block.tramways.blue_station_name_sign": "Blue Station Name Sign",
   "block.tramways.brown_station_name_sign": "Brown Station Name Sign",
@@ -62,6 +63,11 @@
   "tramways.schedule.instruction.request_stop": "Travel to Request Stop",
   "tramways.schedule.instruction.set_primary_limit": "Set Primary Speed Limit",
   "tramways.sign_demand": "Sign Demand",
+  "tramways.sign_demand.advance_warning_aux": "Speed Limit Warning",
+  "tramways.sign_demand.arrow_aux": "Arrow Facing...",
+  "tramways.sign_demand.arrow_aux.both": "Left & Right",
+  "tramways.sign_demand.arrow_aux.left": "Left",
+  "tramways.sign_demand.arrow_aux.right": "Right",
   "tramways.sign_demand.speed": "Speed Limit",
   "tramways.sign_demand.temporary_end": "Temporary Speed Limit End",
   "tramways.sign_demand.temporary_speed": "Temporary Speed Limit",

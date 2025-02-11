@@ -6,6 +6,11 @@
   "tramways.sign_demand.whistle": "Whistle",
   "tramways.sign_demand.temporary_speed": "Temporary Speed Limit",
   "tramways.sign_demand.temporary_end": "Temporary Speed Limit End",
+  "tramways.sign_demand.advance_warning_aux": "Speed Limit Warning",
+  "tramways.sign_demand.arrow_aux": "Arrow Facing...",
+  "tramways.sign_demand.arrow_aux.both": "Left & Right",
+  "tramways.sign_demand.arrow_aux.left": "Left",
+  "tramways.sign_demand.arrow_aux.right": "Right",
 
   "tramways.display_target.speaker": "Speaker",
 

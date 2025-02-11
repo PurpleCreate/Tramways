@@ -8,6 +8,9 @@ public class TPartialModels {
   public static final PartialModel GREY_RAILWAY_FACE = load("block/railway_sign/grey_face");
   public static final PartialModel TSR_RAILWAY_FACE = load("block/railway_sign/tsr_face");
 
+  public static final PartialModel TEXT_AUX_FACE = load("block/auxiliary_sign/text_face");
+  public static final PartialModel ADVANCE_WARNING_AUX_FACE = load("block/auxiliary_sign/advance_warning_face");
+
   public static final PartialModel SIGN_WOODEN_INNER_A = load("block/station_name_sign/wooden_inner_a");
   public static final PartialModel SIGN_WOODEN_INNER_B = load("block/station_name_sign/wooden_inner_b");
 

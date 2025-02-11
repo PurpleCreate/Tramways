@@ -1,4 +1,5 @@
 {
+  "block.tramways.auxiliary_sign": "ubıS ןıɐᴚ ʎɹɐıןıxnⱯ",
   "block.tramways.black_station_name_sign": "ubıS ǝɯɐN uoıʇɐʇS ʞɔɐןᗺ",
   "block.tramways.blue_station_name_sign": "ubıS ǝɯɐN uoıʇɐʇS ǝnןᗺ",
   "block.tramways.brown_station_name_sign": "ubıS ǝɯɐN uoıʇɐʇS uʍoɹᗺ",
@@ -62,6 +63,11 @@
   "tramways.schedule.instruction.request_stop": "doʇS ʇsǝnbǝᴚ oʇ ןǝʌɐɹ⟘",
   "tramways.schedule.instruction.set_primary_limit": "ʇıɯıꞀ pǝǝdS ʎɹɐɯıɹԀ ʇǝS",
   "tramways.sign_demand": "puɐɯǝᗡ ubıS",
+  "tramways.sign_demand.advance_warning_aux": "buıuɹɐM ʇıɯıꞀ pǝǝdS",
+  "tramways.sign_demand.arrow_aux": "˙˙˙buıɔɐℲ ʍoɹɹⱯ",
+  "tramways.sign_demand.arrow_aux.both": "ʇɥbıᴚ & ʇɟǝꞀ",
+  "tramways.sign_demand.arrow_aux.left": "ʇɟǝꞀ",
+  "tramways.sign_demand.arrow_aux.right": "ʇɥbıᴚ",
   "tramways.sign_demand.speed": "ʇıɯıꞀ pǝǝdS",
   "tramways.sign_demand.temporary_end": "puƎ ʇıɯıꞀ pǝǝdS ʎɹɐɹodɯǝ⟘",
   "tramways.sign_demand.temporary_speed": "ʇıɯıꞀ pǝǝdS ʎɹɐɹodɯǝ⟘",

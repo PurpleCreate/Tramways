@@ -27,6 +27,7 @@ public class TramSignBlock extends HorizontalDirectionalBlock implements IBE<Tra
   public enum SignType {
     TRAM,
     RAILWAY,
+    AUXILIARY,
   }
 
   public final SignType signType;
@@ -42,6 +43,10 @@ public class TramSignBlock extends HorizontalDirectionalBlock implements IBE<Tra
 
   public static TramSignBlock newRailwaySign(Properties properties) {
     return new TramSignBlock(SignType.RAILWAY, properties);
+  }
+
+  public static TramSignBlock newAuxiliarySign(Properties properties) {
+    return new TramSignBlock(SignType.AUXILIARY, properties);
   }
 
   @Override

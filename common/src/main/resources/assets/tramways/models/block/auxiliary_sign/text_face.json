@@ -1,0 +1,21 @@
+{
+	"credit": "Made with Blockbench",
+	"textures": {
+		"0": "tramways:block/auxiliary_sign/text_face"
+	},
+	"elements": [
+		{
+			"from": [0, 10, 3],
+			"to": [16, 16, 4],
+			"rotation": {"angle": 0, "axis": "y", "origin": [7, 14, 2]},
+			"faces": {
+				"north": {"uv": [0, 0, 16, 6], "texture": "#0"},
+				"east": {"uv": [0, 0, 1, 6], "texture": "#0"},
+				"south": {"uv": [16, 0, 0, 6], "texture": "#0"},
+				"west": {"uv": [15, 0, 16, 6], "texture": "#0"},
+				"up": {"uv": [16, 1, 0, 0], "texture": "#0"},
+				"down": {"uv": [16, 5, 0, 6], "texture": "#0"}
+			}
+		}
+	]
+}

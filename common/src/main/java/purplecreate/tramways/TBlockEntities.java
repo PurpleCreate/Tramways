@@ -17,7 +17,7 @@ public class TBlockEntities {
 
   public static final BlockEntityEntry<TramSignBlockEntity> TRAM_SIGN =
     Tramways.REGISTRATE.blockEntity("tram_sign", TramSignBlockEntity::new)
-      .validBlocks(TBlocks.TRAM_SIGN, TBlocks.RAILWAY_SIGN)
+      .validBlocks(TBlocks.TRAM_SIGN, TBlocks.RAILWAY_SIGN, TBlocks.AUXILIARY_SIGN)
       .renderer(() -> TramSignRenderer::new)
       .register();
 

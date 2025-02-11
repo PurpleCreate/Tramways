@@ -25,12 +25,13 @@ import net.minecraft.world.item.ItemStack;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Environment(EnvType.CLIENT)
 public class TramSignSettingsScreen extends AbstractSimiScreen {
   final AllGuiTextures background = AllGuiTextures.SCHEDULE_EDITOR;
 
-  final List<ResourceLocation> availableDemands = new ArrayList<>(SignDemand.demands.keySet());
+  final List<ResourceLocation> availableDemands;
 
   final TramSignBlockEntity be;
 
@@ -43,6 +44,13 @@ public class TramSignSettingsScreen extends AbstractSimiScreen {
 
   public TramSignSettingsScreen(TramSignBlockEntity be) {
     this.be = be;
+
+    boolean isAuxiliary = be.getSignType() == TramSignBlock.SignType.AUXILIARY;
+    availableDemands = SignDemand.demands.entrySet()
+      .stream()
+      .filter((entry) -> entry.getValue().isAuxiliary() == isAuxiliary)
+      .map(Map.Entry::getKey)
+      .toList();
   }
 
   private MutableComponent getDemandComponent(int i) {

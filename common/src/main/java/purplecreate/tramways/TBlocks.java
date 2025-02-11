@@ -69,6 +69,19 @@ public class TBlocks {
       .transform(customItemModel())
       .register();
 
+  public static final BlockEntry<TramSignBlock> AUXILIARY_SIGN =
+    Tramways.REGISTRATE.block("auxiliary_sign", TramSignBlock::newAuxiliarySign)
+      .initialProperties(SharedProperties::softMetal)
+      .properties(properties -> properties.mapColor(MapColor.COLOR_GRAY).sound(SoundType.NETHERITE_BLOCK))
+      .blockstate((context, provider) ->
+        simpleHorizontalBlock(context, provider, "block/tram_sign/girder")
+      )
+      .onRegister(CreateRegistrate.blockModel(() -> ConnectedGirderModel::new))
+      .lang("Auxiliary Rail Sign")
+      .item()
+      .transform(customItemModel())
+      .register();
+
   public static final BlockEntry<SpeakerBlock> SPEAKER =
     Tramways.REGISTRATE.block("speaker", SpeakerBlock::new)
       .initialProperties(SharedProperties::wooden)

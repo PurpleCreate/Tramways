@@ -100,6 +100,13 @@ public abstract class SignDemand {
   public ResourceLocation id;
 
   /**
+   * @return true if the sign demand should be for auxiliary blocks
+   */
+  public boolean isAuxiliary() {
+    return false;
+  }
+
+  /**
    * @return an icon to be shown in the settings menu
    */
   @Environment(EnvType.CLIENT)

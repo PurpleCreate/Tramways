@@ -11,6 +11,7 @@ public class GirderLikeUtil {
   private static List<BlockEntry> allowed = List.of(
     TBlocks.TRAM_SIGN,
     TBlocks.RAILWAY_SIGN,
+    TBlocks.AUXILIARY_SIGN,
     TBlocks.TRAM_SIGNAL,
     AllBlocks.METAL_GIRDER
   );

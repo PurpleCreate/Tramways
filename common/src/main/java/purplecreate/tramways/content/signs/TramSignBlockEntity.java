@@ -24,12 +24,21 @@ public class TramSignBlockEntity extends SmartBlockEntity implements ITransforma
   TrackTargetingBehaviour<TramSignPoint> edgePoint;
 
   private static final ResourceLocation DEFAULT_DEMAND_ID = Tramways.rl("speed");
+  private static final ResourceLocation DEFAULT_AUX_DEMAND_ID = Tramways.rl("advance_warning_aux");
   private SignDemand demand;
   private CompoundTag demandExtra;
   private SignalBlockEntity.OverlayState overlay;
 
   public TramSignBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
     super(type, pos, state);
+
+    demand = SignDemand.demands.get(
+      getSignType() == TramSignBlock.SignType.AUXILIARY
+        ? DEFAULT_AUX_DEMAND_ID
+        : DEFAULT_DEMAND_ID
+    );
+    demandExtra = new CompoundTag();
+    demand.setDefaultSettings(demandExtra);
   }
 
   @Override
@@ -129,11 +138,8 @@ public class TramSignBlockEntity extends SmartBlockEntity implements ITransforma
 
     overlay = NBTHelper.readEnum(tag, "Overlay", SignalBlockEntity.OverlayState.class);
 
-    demand = SignDemand.demands.get(
-      tag.contains("Demand")
-        ? NBTHelper.readResourceLocation(tag, "Demand")
-        : DEFAULT_DEMAND_ID
-    );
+    if (tag.contains("Demand"))
+      demand = SignDemand.demands.get(NBTHelper.readResourceLocation(tag, "Demand"));
 
     if (tag.contains("DemandExtra")) {
       demandExtra = tag.getCompound("DemandExtra");
