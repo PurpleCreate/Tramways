@@ -26,7 +26,6 @@ public class TNetworkingImpl {
     );
   }
 
-  @Environment(EnvType.SERVER)
   public static void serverInit() {
     ServerPlayNetworking.registerGlobalReceiver(fabricChannel, (server, player, listener, buf, sender) ->
       TNetworking.handleInternal(buf, player)
