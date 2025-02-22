@@ -47,7 +47,9 @@ public class NameSignBlock extends HorizontalDirectionalBlock implements IBE<Nam
   @Override
   public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
     if (player.getItemInHand(hand).isEmpty()) {
-      openScreen(level, pos);
+      Env.unsafeRunWhenOn(Env.CLIENT, () -> () ->
+        openScreen(level, pos)
+      );
       return InteractionResult.SUCCESS;
     }
 
