@@ -1,8 +1,10 @@
 ## ✨ Features
 
-- Extendable station name signs
-- Primary speed limits for trains (trains won't go above the max speed set in the schedule)
+- Placeholders for Create Railways Navigator
+- Custom audio announcements
+- Auxiliary rail signs
 
 ## 🔨 Fixes
 
-- Make station name signs work more similarly to vanilla signs
+- Relocated jlayer
+- Various fixes related to servers attempting to load client-side code
