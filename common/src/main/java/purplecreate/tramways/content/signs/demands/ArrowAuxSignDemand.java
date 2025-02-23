@@ -9,6 +9,7 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import purplecreate.tramways.TPartialModels;
 import purplecreate.tramways.Tramways;
 import purplecreate.tramways.content.signs.TramSignBlock;
 
@@ -52,7 +53,7 @@ public class ArrowAuxSignDemand extends AuxSignDemand {
   @Override
   @Environment(EnvType.CLIENT)
   public PartialModel getSignFace(TramSignBlock.SignType signType) {
-    return AuxSignDemand.TEXT_AUX_FACE;
+    return TPartialModels.TEXT_AUX_FACE;
   }
 
   @Override

@@ -11,6 +11,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.item.alchemy.Potions;
+import purplecreate.tramways.TPartialModels;
 import purplecreate.tramways.Tramways;
 import purplecreate.tramways.content.signs.TramSignBlock;
 
@@ -24,7 +25,7 @@ public class AdvanceWarningAuxSignDemand extends AuxSignDemand {
   @Override
   @Environment(EnvType.CLIENT)
   public PartialModel getSignFace(TramSignBlock.SignType signType) {
-    return AuxSignDemand.ADVANCE_WARNING_AUX_FACE;
+    return TPartialModels.ADVANCE_WARNING_AUX_FACE;
   }
 
   @Override

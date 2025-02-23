@@ -7,6 +7,7 @@ import com.simibubi.create.foundation.render.CachedBufferer;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import purplecreate.tramways.TPartialModels;
 import purplecreate.tramways.content.signs.demands.SignDemand;
 import com.jozufozu.flywheel.util.transform.TransformStack;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -58,7 +59,7 @@ public class TramSignRenderer extends SmartBlockEntityRenderer<TramSignBlockEnti
       .getValue(TramSignBlock.FACING);
     SignDemand demand = be.getDemand();
     PartialModel signFace = demand == null
-      ? SignDemand.TRAM_FACE
+      ? TPartialModels.TRAM_FACE
       : demand.getSignFace(be.getSignType());
 
     CachedBufferer

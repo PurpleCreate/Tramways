@@ -25,11 +25,6 @@ public abstract class SignDemand {
    */
   public static final Map<ResourceLocation, SignDemand> demands = new HashMap<>();
 
-  public static final PartialModel TRAM_FACE = TPartialModels.TRAM_FACE;
-  public static final PartialModel RED_RAILWAY_FACE = TPartialModels.RED_RAILWAY_FACE;
-  public static final PartialModel GREY_RAILWAY_FACE = TPartialModels.GREY_RAILWAY_FACE;
-  public static final PartialModel TSR_RAILWAY_FACE = TPartialModels.TSR_RAILWAY_FACE;
-
   /**
    * Use this to register a demand. You should probably use this
    * at the common setup event.
@@ -115,9 +110,9 @@ public abstract class SignDemand {
   @Environment(EnvType.CLIENT)
   public PartialModel getSignFace(TramSignBlock.SignType signType) {
     if (signType == TramSignBlock.SignType.RAILWAY) {
-      return RED_RAILWAY_FACE;
+      return TPartialModels.RED_RAILWAY_FACE;
     } else {
-      return TRAM_FACE;
+      return TPartialModels.TRAM_FACE;
     }
   }
 

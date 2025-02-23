@@ -10,6 +10,7 @@ import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
+import purplecreate.tramways.TPartialModels;
 import purplecreate.tramways.content.signs.TramSignBlock;
 
 public class WhistleSignDemand extends SignDemand {
@@ -28,7 +29,7 @@ public class WhistleSignDemand extends SignDemand {
   @Environment(EnvType.CLIENT)
   public PartialModel getSignFace(TramSignBlock.SignType signType) {
     if (signType == TramSignBlock.SignType.RAILWAY) {
-      return SignDemand.GREY_RAILWAY_FACE;
+      return TPartialModels.GREY_RAILWAY_FACE;
     }
 
     return super.getSignFace(signType);

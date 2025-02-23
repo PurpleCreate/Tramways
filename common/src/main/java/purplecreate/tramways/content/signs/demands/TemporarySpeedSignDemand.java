@@ -11,6 +11,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.item.alchemy.Potions;
+import purplecreate.tramways.TPartialModels;
 import purplecreate.tramways.content.signs.TramSignBlock;
 import purplecreate.tramways.mixinInterfaces.ISpeedLimitableTrain;
 
@@ -25,7 +26,7 @@ public class TemporarySpeedSignDemand extends SpeedSignDemand {
   @Environment(EnvType.CLIENT)
   public PartialModel getSignFace(TramSignBlock.SignType signType) {
     if (signType == TramSignBlock.SignType.RAILWAY) {
-      return SignDemand.TSR_RAILWAY_FACE;
+      return TPartialModels.TSR_RAILWAY_FACE;
     }
 
     return super.getSignFace(signType);

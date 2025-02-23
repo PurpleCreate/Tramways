@@ -9,6 +9,7 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import purplecreate.tramways.TPartialModels;
 import purplecreate.tramways.content.signs.TramSignBlock;
 import purplecreate.tramways.mixinInterfaces.ISpeedLimitableTrain;
 
@@ -23,7 +24,7 @@ public class TemporaryEndSignDemand extends SignDemand {
   @Environment(EnvType.CLIENT)
   public PartialModel getSignFace(TramSignBlock.SignType signType) {
     if (signType == TramSignBlock.SignType.RAILWAY) {
-      return SignDemand.TSR_RAILWAY_FACE;
+      return TPartialModels.TSR_RAILWAY_FACE;
     }
 
     return super.getSignFace(signType);

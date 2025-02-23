@@ -1,7 +1,10 @@
 package purplecreate.tramways;
 
 import com.jozufozu.flywheel.core.PartialModel;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 
+@Environment(EnvType.CLIENT)
 public class TPartialModels {
   public static final PartialModel TRAM_FACE = load("block/tram_sign/face");
   public static final PartialModel RED_RAILWAY_FACE = load("block/railway_sign/red_face");
