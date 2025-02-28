@@ -52,6 +52,8 @@
   "tramways.ponder.tram_signs_whistle.header": "Sign Demands: Whistling",
   "tramways.ponder.tram_signs_whistle.text_1": "The whistle sign demand will make an automatic train whistle",
   "tramways.ponder.tram_signs_whistle.text_2": "It'll whistle on the approach towards the sign",
+  "tramways.ponder.tram_switches.header": "Tram Signals with Track Switches",
+  "tramways.ponder.tram_switches.text_1": "Tram Signals can also show a track switch's state",
   "tramways.request_stop.countdown": "Press %1$s to request stop at %2$s",
   "tramways.request_stop.next_train.info": "%1$s to %2$s",
   "tramways.request_stop.next_train.no_trains": "No requestable trains nearby",

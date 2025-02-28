@@ -26,5 +26,8 @@
   "create.schedule.instruction.request_stop.summary": "Request Stop:",
 
   "tramways.schedule.instruction.set_primary_limit": "Set Primary Speed Limit",
-  "create.schedule.instruction.set_primary_limit.summary": "Set Primary Speed Limit to %1$s"
+  "create.schedule.instruction.set_primary_limit.summary": "Set Primary Speed Limit to %1$s",
+
+  "tramways.ponder.tram_switches.header": "Tram Signals with Track Switches",
+  "tramways.ponder.tram_switches.text_1": "Tram Signals can also show a track switch's state"
 }
