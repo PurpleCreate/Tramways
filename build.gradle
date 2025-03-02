@@ -89,3 +89,13 @@ allprojects {
 tasks.create("publishTramways") {
   dependsOn tasks.build, ":fabric:publishMods", ":forge:publishMods"
 }
+
+tasks.register('javadocAll', Javadoc) {
+  source subprojects.collect { project -> project.sourceSets.main.allJava }
+  classpath = files(subprojects.collect { project -> project.sourceSets.main.compileClasspath })
+  destinationDir = rootProject.file("docs")
+
+  options {
+    encoding = "UTF-8"
+  }
+}
