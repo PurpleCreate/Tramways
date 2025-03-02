@@ -39,14 +39,3 @@ sourceSets {
     resources.srcDir file("src/generated/resources")
   }
 }
-
-publishing {
-  publications {
-    mavenCommon(MavenPublication) {
-      artifactId = rootProject.mod_id
-      from components.java
-    }
-  }
-
-  repositories {}
-}

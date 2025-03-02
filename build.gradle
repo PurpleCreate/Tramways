@@ -12,6 +12,7 @@ architectury {
 subprojects {
   apply plugin: "dev.architectury.loom"
   apply plugin: "me.modmuss50.mod-publish-plugin"
+  apply plugin: "maven-publish"
 
   loom {
     silentMojangMappingsLicense()
@@ -39,6 +40,22 @@ subprojects {
       it.officialMojangMappings()
       it.parchment("org.parchmentmc.data:parchment-${minecraft_version}:${parchment_version}@zip")
     })
+  }
+
+  publishing {
+    publications {
+      mavenJava(MavenPublication) {
+        artifactId = rootProject.mod_id + "-" + project.name
+        from components.java
+      }
+    }
+
+    repositories {
+      maven {
+        name = "Github"
+        url = "file://${System.getProperty('user.home')}/Documents/purplecreatemaven"
+      }
+    }
   }
 }
 

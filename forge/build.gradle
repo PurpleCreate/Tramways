@@ -116,17 +116,6 @@ components.java {
   }
 }
 
-publishing {
-  publications {
-    mavenForge(MavenPublication) {
-      artifactId = rootProject.mod_id + "-" + project.name
-      from components.java
-    }
-  }
-
-  repositories {}
-}
-
 publishMods {
   type = STABLE
   file = tasks.remapJar.archiveFile
