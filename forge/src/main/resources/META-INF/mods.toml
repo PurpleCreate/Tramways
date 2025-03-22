@@ -28,14 +28,14 @@ updateJSONURL="https://api.modrinth.com/updates/tramways/forge_updates.json"
 [[dependencies.${mod_id}]]
     modId="minecraft"
     mandatory=true
-    versionRange = "${minecraft_version}"
+    versionRange = "[${minecraft_version}]"
     ordering="NONE"
     side="BOTH"
 
 [[dependencies.${mod_id}]]
     modId="create"
     mandatory=true
-    versionRange="${create_version}"
+    versionRange="[${create_version}]"
     ordering="NONE"
     side="BOTH"
 
