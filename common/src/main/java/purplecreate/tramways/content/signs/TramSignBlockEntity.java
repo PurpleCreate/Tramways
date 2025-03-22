@@ -87,6 +87,7 @@ public class TramSignBlockEntity extends SmartBlockEntity implements ITransforma
     }
 
     notifyUpdate();
+    updatePoint();
   }
 
   // warning: this function also receives unvalidated data from the client
@@ -98,6 +99,13 @@ public class TramSignBlockEntity extends SmartBlockEntity implements ITransforma
     demandExtra = disk;
 
     notifyUpdate();
+    updatePoint();
+  }
+
+  private void updatePoint() {
+    TramSignPoint point = edgePoint.getEdgePoint();
+    if (point != null)
+      point.updateSignData(worldPosition, demand, demandExtra);
   }
 
   public void setOverlay(SignalBlockEntity.OverlayState overlay) {
@@ -122,14 +130,13 @@ public class TramSignBlockEntity extends SmartBlockEntity implements ITransforma
       setOverlay(point.getOverlayFor(worldPosition));
     }
 
-    if (demand == null) return;
+    TramSignPoint.SignData data = point.getSignData(worldPosition);
 
-    point.iterateQueue(worldPosition, (train, distance) -> {
-      int lastHashCode = demandExtra.hashCode();
-      demand.execute(demandExtra, train, distance);
-      if (demandExtra.hashCode() != lastHashCode)
-        notifyUpdate();
-    });
+    if (data.demand != demand || data.demandExtra != demandExtra) {
+      demand = data.demand;
+      demandExtra = data.demandExtra;
+      notifyUpdate();
+    }
   }
 
   @Override
