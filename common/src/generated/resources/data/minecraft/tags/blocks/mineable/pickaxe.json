@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "values": [
+    "tramways:tram_signal",
+    "tramways:tram_sign",
+    "tramways:railway_sign",
+    "tramways:auxiliary_sign",
+    "tramways:request_stop_button"
+  ]
+}

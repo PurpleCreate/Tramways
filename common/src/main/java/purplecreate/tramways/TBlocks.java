@@ -20,6 +20,8 @@ import com.simibubi.create.foundation.data.SharedProperties;
 import static com.simibubi.create.AllMovementBehaviours.movementBehaviour;
 import static com.simibubi.create.content.redstone.displayLink.AllDisplayBehaviours.assignDataBehaviour;
 import static com.simibubi.create.foundation.data.ModelGen.customItemModel;
+import static com.simibubi.create.foundation.data.TagGen.axeOnly;
+import static com.simibubi.create.foundation.data.TagGen.pickaxeOnly;
 
 import purplecreate.tramways.content.announcements.SpeakerDisplayTarget;
 import purplecreate.tramways.content.announcements.SpeakerMovementBehaviour;
@@ -37,6 +39,7 @@ public class TBlocks {
       .initialProperties(SharedProperties::softMetal)
       .properties(properties -> properties.mapColor(MapColor.COLOR_GRAY).sound(SoundType.NETHERITE_BLOCK))
       .blockstate(TBlocks::complexTramSignal)
+      .transform(pickaxeOnly())
       .onRegister(CreateRegistrate.blockModel(() -> ConnectedGirderModel::new))
       .lang("Tram Signal")
       .item()
@@ -50,6 +53,7 @@ public class TBlocks {
       .blockstate((context, provider) ->
         simpleHorizontalBlock(context, provider, "block/tram_sign/girder")
       )
+      .transform(pickaxeOnly())
       .onRegister(CreateRegistrate.blockModel(() -> ConnectedGirderModel::new))
       .lang("Tram Sign")
       .item(TrackTargetingBlockItem.ofType(TExtras.EdgePointTypes.TRAM_SIGN))
@@ -63,6 +67,7 @@ public class TBlocks {
       .blockstate((context, provider) ->
         simpleHorizontalBlock(context, provider, "block/tram_sign/girder")
       )
+      .transform(pickaxeOnly())
       .onRegister(CreateRegistrate.blockModel(() -> ConnectedGirderModel::new))
       .lang("Railway Sign")
       .item(TrackTargetingBlockItem.ofType(TExtras.EdgePointTypes.TRAM_SIGN))
@@ -76,6 +81,7 @@ public class TBlocks {
       .blockstate((context, provider) ->
         simpleHorizontalBlock(context, provider, "block/tram_sign/girder")
       )
+      .transform(pickaxeOnly())
       .onRegister(CreateRegistrate.blockModel(() -> ConnectedGirderModel::new))
       .lang("Auxiliary Rail Sign")
       .item()
@@ -89,6 +95,7 @@ public class TBlocks {
       .blockstate((context, provider) ->
         simpleDirectionalBlock(context, provider, "block/speaker")
       )
+      .transform(axeOnly())
       .onRegister(assignDataBehaviour(new SpeakerDisplayTarget()))
       .onRegister(movementBehaviour(new SpeakerMovementBehaviour()))
       .lang("Speaker")
@@ -101,6 +108,7 @@ public class TBlocks {
       .blockstate((context, provider) ->
         buttonBlock(context, provider, Tramways.rl("block/request_stop_button"))
       )
+      .transform(pickaxeOnly())
       .lang("Request Stop Button")
       .item(RequestStopButtonItem::new)
       .transform(customItemModel())
@@ -115,6 +123,7 @@ public class TBlocks {
       .blockstate((context, provider) ->
         complexStationNameSign(context, provider, colorId)
       )
+      .transform(axeOnly())
       .item(NameSignItem::new)
       .model((context, provider) ->
         complexStationNameSignItem(context, provider, colorId)
