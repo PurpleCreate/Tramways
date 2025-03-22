@@ -1,6 +1,7 @@
 package purplecreate.tramways.content.announcements;
 
 import purplecreate.tramways.TNetworking;
+import purplecreate.tramways.Tramways;
 import purplecreate.tramways.config.TrainMessageType;
 import purplecreate.tramways.content.announcements.info.TrainInfo;
 import purplecreate.tramways.content.announcements.network.PlayMovingVoiceS2CPacket;
@@ -17,14 +18,16 @@ public class SpeakerMovementBehaviour implements MovementBehaviour {
     if (context.world.isClientSide) return;
 
     MovementBehaviourUtil.withCarriage(context, (carriage) -> {
-      if (carriage.train.runtime.state == ScheduleRuntime.State.PRE_TRANSIT)
+      ScheduleRuntime rt = carriage.train.runtime;
+
+      if (rt.state == ScheduleRuntime.State.PRE_TRANSIT)
         return;
 
       TrainInfo trainInfo = TrainInfo.fromTrain(carriage.train);
       Map<String, String> props = trainInfo.getProperties();
       TrainMessageType type;
 
-      boolean atStation = carriage.train.runtime.state == ScheduleRuntime.State.POST_TRANSIT;
+      boolean atStation = rt.state == ScheduleRuntime.State.POST_TRANSIT;
       boolean atEnd = props.containsKey("end") && props.get("end").equals(props.get("current"));
       boolean approachingEnd = props.containsKey("end") && props.get("end").equals(props.get("next"));
 
@@ -48,7 +51,14 @@ public class SpeakerMovementBehaviour implements MovementBehaviour {
           props.getOrDefault("next", "") + "," +
           props.getOrDefault("end", "");
 
-      if (!announcementConditions.equals(context.temporaryData)) {
+      int previousInstruction = rt.currentEntry == 0
+        ? rt.getSchedule().entries.size() - 1
+        : rt.currentEntry - 1;
+
+      if (
+        !announcementConditions.equals(context.temporaryData)
+          && !trainInfo.travellingToWaypoint(atStation ? rt.currentEntry : previousInstruction)
+      ) {
         context.temporaryData = announcementConditions;
 
         TNetworking.sendToNear(

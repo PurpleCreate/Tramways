@@ -1,6 +1,8 @@
 package purplecreate.tramways.content.announcements.info;
 
+import com.simibubi.create.content.trains.schedule.destination.ScheduleInstruction;
 import com.simibubi.create.foundation.utility.Couple;
+import net.minecraft.resources.ResourceLocation;
 import purplecreate.tramways.config.Config;
 import purplecreate.tramways.config.MessageConfig;
 import purplecreate.tramways.config.TrainMessageType;
@@ -24,6 +26,19 @@ public class TrainInfo {
     return new TrainInfo(train);
   }
 
+  public boolean travellingToWaypoint(int i) {
+    ScheduleRuntime rt = train.runtime;
+    Schedule schedule = rt.getSchedule();
+
+    if (schedule == null) return false;
+
+    return travellingToWaypoint(schedule.entries.get(i).instruction);
+  }
+
+  public boolean travellingToWaypoint(ScheduleInstruction instruction) {
+    return instruction.getId().equals(new ResourceLocation("railways", "waypoint_destination"));
+  }
+
   private List<StationInfo> getCallingAt() {
     return getCallingAt(train.runtime.currentEntry);
   }
@@ -41,6 +56,9 @@ public class TrainInfo {
 
     for (int i = startAt; i < entries.size(); i++) {
       if (entries.get(i).instruction instanceof DestinationInstruction instruction) {
+        if (travellingToWaypoint(instruction))
+          continue;
+
         StationInfo destination = StationInfo.fromFilter(instruction.getFilter());
         if (
           schedule.cyclic
