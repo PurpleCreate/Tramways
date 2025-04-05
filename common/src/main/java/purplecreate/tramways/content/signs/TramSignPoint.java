@@ -24,7 +24,7 @@ import purplecreate.tramways.content.signs.demands.SignDemand;
 import java.util.*;
 
 public class TramSignPoint extends TrackEdgePoint {
-  private Couple<Set<SignData>> sides = Couple.create(HashSet::new);
+  public Couple<Set<SignData>> sides = Couple.create(HashSet::new);
   private final Couple<Map<Train, Double>> queue = Couple.create(HashMap::new);
 
   public void updateTrain(Train train, TrackNode node, double distance) {
