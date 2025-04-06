@@ -35,7 +35,7 @@ updateJSONURL="https://api.modrinth.com/updates/tramways/forge_updates.json"
 [[dependencies.${mod_id}]]
     modId="create"
     mandatory=true
-    versionRange="[${create_version}]"
+    versionRange="[${create_version},6)"
     ordering="NONE"
     side="BOTH"
 
