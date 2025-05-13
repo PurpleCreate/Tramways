@@ -81,7 +81,7 @@ public class SpeedSignDemand extends SignDemand {
       float a = train.acceleration(); // acceleration
       double s = ((v * v) - (u * u)) / (2 * a); // displacement (distance)
 
-      if (distance >= s)
+      if (distance <= Math.abs(s))
         train.throttle = nextThrottle;
     }
   }
