@@ -42,7 +42,7 @@ repositories {
   maven { url = "https://raw.githubusercontent.com/Fuzss/modresources/main/maven/" } // Forge Config API Port
   maven { url = "https://maven.jamieswhiteshirt.com/libs-release" } // Reach Entity Attributes
   maven { url = "https://jitpack.io/" } // Mixin Extras, Fabric ASM
-  maven { url = 'https://maven.ithundxr.dev/snapshots' } // Steam 'n' Rails
+  maven { url = 'https://mvn.devos.one/snapshots' } // Steam 'n' Rails
 }
 
 configurations.configureEach {

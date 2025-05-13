@@ -28,7 +28,7 @@ repositories {
   // mavens for Forge-exclusives
   maven { url = "https://jitpack.io/" } // MixinExtras
   maven { url = "https://maven.theillusivec4.top/" } // Curios
-  maven { url = 'https://maven.ithundxr.dev/snapshots' } // Steam 'n' Rails
+  maven { url = 'https://mvn.devos.one/snapshots' } // Steam 'n' Rails
   maven { // Create Forge and Registrate Forge
     url = "https://maven.tterrag.com/"
     content {
