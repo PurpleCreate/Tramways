@@ -16,6 +16,11 @@ idea. If you do find a bug, please report it!
 - Request Stops - only stop at a station on request
 - Station Name Signs - with many sign variants
 
+## Supported Languages
+
+- English
+- Polish (Craft1User)
+
 ---
 
 <p align="center">a Purple Create mod</p>
