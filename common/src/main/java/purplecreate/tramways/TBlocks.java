@@ -17,13 +17,12 @@ import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.material.MapColor;
 import com.simibubi.create.foundation.data.SharedProperties;
 
-import static com.simibubi.create.AllMovementBehaviours.movementBehaviour;
-import static com.simibubi.create.content.redstone.displayLink.AllDisplayBehaviours.assignDataBehaviour;
+import static com.simibubi.create.api.behaviour.display.DisplayTarget.displayTarget;
+import static com.simibubi.create.api.behaviour.movement.MovementBehaviour.movementBehaviour;
 import static com.simibubi.create.foundation.data.ModelGen.customItemModel;
 import static com.simibubi.create.foundation.data.TagGen.axeOnly;
 import static com.simibubi.create.foundation.data.TagGen.pickaxeOnly;
 
-import purplecreate.tramways.content.announcements.SpeakerDisplayTarget;
 import purplecreate.tramways.content.announcements.SpeakerMovementBehaviour;
 import purplecreate.tramways.content.requestStop.station.RequestStopButtonBlock;
 import purplecreate.tramways.content.requestStop.station.RequestStopButtonItem;
@@ -96,7 +95,7 @@ public class TBlocks {
         simpleDirectionalBlock(context, provider, "block/speaker")
       )
       .transform(axeOnly())
-      .onRegister(assignDataBehaviour(new SpeakerDisplayTarget()))
+      .transform(displayTarget(TExtras.DisplayTargets.SPEAKER))
       .onRegister(movementBehaviour(new SpeakerMovementBehaviour()))
       .lang("Speaker")
       .simpleItem()

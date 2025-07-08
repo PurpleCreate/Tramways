@@ -2,9 +2,9 @@ package purplecreate.tramways.content.stationDeco.nameSign;
 
 import com.simibubi.create.AllShapes;
 import com.simibubi.create.foundation.block.IBE;
-import com.simibubi.create.foundation.gui.ScreenOpener;
-import com.simibubi.create.foundation.utility.Iterate;
-import com.simibubi.create.foundation.utility.VoxelShaper;
+import net.createmod.catnip.gui.ScreenOpener;
+import net.createmod.catnip.data.Iterate;
+import net.createmod.catnip.math.VoxelShaper;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.core.BlockPos;

@@ -1,18 +1,18 @@
 package purplecreate.tramways.content.signs;
 
-import com.jozufozu.flywheel.core.PartialModel;
+import dev.engine_room.flywheel.lib.model.baked.PartialModel;
 import com.simibubi.create.content.trains.signal.SignalBlockEntity;
 import com.simibubi.create.content.trains.track.TrackTargetingBehaviour;
-import com.simibubi.create.foundation.render.CachedBufferer;
+import net.createmod.catnip.render.CachedBuffers;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import purplecreate.tramways.TPartialModels;
 import purplecreate.tramways.content.signs.demands.SignDemand;
-import com.jozufozu.flywheel.util.transform.TransformStack;
+import dev.engine_room.flywheel.lib.transform.TransformStack;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.simibubi.create.foundation.blockEntity.renderer.SmartBlockEntityRenderer;
-import com.simibubi.create.foundation.utility.AngleHelper;
+import net.createmod.catnip.math.AngleHelper;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 
@@ -34,7 +34,7 @@ public class TramSignRenderer extends SmartBlockEntityRenderer<TramSignBlockEnti
     if (be.getOverlay() != SignalBlockEntity.OverlayState.SKIP) {
       BlockPos targetPosition = be.edgePoint.getGlobalPosition();
 
-      TransformStack.cast(ms)
+      TransformStack.of(ms)
         .translate(targetPosition.subtract(be.getBlockPos()));
 
       TrackTargetingBehaviour.render(
@@ -62,22 +62,22 @@ public class TramSignRenderer extends SmartBlockEntityRenderer<TramSignBlockEnti
       ? TPartialModels.TRAM_FACE
       : demand.getSignFace(be.getSignType());
 
-    CachedBufferer
+    CachedBuffers
       .partial(signFace, be.getBlockState())
-      .centre()
-      .rotateY(AngleHelper.horizontalAngle(
+      .center()
+      .rotateYDegrees(AngleHelper.horizontalAngle(
         facing.getOpposite()
       ))
-      .unCentre()
+      .uncenter()
       .light(light)
       .renderInto(ms, buffer.getBuffer(RenderType.solid()));
 
-    TransformStack.cast(ms)
-      .centre()
-      .rotateY(AngleHelper.horizontalAngle(
+    TransformStack.of(ms)
+      .center()
+      .rotateYDegrees(AngleHelper.horizontalAngle(
         facing
       ))
-      .unCentre()
+      .uncenter()
       .translate(0, 0, 13.01 / 16f);
 
     if (demand != null) {

@@ -1,7 +1,7 @@
 package purplecreate.tramways.content.announcements.info;
 
 import com.simibubi.create.content.trains.schedule.destination.ScheduleInstruction;
-import com.simibubi.create.foundation.utility.Couple;
+import net.createmod.catnip.data.Couple;
 import net.minecraft.resources.ResourceLocation;
 import purplecreate.tramways.config.Config;
 import purplecreate.tramways.config.MessageConfig;

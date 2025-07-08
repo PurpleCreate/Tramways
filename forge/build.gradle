@@ -24,20 +24,6 @@ configurations {
   developmentForge.extendsFrom common
 }
 
-repositories {
-  // mavens for Forge-exclusives
-  maven { url = "https://jitpack.io/" } // MixinExtras
-  maven { url = "https://maven.theillusivec4.top/" } // Curios
-  maven { url = 'https://mvn.devos.one/snapshots' } // Steam 'n' Rails
-  maven { // Create Forge and Registrate Forge
-    url = "https://maven.tterrag.com/"
-    content {
-      includeGroup("com.tterrag.registrate")
-      includeGroup("com.simibubi.create")
-    }
-  }
-}
-
 dependencies {
   forge("net.minecraftforge:forge:${minecraft_version}-${forge_version}")
   common(project(path: ":common", configuration: "namedElements")) { transitive = false }
@@ -51,13 +37,15 @@ dependencies {
   // Create and its dependencies
   modImplementation("com.simibubi.create:create-${minecraft_version}:${create_forge_version}:slim") { transitive = false }
   modImplementation("com.tterrag.registrate:Registrate:${registrate_forge_version}")
-  modImplementation("com.jozufozu.flywheel:flywheel-forge-${minecraft_version}:${flywheel_forge_version}")
+  modImplementation("net.createmod.ponder:Ponder-Forge-${minecraft_version}:${ponder_forge_version}")
+  modCompileOnly("dev.engine-room.flywheel:flywheel-forge-api-${minecraft_version}:${flywheel_forge_version}")
+  modRuntimeOnly("dev.engine-room.flywheel:flywheel-forge-${minecraft_version}:${flywheel_forge_version}")
 
   // Development QOL
   modLocalRuntime("mezz.jei:jei-${minecraft_version}-forge:${jei_version}") { transitive = false }
 
   // Compat
-  modCompileOnly("com.railwayteam.railways:Steam_Rails-forge-${minecraft_version}:${railways_forge_version}") { transitive = false }
+  //modCompileOnly("com.railwayteam.railways:Steam_Rails-forge-${minecraft_version}:${railways_forge_version}") { transitive = false }
   //modLocalRuntime("com.railwayteam.railways:Steam_Rails-forge-${minecraft_version}:${railways_forge_version}") { transitive = false }
 }
 
@@ -68,7 +56,6 @@ processResources {
     "forge_version", forge_version.split("\\.")[0],
     "minecraft_version", minecraft_version,
     "create_version", create_forge_version.split("-")[0],
-    "railways_version", railways_forge_version.split("\\+")[0]
   )
   properties.forEach((k, v) -> inputs.property(k, v))
 

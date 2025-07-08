@@ -1,12 +1,11 @@
 package purplecreate.tramways.content.announcements;
 
 import purplecreate.tramways.TNetworking;
-import purplecreate.tramways.Tramways;
 import purplecreate.tramways.config.TrainMessageType;
 import purplecreate.tramways.content.announcements.info.TrainInfo;
 import purplecreate.tramways.content.announcements.network.PlayMovingVoiceS2CPacket;
 import purplecreate.tramways.util.MovementBehaviourUtil;
-import com.simibubi.create.content.contraptions.behaviour.MovementBehaviour;
+import com.simibubi.create.api.behaviour.movement.MovementBehaviour;
 import com.simibubi.create.content.contraptions.behaviour.MovementContext;
 import com.simibubi.create.content.trains.schedule.ScheduleRuntime;
 

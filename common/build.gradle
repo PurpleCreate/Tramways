@@ -6,20 +6,6 @@ loom {
   accessWidenerPath = file("src/main/resources/tramways.accesswidener")
 }
 
-repositories {
-  // mavens for Create Fabric and dependencies
-  maven { url = "https://api.modrinth.com/maven" } // LazyDFU
-  maven { url = "https://maven.terraformersmc.com/releases/" } // Mod Menu
-  maven { url = "https://mvn.devos.one/snapshots/" } // Create Fabric, Porting Lib, Forge Tags, Milk Lib, Registrate Fabric
-  maven { url = "https://mvn.devos.one/releases/" } // Porting Lib Releases
-  maven { url = "https://raw.githubusercontent.com/Fuzss/modresources/main/maven/" } // Forge Config API Port
-  maven { url = "https://maven.jamieswhiteshirt.com/libs-release" } // Reach Entity Attributes
-  maven { url = "https://jitpack.io/" } // Mixin Extras, Fabric ASM
-  maven { url = 'https://mvn.devos.one/snapshots' } // Steam 'n' Rails
-  maven { url = "https://api.modrinth.com/maven" } // CRN
-  maven { url = "https://raw.githubusercontent.com/MisterJulsen/modsrepo/main/maven" } // DragonLib
-}
-
 dependencies {
   modImplementation("net.fabricmc:fabric-loader:${fabric_loader_version}")
   modCompileOnly("com.simibubi.create:create-fabric-${minecraft_version}:${create_fabric_version}")
@@ -29,7 +15,7 @@ dependencies {
   annotationProcessor(implementation("io.github.llamalad7:mixinextras-common:${mixin_extras_version}"))
 
   // Compat
-  modCompileOnly("com.railwayteam.railways:Steam_Rails-common-${minecraft_version}:${railways_common_version}") { transitive = false }
+  //modCompileOnly("com.railwayteam.railways:Steam_Rails-common-${minecraft_version}:${railways_common_version}") { transitive = false }
   modCompileOnly("maven.modrinth:create-railways-navigator:${crn_fabric_version}")
   modCompileOnly("de.mrjulsen.mcdragonlib:dragonlib-fabric:${minecraft_version}-${dragonlib_version}")
 }

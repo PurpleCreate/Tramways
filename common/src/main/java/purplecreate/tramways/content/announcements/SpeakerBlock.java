@@ -7,7 +7,7 @@ import purplecreate.tramways.config.MessageConfig;
 import purplecreate.tramways.content.announcements.network.PlayVoiceS2CPacket;
 import com.simibubi.create.AllShapes;
 import com.simibubi.create.content.equipment.wrench.IWrenchable;
-import com.simibubi.create.foundation.utility.VoxelShaper;
+import net.createmod.catnip.math.VoxelShaper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.context.BlockPlaceContext;

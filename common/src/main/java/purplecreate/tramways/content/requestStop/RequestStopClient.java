@@ -2,7 +2,7 @@ package purplecreate.tramways.content.requestStop;
 
 import com.simibubi.create.AllSoundEvents;
 import com.simibubi.create.content.trains.entity.CarriageContraptionEntity;
-import com.simibubi.create.foundation.utility.Components;
+import net.minecraft.network.chat.Component;
 import com.tterrag.registrate.util.nullness.NonNullConsumer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.protocol.game.ClientboundBossEventPacket;
@@ -60,7 +60,7 @@ public class RequestStopClient {
             packet.type == StoppingBroadcastS2CPacket.Type.SHOW_STOPPING
               ? Tramways.translatable("request_stop.stopping")
               : Tramways.translatable("request_stop.countdown",
-                                      Components.keybind("key.jump"),
+                                      Component.keybind("key.jump"),
                                       packet.stationName),
             packet.type == StoppingBroadcastS2CPacket.Type.SHOW_STOPPING
               ? BossEvent.BossBarColor.RED

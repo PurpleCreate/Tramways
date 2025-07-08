@@ -3,9 +3,11 @@ package purplecreate.tramways;
 import com.simibubi.create.content.trains.graph.EdgePointType;
 
 import com.simibubi.create.content.trains.schedule.destination.ScheduleInstruction;
-import com.simibubi.create.foundation.utility.Pair;
+import com.tterrag.registrate.util.entry.RegistryEntry;
+import net.createmod.catnip.data.Pair;
 import purplecreate.tramways.compat.Mods;
 import purplecreate.tramways.compat.createrailwaysnavigator.CRNTrainInfo;
+import purplecreate.tramways.content.announcements.SpeakerDisplayTarget;
 import purplecreate.tramways.content.announcements.info.TrainInfo;
 import purplecreate.tramways.content.requestStop.train.RequestStopInstruction;
 import purplecreate.tramways.content.signs.TramSignPoint;
@@ -47,11 +49,18 @@ public class TExtras {
     }
   }
 
+  public static class DisplayTargets {
+    public static final RegistryEntry<SpeakerDisplayTarget> SPEAKER = Tramways.REGISTRATE.displayTarget("speaker", SpeakerDisplayTarget::new).register();
+
+    public static void register() {}
+  }
+
   // runs in Tramways#commonSetup
   public static void registerCommon() {
     Schedule.register();
     EdgePointTypes.register();
     SignDemands.register();
+    DisplayTargets.register();
 
     Mods.CREATERAILWAYSNAVIGATOR.ifLoadedRun(() -> () ->
       TrainInfo.registerPropertyGetter("crn", new CRNTrainInfo())

@@ -2,8 +2,8 @@ package purplecreate.tramways.content.signals;
 
 import purplecreate.tramways.TTags;
 import purplecreate.tramways.compat.Mods;
-import com.railwayteam.railways.content.switches.TrackSwitchBlock;
-import com.railwayteam.railways.content.switches.TrackSwitchBlockEntity;
+//import com.railwayteam.railways.content.switches.TrackSwitchBlock;
+//import com.railwayteam.railways.content.switches.TrackSwitchBlockEntity;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.content.trains.signal.SignalBlockEntity;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
@@ -36,9 +36,9 @@ public class TramSignalBlockEntity extends SmartBlockEntity {
     for (int i = 0; i < 16; i++) {
       BlockState state = level.getBlockState(currentPos);
       if (
-        AllBlocks.TRACK_SIGNAL.has(state) ||
+        AllBlocks.TRACK_SIGNAL.has(state) /*||
           Mods.RAILWAYS.isBlock("track_switch_andesite", state) ||
-          Mods.RAILWAYS.isBlock("track_switch_brass", state)
+          Mods.RAILWAYS.isBlock("track_switch_brass", state)*/
       ) {
         current = level.getBlockEntity(currentPos);
         found = true;
@@ -82,7 +82,7 @@ public class TramSignalBlockEntity extends SmartBlockEntity {
       } else if (signal.getState() == SignalBlockEntity.SignalState.RED) {
         state = TramSignalState.STOP;
       }
-    } else if (blockEntity instanceof TrackSwitchBlockEntity trackSwitch) {
+    } /*else if (blockEntity instanceof TrackSwitchBlockEntity trackSwitch) {
       if (trackSwitch.getState() == TrackSwitchBlock.SwitchState.NORMAL) {
         state = TramSignalState.FORWARD;
       } else if (trackSwitch.getState() == TrackSwitchBlock.SwitchState.REVERSE_LEFT) {
@@ -90,7 +90,7 @@ public class TramSignalBlockEntity extends SmartBlockEntity {
       } else if (trackSwitch.getState() == TrackSwitchBlock.SwitchState.REVERSE_RIGHT) {
         state = TramSignalState.RIGHT;
       }
-    }
+    }*/
 
     return state;
   }

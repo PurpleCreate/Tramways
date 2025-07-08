@@ -1,13 +1,12 @@
 package purplecreate.tramways.content.requestStop.station;
 
-import com.simibubi.create.content.equipment.goggles.IHaveHoveringInformation;
+import com.simibubi.create.api.equipment.goggles.IHaveHoveringInformation;
 import com.simibubi.create.content.trains.entity.Train;
 import com.simibubi.create.content.trains.station.GlobalStation;
 import com.simibubi.create.content.trains.station.StationBlockEntity;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
-import com.simibubi.create.foundation.utility.Components;
-import com.simibubi.create.foundation.utility.LangBuilder;
+import net.createmod.catnip.lang.LangBuilder;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -139,7 +138,7 @@ public class RequestStopButtonBlockEntity extends SmartBlockEntity implements IH
       Component.Serializer.toJson(
         nearestTrain && nearestTrainName != null
           ? nearestTrainName
-          : Components.empty()
+          : Component.empty()
       )
     );
     tag.putString(

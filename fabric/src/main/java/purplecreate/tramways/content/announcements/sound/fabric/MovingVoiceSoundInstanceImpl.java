@@ -3,6 +3,7 @@ package purplecreate.tramways.content.announcements.sound.fabric;
 import com.simibubi.create.content.trains.entity.Carriage;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.fabricmc.fabric.api.client.sound.v1.FabricSoundInstance;
 import net.minecraft.client.sounds.AudioStream;
 import net.minecraft.client.sounds.SoundBufferLibrary;
 import net.minecraft.core.BlockPos;
@@ -12,7 +13,7 @@ import purplecreate.tramways.content.announcements.sound.MovingVoiceSoundInstanc
 import java.util.concurrent.CompletableFuture;
 
 @Environment(EnvType.CLIENT)
-public class MovingVoiceSoundInstanceImpl extends MovingVoiceSoundInstance {
+public class MovingVoiceSoundInstanceImpl extends MovingVoiceSoundInstance implements FabricSoundInstance {
   protected MovingVoiceSoundInstanceImpl(AudioStream stream, Carriage carriage, BlockPos localPos) {
     super(stream, carriage, localPos);
   }

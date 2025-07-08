@@ -1,7 +1,7 @@
 package purplecreate.tramways.content.announcements;
 
 import com.simibubi.create.content.redstone.displayLink.DisplayLinkContext;
-import com.simibubi.create.content.redstone.displayLink.target.DisplayTarget;
+import com.simibubi.create.api.behaviour.display.DisplayTarget;
 import com.simibubi.create.content.redstone.displayLink.target.DisplayTargetStats;
 import com.simibubi.create.content.trains.display.GlobalTrainDisplayData;
 import net.minecraft.nbt.CompoundTag;

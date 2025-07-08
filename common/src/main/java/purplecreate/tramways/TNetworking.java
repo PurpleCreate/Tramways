@@ -1,10 +1,10 @@
 package purplecreate.tramways;
 
-import com.simibubi.create.foundation.utility.Components;
 import dev.architectury.injectables.annotations.ExpectPlatform;
 import io.netty.buffer.Unpooled;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.Level;
@@ -55,7 +55,7 @@ public class TNetworking {
         return;
 
       mc.getConnection().onDisconnect(
-        Components.literal(
+        Component.literal(
           "Create: Tramways network versions do not match! Server expected %s, client has %s"
             .formatted(serverVersion, TNetworking.VERSION)
         )

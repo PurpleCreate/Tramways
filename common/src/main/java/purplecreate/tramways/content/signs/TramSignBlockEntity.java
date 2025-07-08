@@ -2,16 +2,17 @@ package purplecreate.tramways.content.signs;
 
 import com.simibubi.create.content.trains.signal.SignalBlockEntity;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.phys.AABB;
 import purplecreate.tramways.TExtras;
 import purplecreate.tramways.Tramways;
 import purplecreate.tramways.content.signs.demands.SignDemand;
-import com.simibubi.create.content.contraptions.ITransformableBlockEntity;
+import com.simibubi.create.api.contraption.transformable.TransformableBlockEntity;
 import com.simibubi.create.content.contraptions.StructureTransform;
 import com.simibubi.create.content.trains.track.TrackTargetingBehaviour;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
-import com.simibubi.create.foundation.utility.NBTHelper;
+import net.createmod.catnip.nbt.NBTHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
@@ -20,7 +21,7 @@ import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.List;
 
-public class TramSignBlockEntity extends SmartBlockEntity implements ITransformableBlockEntity {
+public class TramSignBlockEntity extends SmartBlockEntity implements TransformableBlockEntity {
   TrackTargetingBehaviour<TramSignPoint> edgePoint;
 
   private static final ResourceLocation DEFAULT_DEMAND_ID = Tramways.rl("speed");
@@ -46,8 +47,9 @@ public class TramSignBlockEntity extends SmartBlockEntity implements ITransforma
     behaviours.add(edgePoint = new TrackTargetingBehaviour<>(this, TExtras.EdgePointTypes.TRAM_SIGN));
   }
 
-  public void transform(StructureTransform transform) {
-    edgePoint.transform(transform);
+  @Override
+  public void transform(BlockEntity be, StructureTransform transform) {
+    edgePoint.transform(be, transform);
   }
 
   public SignDemand getDemand() {

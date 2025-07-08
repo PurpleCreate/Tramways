@@ -1,13 +1,13 @@
 package purplecreate.tramways.content.stationDeco.nameSign;
 
-import com.jozufozu.flywheel.core.PartialModel;
-import com.jozufozu.flywheel.util.transform.TransformStack;
+import dev.engine_room.flywheel.lib.model.baked.PartialModel;
+import dev.engine_room.flywheel.lib.transform.TransformStack;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.simibubi.create.foundation.blockEntity.renderer.SmartBlockEntityRenderer;
 import com.simibubi.create.foundation.model.BakedModelHelper;
-import com.simibubi.create.foundation.render.BakedModelRenderHelper;
-import com.simibubi.create.foundation.utility.AngleHelper;
-import com.simibubi.create.foundation.utility.RegisteredObjects;
+import net.createmod.catnip.platform.CatnipServices;
+import net.createmod.catnip.render.SuperBufferFactory;
+import net.createmod.catnip.math.AngleHelper;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
@@ -121,23 +121,23 @@ public class NameSignRenderer extends SmartBlockEntityRenderer<NameSignBlockEnti
       woodenInnerA.get(),
       s -> getSpriteOnSide(wood, Direction.UP)
     );
-    BakedModelRenderHelper.standardModelRender(modelA, ref)
+    SuperBufferFactory.getInstance().createForBlock(modelA, ref)
       .light(light)
       .renderInto(ms, buffer.getBuffer(RenderType.solid()));
 
     // b (block, rotated)
     ms.pushPose();
 
-    TransformStack.cast(ms)
-      .centre()
-      .rotateY(AngleHelper.horizontalAngle(direction))
-      .unCentre();
+    TransformStack.of(ms)
+      .center()
+      .rotateYDegrees(AngleHelper.horizontalAngle(direction))
+      .uncenter();
 
     BakedModel modelB = BakedModelHelper.generateModel(
       woodenInnerB.get(),
       s -> getSpriteOnSide(wood, Direction.UP)
     );
-    BakedModelRenderHelper.standardModelRender(modelB, ref)
+    SuperBufferFactory.getInstance().createForBlock(modelB, ref)
       .light(light)
       .renderInto(ms, buffer.getBuffer(RenderType.solid()));
 
@@ -159,7 +159,7 @@ public class NameSignRenderer extends SmartBlockEntityRenderer<NameSignBlockEnti
     boolean extended = state.getValue(NameSignBlock.EXTENDED);
 
     NameSignInfo.Entry nameSignInfo = NameSignInfo.get(
-      RegisteredObjects.getKeyOrThrow(state.getBlock())
+      CatnipServices.REGISTRIES.getKeyOrThrow(state.getBlock())
     );
 
     renderWoodenInner(be.wood, be.getBlockState(), facing, light, ms, buffer);
@@ -170,10 +170,10 @@ public class NameSignRenderer extends SmartBlockEntityRenderer<NameSignBlockEnti
     for (Direction direction : List.of(facing, facing.getOpposite())) {
       ms.pushPose();
       float extendedTranslation = direction == facing ? 1 / 2f : -1 / 2f;
-      TransformStack.cast(ms)
-        .centre()
-        .rotateY(AngleHelper.horizontalAngle(direction))
-        .unCentre()
+      TransformStack.of(ms)
+        .center()
+        .rotateYDegrees(AngleHelper.horizontalAngle(direction))
+        .uncenter()
         .translate(extended ? extendedTranslation : 0, 0, 11.01 / 16f);
       renderText(
         nameSignInfo.forceCenteredIf(extended),

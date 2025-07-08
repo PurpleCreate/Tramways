@@ -7,15 +7,14 @@ import purplecreate.tramways.Tramways;
 import purplecreate.tramways.content.signs.demands.SignDemand;
 import purplecreate.tramways.content.signs.network.SaveSignSettingsC2SPacket;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.simibubi.create.foundation.gui.AbstractSimiScreen;
+import net.createmod.catnip.gui.AbstractSimiScreen;
 import com.simibubi.create.foundation.gui.AllGuiTextures;
 import com.simibubi.create.foundation.gui.ModularGuiLine;
 import com.simibubi.create.foundation.gui.ModularGuiLineBuilder;
-import com.simibubi.create.foundation.gui.element.GuiGameElement;
-import com.simibubi.create.foundation.gui.widget.AbstractSimiWidget;
+import net.createmod.catnip.gui.element.GuiGameElement;
+import net.createmod.catnip.gui.widget.AbstractSimiWidget;
 import com.simibubi.create.foundation.gui.widget.Label;
 import com.simibubi.create.foundation.gui.widget.ScrollInput;
-import com.simibubi.create.foundation.utility.Components;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -23,7 +22,6 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -58,13 +56,13 @@ public class TramSignSettingsScreen extends AbstractSimiScreen {
   }
 
   private MutableComponent getDemandComponent(ResourceLocation id) {
-    if (id == null) return Components.empty();
-    return Components.translatable(id.getNamespace() + ".sign_demand." + id.getPath());
+    if (id == null) return Component.empty();
+    return Component.translatable(id.getNamespace() + ".sign_demand." + id.getPath());
   }
 
   @Override
   protected void init() {
-    setWindowSize(background.width, background.height);
+    setWindowSize(background.getWidth(), background.getHeight());
     super.init();
 
     removeWidget(demandInput);

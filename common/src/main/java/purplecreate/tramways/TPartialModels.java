@@ -1,6 +1,6 @@
 package purplecreate.tramways;
 
-import com.jozufozu.flywheel.core.PartialModel;
+import dev.engine_room.flywheel.lib.model.baked.PartialModel;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
@@ -18,7 +18,7 @@ public class TPartialModels {
   public static final PartialModel SIGN_WOODEN_INNER_B = load("block/station_name_sign/wooden_inner_b");
 
   private static PartialModel load(String path) {
-    return new PartialModel(Tramways.rl(path));
+    return PartialModel.of(Tramways.rl(path));
   }
 
   public static void register() {}

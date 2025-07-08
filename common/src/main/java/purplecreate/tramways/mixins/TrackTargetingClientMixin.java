@@ -1,6 +1,6 @@
 package purplecreate.tramways.mixins;
 
-import com.jozufozu.flywheel.util.transform.TransformStack;
+import dev.engine_room.flywheel.lib.transform.TransformStack;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.simibubi.create.content.trains.graph.EdgePointType;
 import com.simibubi.create.content.trains.graph.TrackGraphLocation;
@@ -8,7 +8,7 @@ import com.simibubi.create.content.trains.track.BezierTrackPointLocation;
 import com.simibubi.create.content.trains.track.TrackTargetingBehaviour;
 import com.simibubi.create.content.trains.track.TrackTargetingBlockItem;
 import com.simibubi.create.content.trains.track.TrackTargetingClient;
-import com.simibubi.create.foundation.render.SuperRenderTypeBuffer;
+import net.createmod.catnip.render.SuperRenderTypeBuffer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
@@ -42,7 +42,7 @@ public class TrackTargetingClientMixin {
       BlockPos pos = lastHovered;
 
       ms.pushPose();
-      TransformStack.cast(ms)
+      TransformStack.of(ms)
         .translate(Vec3.atLowerCornerOf(pos).subtract(camera));
       TrackTargetingBehaviour.render(
         mc.level,

@@ -13,6 +13,7 @@ public class TramwaysImpl {
     IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
     Tramways.init();
+    Tramways.REGISTRATE.registerEventListeners(modEventBus);
     TCreativeTabsImpl.register(modEventBus);
     modEventBus.addListener(this::commonSetup);
     modEventBus.addListener(this::clientSetup);

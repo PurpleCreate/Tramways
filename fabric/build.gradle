@@ -33,18 +33,6 @@ configurations {
   developmentFabric.extendsFrom common
 }
 
-repositories {
-  // mavens for Fabric-exclusives
-  maven { url = "https://api.modrinth.com/maven" } // LazyDFU
-  maven { url = "https://maven.terraformersmc.com/releases/" } // Mod Menu
-  maven { url = "https://mvn.devos.one/snapshots/" } // Create Fabric, Porting Lib, Forge Tags, Milk Lib, Registrate Fabric
-  maven { url = "https://mvn.devos.one/releases/" } // Porting Lib Releases
-  maven { url = "https://raw.githubusercontent.com/Fuzss/modresources/main/maven/" } // Forge Config API Port
-  maven { url = "https://maven.jamieswhiteshirt.com/libs-release" } // Reach Entity Attributes
-  maven { url = "https://jitpack.io/" } // Mixin Extras, Fabric ASM
-  maven { url = 'https://mvn.devos.one/snapshots' } // Steam 'n' Rails
-}
-
 configurations.configureEach {
   resolutionStrategy {
     force("net.fabricmc:fabric-loader:${fabric_loader_version}")
@@ -69,7 +57,7 @@ dependencies {
   modLocalRuntime("com.terraformersmc:modmenu:${modmenu_version}")
 
   // Compat
-  modCompileOnly("com.railwayteam.railways:Steam_Rails-fabric-${minecraft_version}:${railways_fabric_version}") { transitive = false }
+  //modCompileOnly("com.railwayteam.railways:Steam_Rails-fabric-${minecraft_version}:${railways_fabric_version}") { transitive = false }
   //modLocalRuntime("com.railwayteam.railways:Steam_Rails-fabric-${minecraft_version}:${railways_fabric_version}") { transitive = false }
 
   switch (fabric_recipe_viewer.toLowerCase(Locale.ROOT)) {
@@ -90,7 +78,7 @@ processResources {
     "fabric_api_version", fabric_api_version,
     "minecraft_version", minecraft_version,
     "create_version", create_fabric_version,
-    "railways_version", railways_fabric_version.split("\\+")[0]
+    //"railways_version", railways_fabric_version.split("\\+")[0]
   )
   properties.forEach((k, v) -> inputs.property(k, v))
 

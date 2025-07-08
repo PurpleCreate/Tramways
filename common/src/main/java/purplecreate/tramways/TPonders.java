@@ -1,23 +1,32 @@
 package purplecreate.tramways;
 
-import com.simibubi.create.foundation.ponder.PonderRegistrationHelper;
-import purplecreate.tramways.compat.Mods;
+import com.tterrag.registrate.util.entry.ItemProviderEntry;
+import com.tterrag.registrate.util.entry.RegistryEntry;
+import net.createmod.ponder.api.registration.PonderPlugin;
+import net.createmod.ponder.api.registration.PonderSceneRegistrationHelper;
+import net.minecraft.resources.ResourceLocation;
 import purplecreate.tramways.ponder.SpeakerScenes;
 import purplecreate.tramways.ponder.TramSignScenes;
 import purplecreate.tramways.ponder.TramSignalScenes;
 
-public class TPonders {
-  private static final PonderRegistrationHelper HELPER = new PonderRegistrationHelper(Tramways.ID);
+public class TPonders implements PonderPlugin {
+  @Override
+  public String getModId() {
+    return Tramways.ID;
+  }
 
-  public static void register() {
+  @Override
+  public void registerScenes(PonderSceneRegistrationHelper<ResourceLocation> helper) {
+    PonderSceneRegistrationHelper<ItemProviderEntry<?>> HELPER = helper.withKeyFunction(RegistryEntry::getId);
+
     HELPER
       .forComponents(TBlocks.TRAM_SIGNAL)
       .addStoryBoard("tram_signal/track_signals", TramSignalScenes::trackSignals);
 
-    if (Mods.RAILWAYS.loaded())
+    /*if (Mods.RAILWAYS.loaded())
       HELPER
         .forComponents(TBlocks.TRAM_SIGNAL)
-        .addStoryBoard("tram_signal/track_switches", TramSignalScenes::trackSwitches);
+        .addStoryBoard("tram_signal/track_switches", TramSignalScenes::trackSwitches);*/
 
     HELPER
       .forComponents(TBlocks.TRAM_SIGN, TBlocks.RAILWAY_SIGN)

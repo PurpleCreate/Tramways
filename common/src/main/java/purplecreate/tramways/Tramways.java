@@ -1,10 +1,12 @@
 package purplecreate.tramways;
 
 import com.google.gson.JsonSyntaxException;
+import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.tterrag.registrate.Registrate;
+import net.createmod.ponder.foundation.PonderIndex;
+import net.minecraft.network.chat.Component;
 import purplecreate.tramways.config.Config;
 import com.mojang.logging.LogUtils;
-import com.simibubi.create.foundation.utility.Components;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import org.slf4j.Logger;
@@ -12,12 +14,12 @@ import purplecreate.tramways.util.Env;
 
 import java.io.IOException;
 
-import static com.simibubi.create.foundation.utility.Lang.resolveBuilders;
+import static net.createmod.catnip.lang.LangBuilder.resolveBuilders;
 
 public class Tramways {
   public static final String ID = "tramways";
-  public static final Registrate REGISTRATE =
-    Registrate.create(ID)
+  public static final CreateRegistrate REGISTRATE =
+    CreateRegistrate.create(ID)
       .defaultCreativeTab(TCreativeTabs.getBaseTab());
   public static final Logger LOGGER = LogUtils.getLogger();
 
@@ -45,11 +47,11 @@ public class Tramways {
   }
 
   public static void clientSetup() {
-    TPonders.register();
+    PonderIndex.addPlugin(new TPonders());
   }
 
   public static MutableComponent translatable(String path, Object... o) {
-    return Components.translatable(Tramways.ID + "." + path, resolveBuilders(o));
+    return Component.translatable(Tramways.ID + "." + path, resolveBuilders(o));
   }
 
   public static ResourceLocation rl(String path) {
