@@ -1,5 +1,6 @@
 package purplecreate.tramways.content.announcements;
 
+import com.simibubi.create.AllDisplaySources;
 import com.simibubi.create.content.redstone.displayLink.DisplayLinkContext;
 import com.simibubi.create.api.behaviour.display.DisplayTarget;
 import com.simibubi.create.content.redstone.displayLink.target.DisplayTargetStats;
@@ -39,7 +40,7 @@ public class SpeakerDisplayTarget extends DisplayTarget {
     String id = config.getString("Id");
     String filter = config.getString("Filter");
 
-    if (id.equals("create:track_station_source_station_summary")) {
+    if (id.equals(AllDisplaySources.STATION_SUMMARY.getId().toString())) {
       List<GlobalTrainDisplayData.TrainDeparturePrediction> predictions =
         GlobalTrainDisplayData.prepare(filter, 5);
 
