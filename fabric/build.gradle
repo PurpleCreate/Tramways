@@ -56,10 +56,6 @@ dependencies {
   modLocalRuntime("maven.modrinth:lazydfu:${lazydfu_version}")
   modLocalRuntime("com.terraformersmc:modmenu:${modmenu_version}")
 
-  // Compat
-  //modCompileOnly("com.railwayteam.railways:Steam_Rails-fabric-${minecraft_version}:${railways_fabric_version}") { transitive = false }
-  //modLocalRuntime("com.railwayteam.railways:Steam_Rails-fabric-${minecraft_version}:${railways_fabric_version}") { transitive = false }
-
   switch (fabric_recipe_viewer.toLowerCase(Locale.ROOT)) {
     case "jei": modLocalRuntime("mezz.jei:jei-${minecraft_version}-fabric:${jei_version}"); break
     case "rei": modLocalRuntime("me.shedaniel:RoughlyEnoughItems-fabric:${rei_version}"); break

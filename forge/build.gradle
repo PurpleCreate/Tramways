@@ -43,10 +43,6 @@ dependencies {
 
   // Development QOL
   modLocalRuntime("mezz.jei:jei-${minecraft_version}-forge:${jei_version}") { transitive = false }
-
-  // Compat
-  //modCompileOnly("com.railwayteam.railways:Steam_Rails-forge-${minecraft_version}:${railways_forge_version}") { transitive = false }
-  //modLocalRuntime("com.railwayteam.railways:Steam_Rails-forge-${minecraft_version}:${railways_forge_version}") { transitive = false }
 }
 
 processResources {
