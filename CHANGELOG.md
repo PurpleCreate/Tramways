@@ -1,6 +1,8 @@
-**⚠️ THIS VERSION DOES NOT SUPPORT CREATE 6.0.0 OR ABOVE, TRAMWAYS WILL SUPPORT CREATE 6 IN THE FUTURE ⚠️**
+## ♻️ Changes
 
-## 🔨 Fixes
+- Create 6.0.6 support
 
-- Update to CRN 0.8.0 ([#10](https://github.com/PurpleCreate/Tramways/issues/10))
-- Fix logic issue when deciding when to start slowing for speed limit
+## 🌐 Translations
+
+- Added Polish translation (by Craft1User)
+- Added Swedish translation (by DanteMinecraft)
