@@ -103,8 +103,13 @@ tasks.create("publishTramways") {
   var platform = System.getenv("PLATFORM")
 
   switch (platform) {
-    case "all" -> dependsOn tasks.build, ":fabric:publishMods", ":forge:publishMods"
-    case "fabric", "forge" -> dependsOn "${platform}:build", "${platform}:publishMods"
+    case "all":
+      dependsOn tasks.build, ":fabric:publishMods", ":forge:publishMods"
+      break
+    case "fabric":
+    case "forge":
+      dependsOn "${platform}:build", "${platform}:publishMods"
+      break
   }
 }
 
