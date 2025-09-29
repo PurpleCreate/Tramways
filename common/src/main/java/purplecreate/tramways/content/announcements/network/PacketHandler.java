@@ -6,11 +6,13 @@ import net.minecraft.client.sounds.AudioStream;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
+import purplecreate.tramways.Tramways;
 import purplecreate.tramways.config.MessageConfig;
 import purplecreate.tramways.content.announcements.sound.FragmentAudioStream;
 import purplecreate.tramways.content.announcements.sound.MP3AudioStream;
 import purplecreate.tramways.content.announcements.util.TTSFileManager;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -24,7 +26,26 @@ public class PacketHandler {
         try {
           return new MP3AudioStream(stream);
         } catch (IOException e) {
-          throw new RuntimeException(e);
+          File file = TTSFileManager.instance.getFile(voice, content.getMessage().get(0));
+
+          if (file.delete()) {
+            Tramways.LOGGER.warn(
+              "{}: {} Successfully deleted rogue file. ({})",
+              e.getClass().getName(),
+              e.getLocalizedMessage(),
+              file.getName()
+            );
+          } else {
+            file.deleteOnExit();
+            Tramways.LOGGER.warn(
+              "{}: {} Could not delete rogue file. Deletion queued for when VM terminates. ({})",
+              e.getClass().getName(),
+              e.getLocalizedMessage(),
+              file.getName()
+            );
+          }
+
+          return null;
         }
       case "files":
         ResourceManager manager = Minecraft.getInstance().getResourceManager();

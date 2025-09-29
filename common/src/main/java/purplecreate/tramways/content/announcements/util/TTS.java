@@ -9,6 +9,7 @@ import java.net.http.WebSocket;
 import java.nio.ByteBuffer;
 import java.util.Arrays;
 import java.util.UUID;
+import java.util.concurrent.CompletionException;
 import java.util.concurrent.CompletionStage;
 import java.util.concurrent.CountDownLatch;
 import java.util.function.Consumer;
@@ -98,15 +99,22 @@ public class TTS {
   }
 
   public void start() {
-    WebSocket ws = HttpClient
-      .newHttpClient()
-      .newWebSocketBuilder()
-      .header("Origin", "chrome-extension://jdiccldimpdaibmpdkjnbmckianbfold")
-      .header("Pragma", "no-cache")
-      .header("Cache-Control", "no-cache")
-      .header("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.74 Safari/537.36 Edg/99.0.1150.55")
-      .buildAsync(TTS_URI, new TTSListener())
-      .join();
+    WebSocket ws;
+
+    try {
+      ws = HttpClient
+        .newHttpClient()
+        .newWebSocketBuilder()
+        .header("Origin", "chrome-extension://jdiccldimpdaibmpdkjnbmckianbfold")
+        .header("Pragma", "no-cache")
+        .header("Cache-Control", "no-cache")
+        .header("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.74 Safari/537.36 Edg/99.0.1150.55")
+        .buildAsync(TTS_URI, new TTSListener())
+        .join();
+    } catch (CompletionException e) {
+      onData.accept(null);
+      return;
+    }
 
     ws.sendText(generateHello(), true);
     ws.sendText(generateRequest(), true);

@@ -21,7 +21,7 @@ public class TTSFileManager {
   }
 
   public InputStream cachedStream(String voice, String content) {
-    File file = new File(folder, getFileName(voice, content));
+    File file = getFile(voice, content);
 
     if (file.exists()) {
       try {
@@ -73,5 +73,9 @@ public class TTSFileManager {
   private String getFileName(String voice, String content) {
     String contentHash = HexFormat.of().formatHex(getDigest().digest(content.getBytes(StandardCharsets.UTF_8)));
     return voice + "-" + contentHash + ".mp3";
+  }
+
+  public File getFile(String voice, String content) {
+    return new File(folder, getFileName(voice, content));
   }
 }
