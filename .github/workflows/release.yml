@@ -1,5 +1,14 @@
 name: Release
-on: [workflow_dispatch] # Manual trigger
+on:
+  workflow_dispatch:
+    inputs:
+      platform:
+        type: choice
+        description: Platform
+        options:
+          - all
+          - fabric
+          - forge
 
 permissions:
   contents: write
@@ -17,3 +26,4 @@ jobs:
         env:
           CURSEFORGE_TOKEN: ${{ secrets.CURSEFORGE_TOKEN }}
           MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
+          PLATFORM: ${{ inputs.platform }}

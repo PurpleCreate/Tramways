@@ -100,7 +100,12 @@ allprojects {
 }
 
 tasks.create("publishTramways") {
-  dependsOn tasks.build, ":fabric:publishMods", ":forge:publishMods"
+  var platform = System.getenv("PLATFORM")
+
+  switch (platform) {
+    case "all" -> dependsOn tasks.build, ":fabric:publishMods", ":forge:publishMods"
+    case "fabric", "forge" -> dependsOn "${platform}:build", "${platform}:publishMods"
+  }
 }
 
 tasks.register('javadocAll', Javadoc) {
