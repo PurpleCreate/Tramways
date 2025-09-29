@@ -1,8 +1,8 @@
-## ♻️ Changes
+## 🔨 Fixes
 
-- Create 6.0.6 support
+- Handle WebSocket/HTTP connection errors ([#15](https://github.com/PurpleCreate/Tramways/issues/15))
+- Auto-remove malformed audio files
 
 ## 🌐 Translations
 
-- Added Polish translation (by Craft1User)
-- Added Swedish translation (by DanteMinecraft)
+- Added Simplified Chinese translation (by DF5-1762)
