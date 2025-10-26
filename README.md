@@ -20,6 +20,7 @@ idea. If you do find a bug, please report it!
 
 - English
 - Polish (Craft1User)
+- Simplified Chinese (DF5-1762)
 - Swedish (DanteMinecraft)
 
 ---
