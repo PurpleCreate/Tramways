@@ -1,8 +1,10 @@
 ## 🔨 Fixes
 
-- Handle WebSocket/HTTP connection errors ([#15](https://github.com/PurpleCreate/Tramways/issues/15))
-- Auto-remove malformed audio files
+- Update stored permanent speed limit when temporary speed limit is active
+- Close MP3 stream on error so that it can properly be deleted
+- Implement Sec-MS-GEC for more reliable TTS responses
 
-## 🌐 Translations
+# ♻️ Changes
 
-- Added Simplified Chinese translation (by DF5-1762)
+- Bump Create to 6.0.7 (and for fabric too!!!!!!)
+- Bump Fabric Loader to 0.17.2
