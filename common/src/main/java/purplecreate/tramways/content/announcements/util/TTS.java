@@ -7,7 +7,10 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.WebSocket;
 import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
 import java.util.Arrays;
+import java.util.HexFormat;
 import java.util.UUID;
 import java.util.concurrent.CompletionException;
 import java.util.concurrent.CompletionStage;
@@ -16,7 +19,7 @@ import java.util.function.Consumer;
 
 public class TTS {
   private static final String TOKEN = "6A5AA1D4EAFF4E9FB37E23D68491D6F4";
-  private static final URI TTS_URI = URI.create("wss://speech.platform.bing.com/consumer/speech/synthesize/readaloud/edge/v1?trustedclienttoken=" + TOKEN);
+  private static final String SEC_VERSION = "1-130.0.2849.68";
   private static final byte[] PATH_AUDIO = new byte[]{0x50, 0x61, 0x74, 0x68, 0x3a, 0x61, 0x75, 0x64, 0x69, 0x6f, 0xd, 0xa};
 
   private final String requestId = UUID.randomUUID().toString().replace("-", "");
@@ -61,6 +64,27 @@ public class TTS {
     ).start();
 
     return in;
+  }
+
+  private URI generateURI() {
+    long time = System.currentTimeMillis();
+    long ticks = (long) (Math.floor((time / 1000.0) + 11644473600L) * 10000000);
+    long roundedTicks = ticks - (ticks % 3000000000L);
+    String plaintext = roundedTicks + TOKEN;
+    String sec = HexFormat.of().withUpperCase().formatHex(
+      Hash
+        .getSha256()
+        .digest(plaintext.getBytes(StandardCharsets.UTF_8))
+    );
+
+    return URI.create(
+      String.format(
+        "wss://speech.platform.bing.com/consumer/speech/synthesize/readaloud/edge/v1?trustedclienttoken=%s&Sec-MS-GEC=%s&Sec-MS-GEC-Version=%s",
+        TOKEN,
+        sec,
+        SEC_VERSION
+      )
+    );
   }
 
   private String generateHello() {
@@ -109,7 +133,7 @@ public class TTS {
         .header("Pragma", "no-cache")
         .header("Cache-Control", "no-cache")
         .header("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.74 Safari/537.36 Edg/99.0.1150.55")
-        .buildAsync(TTS_URI, new TTSListener())
+        .buildAsync(generateURI(), new TTSListener())
         .join();
     } catch (CompletionException e) {
       onData.accept(null);

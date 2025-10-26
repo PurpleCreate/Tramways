@@ -62,16 +62,8 @@ public class TTSFileManager {
     };
   }
 
-  private MessageDigest getDigest() {
-    try {
-      return MessageDigest.getInstance("SHA-256");
-    } catch (NoSuchAlgorithmException e) {
-      throw new RuntimeException(e);
-    }
-  }
-
   private String getFileName(String voice, String content) {
-    String contentHash = HexFormat.of().formatHex(getDigest().digest(content.getBytes(StandardCharsets.UTF_8)));
+    String contentHash = HexFormat.of().formatHex(Hash.getSha256().digest(content.getBytes(StandardCharsets.UTF_8)));
     return voice + "-" + contentHash + ".mp3";
   }
 
