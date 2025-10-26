@@ -50,7 +50,7 @@ public class TemporarySpeedSignDemand extends SpeedSignDemand {
     double s = ((v * v) - (u * u)) / (2 * a); // displacement (distance)
 
     if (
-      distance <= -s
+      distance <= Math.abs(s)
         && train instanceof ISpeedLimitableTrain speedLimitableTrain
     ) {
       speedLimitableTrain.tempSpeedLimit$set(

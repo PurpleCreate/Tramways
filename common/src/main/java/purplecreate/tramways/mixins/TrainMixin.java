@@ -58,6 +58,10 @@ public class TrainMixin implements ISpeedLimitableTrain {
     }
   }
 
+  public void tempSpeedLimit$updateActual(double throttle) {
+    tempSpeedLimit$actual = throttle;
+  }
+
   @Unique
   @Override
   public void tempSpeedLimit$restore(boolean manual) {

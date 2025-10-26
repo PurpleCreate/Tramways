@@ -49,15 +49,6 @@ public class SpeedSignDemand extends SignDemand {
 
   @Override
   public void execute(CompoundTag tag, Train train, double distance) {
-    if (train instanceof ISpeedLimitableTrain speedLimitableTrain) {
-      if (speedLimitableTrain.tempSpeedLimit$has()) {
-        tag.putBoolean("Overridden", true);
-        return;
-      }
-    }
-
-    tag.putBoolean("Overridden", false);
-
     if (SignDemand.isManual(train))
       return;
 
@@ -75,15 +66,24 @@ public class SpeedSignDemand extends SignDemand {
     double u = Math.abs(train.speed); // initial velocity
 
     if (v >= u) {
-      if (distance < 1)
-        train.throttle = nextThrottle;
+      if (distance >= 1) return;
     } else {
       float a = train.acceleration(); // acceleration
       double s = ((v * v) - (u * u)) / (2 * a); // displacement (distance)
 
-      if (distance <= Math.abs(s))
-        train.throttle = nextThrottle;
+      if (distance > Math.abs(s)) return;
     }
+
+    if (train instanceof ISpeedLimitableTrain speedLimitableTrain) {
+      if (speedLimitableTrain.tempSpeedLimit$has()) {
+        tag.putBoolean("Overridden", true);
+        speedLimitableTrain.tempSpeedLimit$updateActual(nextThrottle);
+        return;
+      }
+    }
+
+    tag.putBoolean("Overridden", false);
+    train.throttle = nextThrottle;
   }
 
   @Override
