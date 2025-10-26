@@ -26,6 +26,10 @@ public class PacketHandler {
         try {
           return new MP3AudioStream(stream);
         } catch (IOException e) {
+          try {
+            stream.close();
+          } catch (IOException e2) {}
+
           File file = TTSFileManager.instance.getFile(voice, content.getMessage().get(0));
 
           if (file.delete()) {
