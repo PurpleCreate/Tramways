@@ -52,6 +52,7 @@ processResources {
     "forge_version", forge_version.split("\\.")[0],
     "minecraft_version", minecraft_version,
     "create_version", create_forge_version.split("-")[0],
+    "create_version_range", create_forge_version_range,
   )
   properties.forEach((k, v) -> inputs.property(k, v))
 

@@ -74,7 +74,7 @@ processResources {
     "fabric_api_version", fabric_api_version,
     "minecraft_version", minecraft_version,
     "create_version", create_fabric_version,
-    //"railways_version", railways_fabric_version.split("\\+")[0]
+    "create_version_range", create_fabric_version_range,
   )
   properties.forEach((k, v) -> inputs.property(k, v))
 
