@@ -23,6 +23,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import purplecreate.tramways.mixinInterfaces.ITram;
 import purplecreate.tramways.mixinInterfaces.IStopRequestableNavigation;
 
 import java.util.List;
@@ -54,7 +55,7 @@ public abstract class NavigationMixin implements IStopRequestableNavigation {
     tramways$routeCancelled = false;
   }
 
-  @Inject(method = "lambda$tick$0", at = @At("HEAD"))
+  @Inject(method = "lambda$tick$0", at = @At("HEAD"), cancellable = true)
   private void tramways$tickSign(MutableObject<Pair<UUID, Boolean>> trackingCrossSignal,
                                      double scanDistance,
                                      MutableDouble crossSignalDistanceTracker,
@@ -63,8 +64,11 @@ public abstract class NavigationMixin implements IStopRequestableNavigation {
                                      Pair<TrackEdgePoint, Couple<TrackNode>> couple,
                                      CallbackInfoReturnable<Boolean> cir) {
     if (couple.getFirst() instanceof TramSignPoint sign) {
-      TrackNode node = couple.getSecond().getSecond();
-      sign.updateTrain(train, node, distance);
+      if (train instanceof ITram tram) {
+        TrackNode node = couple.getSecond().getSecond();
+        tram.tramways$putSign(sign.id, sign.isPrimary(node), distance);
+        cir.setReturnValue(false);
+      }
     }
   }
 

@@ -17,23 +17,12 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import purplecreate.tramways.TBlockEntities;
-import purplecreate.tramways.Tramways;
 import purplecreate.tramways.content.signs.demands.SignDemand;
 
 import java.util.*;
 
 public class TramSignPoint extends TrackEdgePoint {
   private Couple<Set<SignData>> sides = Couple.create(HashSet::new);
-  private final Couple<Map<Train, Double>> queue = Couple.create(HashMap::new);
-
-  public void updateTrain(Train train, TrackNode node, double distance) {
-    queue.get(isPrimary(node)).put(train, distance);
-  }
-
-  public void removeTrain(Train train, TrackNode node) {
-    queue.get(isPrimary(node)).remove(train);
-  }
 
   public SignData getSignData(BlockPos pos) {
     for (boolean front : Iterate.trueAndFalse) {
@@ -46,49 +35,17 @@ public class TramSignPoint extends TrackEdgePoint {
     return null;
   }
 
+  public Set<SignData> getSignData(boolean primary) {
+    return sides.get(primary);
+  }
+
   public void updateSignData(BlockPos pos, SignDemand demand, CompoundTag demandExtra) {
     for (boolean front : Iterate.trueAndFalse) {
       for (SignData sign : sides.get(front)) {
         if (!sign.pos.equals(pos)) continue;
-        sign.shouldMigrate = false;
         sign.demand = demand;
         sign.demandExtra = demandExtra;
         return;
-      }
-    }
-  }
-
-  public void iterateQueue(Level level) {
-    for (boolean front : Iterate.trueAndFalse) {
-      if (edgeLocation.get(front).dimension != level.dimension())
-        continue;
-
-      for (SignData sign : new HashSet<>(sides.get(front))) {
-        if (sign.shouldMigrate) {
-          sign.shouldMigrate = false;
-
-          level
-            .getBlockEntity(sign.pos, TBlockEntities.TRAM_SIGN.get())
-            .ifPresentOrElse(
-              (be) -> {
-                sign.demand = be.getDemand();
-                sign.demandExtra = be.getDemandExtra();
-
-                Tramways.LOGGER.info("Successfully migrated tram sign at {}", sign.pos);
-              },
-              () -> {
-                Tramways.LOGGER.info("Couldn't migrate tram sign at {}", sign.pos);
-                invalidateAt(level, sign.pos);
-                sides.get(front).remove(sign);
-              }
-            );
-
-          continue;
-        }
-
-        queue.get(front).forEach((train, distance) -> {
-          sign.demand.execute(sign.demandExtra, train, distance);
-        });
       }
     }
   }
@@ -204,7 +161,6 @@ public class TramSignPoint extends TrackEdgePoint {
   }
 
   public static class SignData {
-    boolean shouldMigrate = false;
     BlockPos pos;
     SignDemand demand;
     CompoundTag demandExtra;
@@ -225,14 +181,12 @@ public class TramSignPoint extends TrackEdgePoint {
         : null;
     }
 
+    public SignDemand.Result execute(Train train, double distance) {
+      return demand.execute(demandExtra, train, distance);
+    }
+
     public void read(CompoundTag posTag, CompoundTag dataTag) {
       pos = NbtUtils.readBlockPos(posTag);
-
-      if (dataTag.isEmpty()) {
-        Tramways.LOGGER.info("Going to try migrating tram sign at {}", pos);
-        shouldMigrate = true;
-        return;
-      }
 
       if (dataTag.contains("Demand"))
         demand = SignDemand.demands.get(NBTHelper.readResourceLocation(dataTag, "Demand"));

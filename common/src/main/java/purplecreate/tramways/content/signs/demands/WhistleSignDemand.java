@@ -36,11 +36,11 @@ public class WhistleSignDemand extends SignDemand {
   }
 
   @Override
-  public void execute(CompoundTag tag, Train train, double distance) {
-    if (SignDemand.isManual(train))
-      return;
+  public Result execute(CompoundTag tag, Train train, double distance) {
+    if (!SignDemand.isManual(train))
+      sendWhistlePacket(train, distance < 30 && distance > 0);
 
-    sendWhistlePacket(train, distance < 30 && distance > 0);
+    return null;
   }
 
   @Override

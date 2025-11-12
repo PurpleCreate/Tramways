@@ -15,6 +15,7 @@ import net.minecraft.world.item.ItemStack;
 import purplecreate.tramways.TPartialModels;
 import purplecreate.tramways.content.signs.TramSignBlock;
 
+import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -146,7 +147,10 @@ public abstract class SignDemand {
    * @param tag The settings for your demand
    * @param train The train running past the sign
    */
-  public void execute(CompoundTag tag, Train train, double distance) {}
+  @Nullable
+  public Result execute(CompoundTag tag, Train train, double distance) {
+    return null;
+  }
 
   /**
    * <p>Use this to render text or symbols on the sign</p>
@@ -158,4 +162,25 @@ public abstract class SignDemand {
    */
   @Environment(EnvType.CLIENT)
   public void render(TramSignBlock.SignType signType, CompoundTag tag, PoseStack ms, MultiBufferSource buffer, int light, int overlay) {}
+
+  public static class Result {
+    public Double permanent = null;
+    public Double temporary = null;
+    public boolean restorePermanent = false;
+
+    public Result setPermanent(double throttle) {
+      this.permanent = throttle;
+      return this;
+    }
+
+    public Result startTemporary(double throttle) {
+      this.temporary = throttle;
+      return this;
+    }
+
+    public Result restorePermanent() {
+      this.restorePermanent = true;
+      return this;
+    }
+  }
 }

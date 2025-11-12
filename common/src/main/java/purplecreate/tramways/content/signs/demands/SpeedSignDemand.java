@@ -11,7 +11,7 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
 import purplecreate.tramways.content.signs.TramSignBlock;
-import purplecreate.tramways.mixinInterfaces.ISpeedLimitableTrain;
+import purplecreate.tramways.mixinInterfaces.ITram;
 
 public class SpeedSignDemand extends SignDemand {
   @Override
@@ -48,15 +48,15 @@ public class SpeedSignDemand extends SignDemand {
   }
 
   @Override
-  public void execute(CompoundTag tag, Train train, double distance) {
+  public Result execute(CompoundTag tag, Train train, double distance) {
     if (SignDemand.isManual(train))
-      return;
+      return null;
 
     double nextThrottle = tag.getInt("Throttle") / 100d;
 
     // Ensure the throttle does not exceed the primary throttle
-    if (train instanceof ISpeedLimitableTrain speedLimitableTrain) {
-      double primaryLimit = speedLimitableTrain.primaryLimit$get();
+    if (train instanceof ITram tram) {
+      double primaryLimit = tram.tramways$getPrimaryLimit();
       if (nextThrottle > primaryLimit) {
         nextThrottle = primaryLimit;
       }
@@ -66,24 +66,17 @@ public class SpeedSignDemand extends SignDemand {
     double u = Math.abs(train.speed); // initial velocity
 
     if (v >= u) {
-      if (distance >= 1) return;
+      if (distance >= 1) return null;
     } else {
       float a = train.acceleration(); // acceleration
       double s = ((v * v) - (u * u)) / (2 * a); // displacement (distance)
 
-      if (distance > Math.abs(s)) return;
+      if (distance > Math.abs(s)) return null;
     }
 
-    if (train instanceof ISpeedLimitableTrain speedLimitableTrain) {
-      if (speedLimitableTrain.tempSpeedLimit$has()) {
-        tag.putBoolean("Overridden", true);
-        speedLimitableTrain.tempSpeedLimit$updateActual(nextThrottle);
-        return;
-      }
-    }
+    tag.putBoolean("Overridden", train instanceof ITram tram && tram.tramways$hasTemporaryLimit());
 
-    tag.putBoolean("Overridden", false);
-    train.throttle = nextThrottle;
+    return new Result().setPermanent(nextThrottle);
   }
 
   @Override

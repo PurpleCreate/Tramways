@@ -13,7 +13,7 @@ import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.item.alchemy.Potions;
 import purplecreate.tramways.TPartialModels;
 import purplecreate.tramways.content.signs.TramSignBlock;
-import purplecreate.tramways.mixinInterfaces.ISpeedLimitableTrain;
+import purplecreate.tramways.mixinInterfaces.ITram;
 
 public class TemporarySpeedSignDemand extends SpeedSignDemand {
   @Override
@@ -33,12 +33,12 @@ public class TemporarySpeedSignDemand extends SpeedSignDemand {
   }
 
   @Override
-  public void execute(CompoundTag tag, Train train, double distance) {
+  public Result execute(CompoundTag tag, Train train, double distance) {
     double nextThrottle = tag.getInt("Throttle") / 100d;
 
     // Ensure the throttle does not exceed the primary throttle
-    if (train instanceof ISpeedLimitableTrain speedLimitableTrain) {
-      double primaryLimit = speedLimitableTrain.primaryLimit$get();
+    if (train instanceof ITram tram) {
+      double primaryLimit = tram.tramways$getPrimaryLimit();
       if (nextThrottle > primaryLimit) {
         nextThrottle = primaryLimit;
       }
@@ -49,15 +49,11 @@ public class TemporarySpeedSignDemand extends SpeedSignDemand {
     float a = train.acceleration(); // acceleration
     double s = ((v * v) - (u * u)) / (2 * a); // displacement (distance)
 
-    if (
-      distance <= Math.abs(s)
-        && train instanceof ISpeedLimitableTrain speedLimitableTrain
-    ) {
-      speedLimitableTrain.tempSpeedLimit$set(
-        nextThrottle,
-        SignDemand.isManual(train)
-      );
+    if (distance <= Math.abs(s)) {
+      return new Result().startTemporary(nextThrottle);
     }
+
+    return null;
   }
 
   @Override

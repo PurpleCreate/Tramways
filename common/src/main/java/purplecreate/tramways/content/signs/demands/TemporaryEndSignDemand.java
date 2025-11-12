@@ -11,7 +11,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import purplecreate.tramways.TPartialModels;
 import purplecreate.tramways.content.signs.TramSignBlock;
-import purplecreate.tramways.mixinInterfaces.ISpeedLimitableTrain;
 
 public class TemporaryEndSignDemand extends SignDemand {
   @Override
@@ -31,13 +30,12 @@ public class TemporaryEndSignDemand extends SignDemand {
   }
 
   @Override
-  public void execute(CompoundTag tag, Train train, double distance) {
-    if (
-      distance < 1
-        && train instanceof ISpeedLimitableTrain speedLimitableTrain
-    ) {
-      speedLimitableTrain.tempSpeedLimit$restore(SignDemand.isManual(train));
+  public Result execute(CompoundTag tag, Train train, double distance) {
+    if (distance < 1) {
+      return new Result().restorePermanent();
     }
+
+    return null;
   }
 
   @Override

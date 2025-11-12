@@ -9,7 +9,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 import purplecreate.tramways.Tramways;
-import purplecreate.tramways.mixinInterfaces.ISpeedLimitableTrain;
+import purplecreate.tramways.mixinInterfaces.ITram;
 
 public class SetPrimaryLimitInstruction extends ChangeThrottleInstruction {
   @Override
@@ -29,8 +29,8 @@ public class SetPrimaryLimitInstruction extends ChangeThrottleInstruction {
 
   @Override
   public @Nullable DiscoveredPath start(ScheduleRuntime runtime, Level level) {
-    if (runtime.train instanceof ISpeedLimitableTrain speedLimitableTrain) {
-      speedLimitableTrain.primaryLimit$set(getThrottle());
+    if (runtime.train instanceof ITram tram) {
+      tram.tramways$setPrimaryLimit(getThrottle());
     }
 
     return super.start(runtime, level);
