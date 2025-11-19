@@ -74,6 +74,9 @@ public abstract class NavigationMixin implements IStopRequestableNavigation {
 
   @Inject(method = "tick", at = @At("HEAD"))
   private void tramways$tickRequestStop(Level level, CallbackInfo ci) {
+    if ((train instanceof ITram tram)) {
+      tram.tramways$clearSigns();
+    }
     Schedule schedule = train.runtime.getSchedule();
 
     if (

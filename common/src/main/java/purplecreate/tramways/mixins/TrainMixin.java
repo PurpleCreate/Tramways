@@ -13,8 +13,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import purplecreate.tramways.TExtras;
 import purplecreate.tramways.content.signs.TramSignPoint;
 import com.simibubi.create.content.trains.entity.Train;
-import com.simibubi.create.content.trains.entity.TravellingPoint;
-import com.simibubi.create.content.trains.graph.TrackNode;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -33,7 +31,7 @@ public class TrainMixin implements ITram {
   @Unique private double tramways$primaryLimit = 1;
   @Unique private Map<Pair<UUID, Boolean>, Double> tramways$signs = new HashMap<>();
 
-  @Inject(method = "earlyTick", at = @At("HEAD"))
+  @Inject(method = "tick", at = @At(value = "INVOKE", target = "Lcom/simibubi/create/content/trains/entity/Navigation;tick(Lnet/minecraft/world/level/Level;)V", shift = At.Shift.AFTER))
   private void tramways$tickSigns(Level level, CallbackInfo ci) {
     Double nextPermanent = null;
     Double nextTemporary = null;
@@ -95,33 +93,33 @@ public class TrainMixin implements ITram {
     }
   }
 
-  @Inject(method = "frontSignalListener", at = @At("RETURN"), cancellable = true)
-  private void tramways$approachTramSign(CallbackInfoReturnable<TravellingPoint.IEdgePointListener> cir) {
-    TravellingPoint.IEdgePointListener originalListener = cir.getReturnValue();
-    cir.setReturnValue((distance, couple) -> {
-      if (couple.getFirst() instanceof TramSignPoint sign) {
-        TrackNode node = couple.getSecond().getSecond();
-        tramways$putSign(sign.id, sign.isPrimary(node), 0.0);
-        return false;
-      }
+//  @Inject(method = "frontSignalListener", at = @At("RETURN"), cancellable = true)
+//  private void tramways$approachTramSign(CallbackInfoReturnable<TravellingPoint.IEdgePointListener> cir) {
+//    TravellingPoint.IEdgePointListener originalListener = cir.getReturnValue();
+//    cir.setReturnValue((distance, couple) -> {
+//      if (couple.getFirst() instanceof TramSignPoint sign) {
+//        TrackNode node = couple.getSecond().getSecond();
+//        tramways$putSign(sign.id, sign.isPrimary(node), 0.0);
+//        return false;
+//      }
+//
+//      return originalListener.test(distance, couple);
+//    });
+//  }
 
-      return originalListener.test(distance, couple);
-    });
-  }
-
-  @Inject(method = "backSignalListener", at = @At("RETURN"), cancellable = true)
-  private void tramways$passedTramSign(CallbackInfoReturnable<TravellingPoint.IEdgePointListener> cir) {
-    TravellingPoint.IEdgePointListener originalListener = cir.getReturnValue();
-    cir.setReturnValue((distance, couple) -> {
-      if (couple.getFirst() instanceof TramSignPoint sign) {
-        TrackNode node = couple.getSecond().getSecond();
-        tramways$signs.remove(Pair.of(sign.id, sign.isPrimary(node)));
-        return false;
-      }
-
-      return originalListener.test(distance, couple);
-    });
-  }
+//  @Inject(method = "backSignalListener", at = @At("RETURN"), cancellable = true)
+//  private void tramways$passedTramSign(CallbackInfoReturnable<TravellingPoint.IEdgePointListener> cir) {
+//    TravellingPoint.IEdgePointListener originalListener = cir.getReturnValue();
+//    cir.setReturnValue((distance, couple) -> {
+//      if (couple.getFirst() instanceof TramSignPoint sign) {
+//        TrackNode node = couple.getSecond().getSecond();
+//        tramways$signs.remove(Pair.of(sign.id, sign.isPrimary(node)));
+//        return false;
+//      }
+//
+//      return originalListener.test(distance, couple);
+//    });
+//  }
 
   @Inject(method = "read", at = @At("RETURN"))
   private static void tramways$readMixin(
@@ -201,5 +199,11 @@ public class TrainMixin implements ITram {
   @Override
   public void tramways$putSign(UUID id, boolean primary, double distance) {
     tramways$signs.put(Pair.of(id, primary), distance);
+  }
+
+  @Unique
+  @Override
+  public void tramways$clearSigns() {
+    tramways$signs.clear();
   }
 }

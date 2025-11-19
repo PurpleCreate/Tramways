@@ -13,4 +13,6 @@ public interface ITram {
   void tramways$putSign(UUID id, boolean primary, double distance);
 
   void tramways$read(CompoundTag tag);
+
+  void tramways$clearSigns();
 }
