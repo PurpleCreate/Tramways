@@ -31,7 +31,7 @@ public class TrainMixin implements ITram {
   @Unique private double tramways$primaryLimit = 1;
   @Unique private Map<Pair<UUID, Boolean>, Double> tramways$signs = new HashMap<>();
 
-  @Inject(method = "tick", at = @At(value = "INVOKE", target = "Lcom/simibubi/create/content/trains/entity/Navigation;tick(Lnet/minecraft/world/level/Level;)V", shift = At.Shift.AFTER))
+  @Inject(method = "tick", at = @At(value = "INVOKE", target = "Lcom/simibubi/create/content/trains/entity/Navigation;tick(Lnet/minecraft/world/level/Level;)V", shift = At.Shift.AFTER),remap = true)
   private void tramways$tickSigns(Level level, CallbackInfo ci) {
     Double nextPermanent = null;
     Double nextTemporary = null;
