@@ -8,7 +8,7 @@ loom {
 
 dependencies {
   modImplementation("net.fabricmc:fabric-loader:${fabric_loader_version}")
-  modCompileOnly("com.simibubi.create:create-fabric-${minecraft_version}:${create_fabric_version}")
+  modImplementation("com.simibubi.create:create-fabric:${create_fabric_version}-mc${minecraft_version}")
 
   implementation("javazoom:jlayer:${jlayer_version}")
 
