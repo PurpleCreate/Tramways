@@ -19,7 +19,8 @@ import java.util.function.Consumer;
 
 public class TTS {
   private static final String TOKEN = "6A5AA1D4EAFF4E9FB37E23D68491D6F4";
-  private static final String SEC_VERSION = "1-130.0.2849.68";
+  private static final String CHROMIUM_VERSION = "143.0.3650.75";
+  private static final String SEC_VERSION = "1-" + CHROMIUM_VERSION;
   private static final byte[] PATH_AUDIO = new byte[]{0x50, 0x61, 0x74, 0x68, 0x3a, 0x61, 0x75, 0x64, 0x69, 0x6f, 0xd, 0xa};
 
   private final String requestId = UUID.randomUUID().toString().replace("-", "");
@@ -67,8 +68,9 @@ public class TTS {
   }
 
   private URI generateURI() {
+    long epoch = -11644473600000L;
     long time = System.currentTimeMillis();
-    long ticks = (long) (Math.floor((time / 1000.0) + 11644473600L) * 10000000);
+    long ticks = (time - epoch) * 10000;
     long roundedTicks = ticks - (ticks % 3000000000L);
     String plaintext = roundedTicks + TOKEN;
     String sec = HexFormat.of().withUpperCase().formatHex(
@@ -132,7 +134,7 @@ public class TTS {
         .header("Origin", "chrome-extension://jdiccldimpdaibmpdkjnbmckianbfold")
         .header("Pragma", "no-cache")
         .header("Cache-Control", "no-cache")
-        .header("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.74 Safari/537.36 Edg/99.0.1150.55")
+        .header("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/%s Safari/537.36 Edg/%1$s".formatted(CHROMIUM_VERSION))
         .buildAsync(generateURI(), new TTSListener())
         .join();
     } catch (CompletionException e) {
