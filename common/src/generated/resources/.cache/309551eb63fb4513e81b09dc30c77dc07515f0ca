@@ -1,4 +1,4 @@
-// 1.21.1	2026-01-23T11:56:22.3542308	Registrate Provider for tramways [Registries, Data Maps, Recipes, Advancements, Loot Tables, Tags (blocks), Tags (enchantments), Tags (items), Tags (fluids), Tags (entity_types), generic_server_provider, Blockstates, Item models, Lang (en_us/en_ud), generic_client_provider]
+// 1.21.1	2026-01-25T22:37:48.1206954	Registrate Provider for tramways [Registries, Data Maps, Recipes, Advancements, Loot Tables, Tags (blocks), Tags (enchantments), Tags (items), Tags (fluids), Tags (entity_types), generic_server_provider, Blockstates, Item models, Lang (en_us/en_ud), generic_client_provider]
 59ac5d75e33afb57442aa32530b14d101588c701 assets/tramways/blockstates/auxiliary_sign.json
 42a7f0d2d45c00fbcdbd2ceec2492f5aa9d80193 assets/tramways/blockstates/black_station_name_sign.json
 93b9b20ed5950a922847c9bd8c5107407deb2914 assets/tramways/blockstates/blue_station_name_sign.json
@@ -21,8 +21,8 @@ e327be1aaabdefad6bf3b157cef7f552d89bb90c assets/tramways/blockstates/request_sto
 6b168a7a02889715ed2894454e1bb8508670191d assets/tramways/blockstates/tram_signal.json
 d096aa6c114fed4e8f757bb5d1bd1f7aa49e7d8b assets/tramways/blockstates/white_station_name_sign.json
 3a7ab5982eef7a35a2fcf1d15c501fda60f54013 assets/tramways/blockstates/yellow_station_name_sign.json
-726ef7d22b0297e127e504c3b3e1f649c6073691 assets/tramways/lang/en_ud.json
-ccaf26432b64a69ef4e6d437bad967f9b17b3c08 assets/tramways/lang/en_us.json
+ec95b42bf9bc5e9915b44363fe53a84b08fe07e3 assets/tramways/lang/en_ud.json
+9f268c618671a82c352e7340c98025e90870b04b assets/tramways/lang/en_us.json
 147861e2043920a41f09d0799257798cafb26bcb assets/tramways/models/block/request_stop_button/normal.json
 e811acc15e9dc36465c23302f7fa9f68a36e2d36 assets/tramways/models/block/request_stop_button/pressed.json
 ea420ccc92adf3cd631b9c4ca8c0e1b75b386c80 assets/tramways/models/block/station_name_sign/black.json
