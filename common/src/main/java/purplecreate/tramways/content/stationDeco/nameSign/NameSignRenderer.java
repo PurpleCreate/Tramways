@@ -5,7 +5,6 @@ import dev.engine_room.flywheel.lib.transform.TransformStack;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.simibubi.create.foundation.blockEntity.renderer.SmartBlockEntityRenderer;
 import com.simibubi.create.foundation.model.BakedModelHelper;
-import net.createmod.catnip.platform.CatnipServices;
 import net.createmod.catnip.render.SuperBufferFactory;
 import net.createmod.catnip.math.AngleHelper;
 import net.fabricmc.api.EnvType;
@@ -19,6 +18,7 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.Direction;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.state.BlockState;
 import purplecreate.tramways.TPartialModels;
@@ -159,7 +159,7 @@ public class NameSignRenderer extends SmartBlockEntityRenderer<NameSignBlockEnti
     boolean extended = state.getValue(NameSignBlock.EXTENDED);
 
     NameSignInfo.Entry nameSignInfo = NameSignInfo.get(
-      CatnipServices.REGISTRIES.getKeyOrThrow(state.getBlock())
+      BuiltInRegistries.BLOCK.getKey(state.getBlock())
     );
 
     renderWoodenInner(be.wood, be.getBlockState(), facing, light, ms, buffer);

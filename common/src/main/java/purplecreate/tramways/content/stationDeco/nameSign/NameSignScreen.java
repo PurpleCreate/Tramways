@@ -2,7 +2,6 @@ package purplecreate.tramways.content.stationDeco.nameSign;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.createmod.catnip.gui.AbstractSimiScreen;
-import net.createmod.catnip.platform.CatnipServices;
 import com.tterrag.registrate.util.entry.BlockEntry;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -68,7 +67,7 @@ public class NameSignScreen extends AbstractSimiScreen {
     this.background =
       (extended ? extendedTextureMap : textureMap).get(BuiltInRegistries.BLOCK.getKey(block));
     this.nameSignInfo =
-      NameSignInfo.get(CatnipServices.REGISTRIES.getKeyOrThrow(block)).forceCenteredIf(extended);
+      NameSignInfo.get(BuiltInRegistries.BLOCK.getKey(block)).forceCenteredIf(extended);
   }
 
   @Override

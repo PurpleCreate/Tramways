@@ -1,0 +1,134 @@
+plugins {
+  id "com.github.johnrengelman.shadow" version "8.1.1"
+}
+
+architectury {
+  platformSetupLoomIde()
+  neoForge()
+}
+
+loom {
+  accessWidenerPath = project(":common").loom.accessWidenerPath
+
+  runs {
+    create("datagen") {
+      data()
+
+      name = "Minecraft Data"
+      programArgs("--all", "--mod", "${mod_id}")
+      programArgs("--output", project(":common").file("src/generated/resources").absolutePath)
+      programArgs("--existing", project(":common").file("src/main/resources").absolutePath)
+      programArgs("--existing-mod", "create")
+
+      environmentVariable("DATAGEN", "TRUE")
+    }
+  }
+}
+
+configurations {
+  common
+  shadowCommon // Don't use shadow from the shadow plugin because we don't want IDEA to index this.
+  compileClasspath.extendsFrom common
+  runtimeClasspath.extendsFrom common
+  developmentNeoForge.extendsFrom common
+}
+
+dependencies {
+  neoForge("net.neoforged:neoforge:${neoforge_version}")
+  common(project(path: ":common", configuration: "namedElements")) { transitive = false }
+  shadowCommon(project(path: ":common", configuration: "transformProductionNeoForge")) { transitive = false }
+
+  forgeRuntimeLibrary(implementation(shadowCommon("javazoom:jlayer:${jlayer_version}")))
+
+  // Create and its dependencies
+  modImplementation("com.simibubi.create:create-${minecraft_version}:${create_forge_version}:slim") { transitive = false }
+  modImplementation("com.tterrag.registrate:Registrate:${registrate_forge_version}")
+  modImplementation("net.createmod.ponder:ponder-neoforge:${ponder_forge_version}+mc${minecraft_version}")
+  modCompileOnly("dev.engine-room.flywheel:flywheel-neoforge-api-${minecraft_version}:${flywheel_forge_version}")
+  modRuntimeOnly("dev.engine-room.flywheel:flywheel-neoforge-${minecraft_version}:${flywheel_forge_version}")
+
+  // Development QOL
+  modLocalRuntime("mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}") { transitive = false }
+  modLocalRuntime("com.github.jab125.architectury-data-generation-fix:architectury-data-generation-fix-neoforge:21.0.3")
+}
+
+processResources {
+  Map<String, String> properties = Map.of(
+    "mod_id", mod_id,
+    "version", mod_version,
+    "neoforge_version", neoforge_version.split("\\.")[0],
+    "minecraft_version", minecraft_version,
+    "create_version", create_forge_version.split("-")[0],
+    "create_version_range", create_forge_version_range,
+  )
+  properties.forEach((k, v) -> inputs.property(k, v))
+
+  filesMatching("META-INF/neoforge.mods.toml") {
+    expand properties
+  }
+}
+
+shadowJar {
+  exclude "fabric.mod.json"
+  exclude "architectury.common.json"
+
+  configurations = [project.configurations.shadowCommon]
+  archiveClassifier = "dev-shadow"
+
+  relocate("javazoom.jl", "purplecreate.tramways.javazoom.jl")
+}
+
+remapJar {
+  injectAccessWidener = true
+  input.set shadowJar.archiveFile
+  dependsOn shadowJar
+  archiveClassifier = null
+  atAccessWideners.add(loom.accessWidenerPath.get().asFile.name)
+}
+
+jar {
+  archiveClassifier = "dev"
+}
+
+sourcesJar {
+  def commonSources = project(":common").sourcesJar
+  dependsOn commonSources
+  from commonSources.archiveFile.map { zipTree(it) }
+}
+
+components.java {
+  withVariantsFromConfiguration(project.configurations.shadowRuntimeElements) {
+    skip()
+  }
+}
+
+publishMods {
+  type = STABLE
+  file = tasks.remapJar.archiveFile
+  version.set("${minecraft_version}-${mod_version}-neoforge")
+  changelog = rootProject.file("CHANGELOG.md").text
+
+  curseforge {
+    displayName = version.get()
+    projectId = curseforge_id
+    accessToken = System.getenv("CURSEFORGE_TOKEN")
+    minecraftVersions.add(minecraft_version)
+    modLoaders.add("neoforge")
+
+    requires("create")
+    optional("create-steam-n-rails")
+    optional("create-railways-navigator")
+  }
+
+  modrinth {
+    displayName = "Create: Tramways ${mod_version} NeoForge"
+    projectId = modrinth_id
+    accessToken = System.getenv("MODRINTH_TOKEN")
+    minecraftVersions.add(minecraft_version)
+    modLoaders.add("neoforge")
+
+    requires("create")
+    optional("create-steam-n-rails")
+    optional("create-railways-navigator")
+  }
+}

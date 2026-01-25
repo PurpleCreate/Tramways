@@ -1,10 +1,11 @@
 package purplecreate.tramways.content.signs.demands;
 
+import com.simibubi.create.content.trains.HonkPacket;
 import dev.engine_room.flywheel.lib.model.baked.PartialModel;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.content.trains.entity.Train;
-import dev.architectury.injectables.annotations.ExpectPlatform;
+import net.createmod.catnip.platform.CatnipServices;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -14,9 +15,8 @@ import purplecreate.tramways.TPartialModels;
 import purplecreate.tramways.content.signs.TramSignBlock;
 
 public class WhistleSignDemand extends SignDemand {
-  @ExpectPlatform
   public static void sendWhistlePacket(Train train, boolean isHonk) {
-    throw new AssertionError();
+    CatnipServices.NETWORK.sendToAllClients(new HonkPacket.Clientbound(train, isHonk));
   }
 
   @Override

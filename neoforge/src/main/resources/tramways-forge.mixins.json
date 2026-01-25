@@ -1,0 +1,12 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "purplecreate.tramways.mixins.neoforge",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "ConnectedGirderModelMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

@@ -6,10 +6,11 @@ import com.simibubi.create.foundation.gui.ModularGuiLineBuilder;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.alchemy.PotionUtils;
+import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.item.alchemy.Potions;
 import purplecreate.tramways.TPartialModels;
 import purplecreate.tramways.Tramways;
@@ -19,7 +20,7 @@ public class AdvanceWarningAuxSignDemand extends AuxSignDemand {
   @Override
   @Environment(EnvType.CLIENT)
   public ItemStack getIcon() {
-    return PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.SLOWNESS);
+    return PotionContents.createItemStack(Items.POTION, Potions.SLOWNESS);
   }
 
   @Override

@@ -21,11 +21,11 @@ import purplecreate.tramways.content.requestStop.RequestStopServer;
 
 public class RequestStopButtonBlock extends ButtonBlock implements IBE<RequestStopButtonBlockEntity>, IWrenchable {
   public RequestStopButtonBlock(Properties properties) {
-    super(properties, BlockSetType.STONE, 0, false);
+    super(BlockSetType.STONE, 0, properties);
   }
 
   @Override
-  public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+  protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
     if (state.getValue(POWERED))
       return InteractionResult.CONSUME;
 

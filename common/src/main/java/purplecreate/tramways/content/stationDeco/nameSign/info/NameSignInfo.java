@@ -29,7 +29,7 @@ public class NameSignInfo implements ResourceManagerReloadListener {
       .listMatchingResources(manager)
       .forEach((location, resource) -> {
         String[] pathParts = location.getPath().split("/");
-        ResourceLocation id = new ResourceLocation(
+        ResourceLocation id = ResourceLocation.fromNamespaceAndPath(
           location.getNamespace(),
           pathParts[pathParts.length - 1].replace(".json", "")
         );

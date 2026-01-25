@@ -4,6 +4,7 @@ import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllItems;
 import com.tterrag.registrate.providers.RegistrateRecipeProvider;
 import com.tterrag.registrate.util.entry.BlockEntry;
+import net.minecraft.advancements.Criterion;
 import net.minecraft.advancements.critereon.InventoryChangeTrigger;
 import net.minecraft.advancements.critereon.ItemPredicate;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -26,7 +27,7 @@ import purplecreate.tramways.content.stationDeco.nameSign.NameSignBlock;
 import static com.tterrag.registrate.providers.RegistrateRecipeProvider.inventoryTrigger;
 
 public class GenRecipes {
-  private static InventoryChangeTrigger.TriggerInstance unlockedByItem(ItemLike item) {
+  private static Criterion<InventoryChangeTrigger.TriggerInstance> unlockedByItem(ItemLike item) {
     return inventoryTrigger(
       ItemPredicate.Builder
         .item()
@@ -35,7 +36,7 @@ public class GenRecipes {
     );
   }
 
-  private static InventoryChangeTrigger.TriggerInstance unlockedByItemTag(TagKey<Item> tag) {
+  private static Criterion<InventoryChangeTrigger.TriggerInstance> unlockedByItemTag(TagKey<Item> tag) {
     return inventoryTrigger(
       ItemPredicate.Builder
         .item()
@@ -107,7 +108,7 @@ public class GenRecipes {
     for (BlockEntry<NameSignBlock> block : TBlocks.STATION_NAME_SIGNS) {
       String name = block.getId().getPath();
       String color = name.substring(0, name.length() - 18);
-      ResourceLocation dye = new ResourceLocation(color + "_dye");
+      ResourceLocation dye = ResourceLocation.withDefaultNamespace(color + "_dye");
 
       ShapelessRecipeBuilder
         .shapeless(RecipeCategory.DECORATIONS, block)

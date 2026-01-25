@@ -17,7 +17,7 @@ public class TPonders implements PonderPlugin {
 
   @Override
   public void registerScenes(PonderSceneRegistrationHelper<ResourceLocation> helper) {
-    PonderSceneRegistrationHelper<ItemProviderEntry<?>> HELPER = helper.withKeyFunction(RegistryEntry::getId);
+    PonderSceneRegistrationHelper<ItemProviderEntry<?, ?>> HELPER = helper.withKeyFunction(RegistryEntry::getId);
 
     HELPER
       .forComponents(TBlocks.TRAM_SIGNAL)

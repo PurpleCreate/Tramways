@@ -2,12 +2,14 @@ package purplecreate.tramways.content.requestStop.station;
 
 import com.simibubi.create.content.trains.station.StationBlockEntity;
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -27,10 +29,10 @@ public class RequestStopButtonItem extends BlockItem {
     if (player == null)
       return InteractionResult.FAIL;
 
-    if (player.isShiftKeyDown() && stack.hasTag()) {
+    if (player.isShiftKeyDown() && stack.has(DataComponents.BLOCK_ENTITY_DATA)) {
       if (level.isClientSide)
         return InteractionResult.SUCCESS;
-      stack.setTag(null);
+      stack.remove(DataComponents.BLOCK_ENTITY_DATA);
       player.displayClientMessage(Tramways.translatable("request_stop.targeting.clear"), true);
       return InteractionResult.SUCCESS;
     }
@@ -42,12 +44,12 @@ public class RequestStopButtonItem extends BlockItem {
       CompoundTag beTag = new CompoundTag();
       beTag.put("LinkedStation", NbtUtils.writeBlockPos(context.getClickedPos()));
       tag.put("BlockEntityTag", beTag);
-      stack.setTag(tag);
+      stack.set(DataComponents.BLOCK_ENTITY_DATA, CustomData.of(tag));
       player.displayClientMessage(Tramways.translatable("request_stop.targeting.set"), true);
       return InteractionResult.SUCCESS;
     }
 
-    if (!stack.hasTag()) {
+    if (!stack.has(DataComponents.BLOCK_ENTITY_DATA)) {
       player.displayClientMessage(
         Tramways.translatable("request_stop.targeting.no_tag")
           .withStyle(ChatFormatting.RED),
@@ -62,7 +64,7 @@ public class RequestStopButtonItem extends BlockItem {
 
     ItemStack itemInHand = player.getItemInHand(context.getHand());
     if (!itemInHand.isEmpty())
-      itemInHand.setTag(null);
+      itemInHand.remove(DataComponents.BLOCK_ENTITY_DATA);
 
     return result;
   }

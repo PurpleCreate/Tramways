@@ -9,7 +9,7 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.alchemy.PotionUtils;
+import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.item.alchemy.Potions;
 import purplecreate.tramways.TPartialModels;
 import purplecreate.tramways.content.signs.TramSignBlock;
@@ -19,7 +19,7 @@ public class TemporarySpeedSignDemand extends SpeedSignDemand {
   @Override
   @Environment(EnvType.CLIENT)
   public ItemStack getIcon() {
-    return PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.SLOWNESS);
+    return PotionContents.createItemStack(Items.POTION, Potions.SLOWNESS);
   }
 
   @Override

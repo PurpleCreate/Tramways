@@ -1,6 +1,6 @@
 plugins {
   id "architectury-plugin" version "3.4-SNAPSHOT"
-  id "dev.architectury.loom" version "1.7-SNAPSHOT" apply false
+  id "dev.architectury.loom" version "1.11-SNAPSHOT" apply false
   id "io.github.p03w.machete" version "1.+" // automatic jar compressing on build
   id "me.modmuss50.mod-publish-plugin" version "0.7.4" apply false
 }
@@ -71,10 +71,11 @@ allprojects {
   version = "${mod_version}-mc${minecraft_version}-${project.name}" + (buildNumber != null ? "-${buildNumber}" : "")
 
   repositories {
+    maven { url = "https://maven.neoforged.net/releases/" }
     maven { url = "https://maven.createmod.net/" }
-    maven { url = "https://maven.tterrag.com" }
-    maven { url = "https://mvn.devos.one/snapshots/" }
-    maven { url = "https://mvn.devos.one/releases/" }
+    maven { url = "https://maven.ithundxr.dev/snapshots" }
+    //maven { url = "https://mvn.devos.one/snapshots/" }
+    //maven { url = "https://mvn.devos.one/releases/" }
     maven { url = "https://api.modrinth.com/maven" }
     maven { url = "https://jitpack.io/" }
     maven { url = "https://maven.jamieswhiteshirt.com/libs-release" }
@@ -104,10 +105,10 @@ tasks.create("publishTramways") {
 
   switch (platform) {
     case "all":
-      dependsOn tasks.build, ":fabric:publishMods", ":forge:publishMods"
+      dependsOn tasks.build, ":fabric:publishMods", ":neoforge:publishMods"
       break
     case "fabric":
-    case "forge":
+    case "neoforge":
       dependsOn "${platform}:build", "${platform}:publishMods"
       break
   }

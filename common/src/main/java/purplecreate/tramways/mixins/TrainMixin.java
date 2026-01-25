@@ -5,6 +5,7 @@ import com.simibubi.create.content.trains.graph.DimensionPalette;
 import com.simibubi.create.content.trains.graph.TrackGraph;
 import net.createmod.catnip.data.Pair;
 import net.createmod.catnip.nbt.NBTHelper;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Shadow;
@@ -124,6 +125,7 @@ public class TrainMixin implements ITram {
   @Inject(method = "read", at = @At("RETURN"))
   private static void tramways$readMixin(
     CompoundTag tag,
+    HolderLookup.Provider registries,
     Map<UUID, TrackGraph> trackNetworks,
     DimensionPalette dimensions,
     CallbackInfoReturnable<Train> cir,
@@ -155,6 +157,7 @@ public class TrainMixin implements ITram {
   @Inject(method = "write", at = @At("RETURN"))
   private void tramways$write(
     DimensionPalette dimensions,
+    HolderLookup.Provider registries,
     CallbackInfoReturnable<CompoundTag> cir,
     @Local CompoundTag tag
   ) {

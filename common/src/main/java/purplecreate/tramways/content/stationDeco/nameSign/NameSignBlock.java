@@ -1,5 +1,6 @@
 package purplecreate.tramways.content.stationDeco.nameSign;
 
+import com.mojang.serialization.MapCodec;
 import com.simibubi.create.AllShapes;
 import com.simibubi.create.foundation.block.IBE;
 import net.createmod.catnip.gui.ScreenOpener;
@@ -11,7 +12,9 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -32,6 +35,7 @@ import purplecreate.tramways.util.Env;
 import java.util.List;
 
 public class NameSignBlock extends HorizontalDirectionalBlock implements IBE<NameSignBlockEntity> {
+  private static final MapCodec<NameSignBlock> CODEC = simpleCodec(NameSignBlock::new);
   public static final BooleanProperty EXTENDED = BlockStateProperties.EXTENDED;
 
   public static final VoxelShaper shape =
@@ -45,15 +49,21 @@ public class NameSignBlock extends HorizontalDirectionalBlock implements IBE<Nam
   }
 
   @Override
-  public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-    if (player.getItemInHand(hand).isEmpty()) {
-      Env.unsafeRunWhenOn(Env.CLIENT, () -> () ->
-        openScreen(level, pos)
-      );
-      return InteractionResult.SUCCESS;
-    }
+  protected MapCodec<? extends HorizontalDirectionalBlock> codec() {
+    return CODEC;
+  }
 
-    return onBlockEntityUse(level, pos, (be) -> be.applyItem(player.getItemInHand(hand)));
+  @Override
+  protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
+    Env.unsafeRunWhenOn(Env.CLIENT, () -> () ->
+      openScreen(level, pos)
+    );
+    return InteractionResult.SUCCESS;
+  }
+
+  @Override
+  protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
+    return onBlockEntityUseItemOn(level, pos, (be) -> be.applyItem(stack));
   }
 
   @Environment(EnvType.CLIENT)

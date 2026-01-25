@@ -1,5 +1,5 @@
 plugins {
-  id "com.github.johnrengelman.shadow" version "7.1.2"
+  id "com.github.johnrengelman.shadow" version "8.1.1"
 }
 
 architectury {
@@ -9,20 +9,6 @@ architectury {
 
 loom {
   accessWidenerPath = project(":common").loom.accessWidenerPath
-
-  runs {
-    data {
-      client()
-
-      name = "Minecraft Data"
-      vmArg("-Dfabric-api.datagen")
-      vmArg("-Dfabric-api.datagen.modid=${mod_id}")
-      vmArg("-Dfabric-api.datagen.output-dir=${project(":common").file("src/generated/resources")}")
-      vmArg("-Dporting_lib.datagen.existing_resources=${project(":common").file("src/main/resources")}")
-
-      environmentVariable("DATAGEN", "TRUE")
-    }
-  }
 }
 
 configurations {
@@ -50,7 +36,7 @@ dependencies {
   implementation(shadowCommon("javazoom:jlayer:${jlayer_version}"))
 
   // Create - dependencies are added transitively
-  modImplementation("com.simibubi.create:create-fabric:${create_fabric_version}-mc${minecraft_version}")
+  //modImplementation("com.simibubi.create:create-fabric:${create_fabric_version}-mc${minecraft_version}")
 
   // Development QOL
   modLocalRuntime("maven.modrinth:lazydfu:${lazydfu_version}")
@@ -118,11 +104,11 @@ components.java {
 publishMods {
   type = STABLE
   file = tasks.remapJar.archiveFile
-  version.set(mod_version)
+  version.set("${minecraft_version}-${mod_version}-fabric")
   changelog = rootProject.file("CHANGELOG.md").text
 
   curseforge {
-    displayName = "${mod_version} Fabric"
+    displayName = version.get()
     projectId = curseforge_id
     accessToken = System.getenv("CURSEFORGE_TOKEN")
     minecraftVersions.add(minecraft_version)

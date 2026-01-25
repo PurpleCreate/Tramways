@@ -7,8 +7,10 @@ import com.simibubi.create.content.trains.station.StationBlockEntity;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import net.createmod.catnip.lang.LangBuilder;
+import net.createmod.catnip.nbt.NBTHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.chat.Component;
@@ -117,17 +119,17 @@ public class RequestStopButtonBlockEntity extends SmartBlockEntity implements IH
   }
 
   @Override
-  protected void read(CompoundTag tag, boolean clientPacket) {
-    super.read(tag, clientPacket);
-    linkedStation = NbtUtils.readBlockPos(tag.getCompound("LinkedStation"));
+  protected void read(CompoundTag tag, HolderLookup.Provider registries, boolean clientPacket) {
+    super.read(tag, registries, clientPacket);
+    linkedStation = NBTHelper.readBlockPos(tag, "LinkedStation");
     nearestTrain = tag.getBoolean("NearestTrain");
-    nearestTrainName = Component.Serializer.fromJson(tag.getString("NearestTrainName"));
+    nearestTrainName = Component.Serializer.fromJson(tag.getString("NearestTrainName"), registries);
     nearestTrainTerminus = tag.getString("NearestTrainTerminus");
   }
 
   @Override
-  protected void write(CompoundTag tag, boolean clientPacket) {
-    super.write(tag, clientPacket);
+  protected void write(CompoundTag tag, HolderLookup.Provider registries, boolean clientPacket) {
+    super.write(tag, registries, clientPacket);
 
     if (linkedStation != null)
       tag.put("LinkedStation", NbtUtils.writeBlockPos(linkedStation));
@@ -138,7 +140,8 @@ public class RequestStopButtonBlockEntity extends SmartBlockEntity implements IH
       Component.Serializer.toJson(
         nearestTrain && nearestTrainName != null
           ? nearestTrainName
-          : Component.empty()
+          : Component.empty(),
+        registries
       )
     );
     tag.putString(

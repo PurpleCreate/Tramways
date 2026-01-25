@@ -1,5 +1,6 @@
 package purplecreate.tramways.content.signals;
 
+import com.mojang.serialization.MapCodec;
 import com.simibubi.create.content.equipment.wrench.IWrenchable;
 import purplecreate.tramways.TBlockEntities;
 import com.simibubi.create.AllShapes;
@@ -19,10 +20,16 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
 public class TramSignalBlock extends HorizontalDirectionalBlock implements IBE<TramSignalBlockEntity>, IWrenchable {
+  private static final MapCodec<TramSignalBlock> CODEC = simpleCodec(TramSignalBlock::new);
   public static final EnumProperty<TramSignalState> STATE = EnumProperty.create("state", TramSignalState.class);
 
   public TramSignalBlock(Properties properties) {
     super(properties);
+  }
+
+  @Override
+  protected MapCodec<? extends HorizontalDirectionalBlock> codec() {
+    return CODEC;
   }
 
   @Override

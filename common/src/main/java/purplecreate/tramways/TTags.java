@@ -26,7 +26,7 @@ public class TTags {
   private static TagKey<Item> createItemTag(String namespace, String path) {
     return TagKey.create(
       BuiltInRegistries.ITEM.key(),
-      new ResourceLocation(namespace, path)
+      ResourceLocation.fromNamespaceAndPath(namespace, path)
     );
   }
 
@@ -37,7 +37,7 @@ public class TTags {
   private static TagKey<Block> createBlockTag(String namespace, String path) {
     return TagKey.create(
       BuiltInRegistries.BLOCK.key(),
-      new ResourceLocation(namespace, path)
+      ResourceLocation.fromNamespaceAndPath(namespace, path)
     );
   }
 

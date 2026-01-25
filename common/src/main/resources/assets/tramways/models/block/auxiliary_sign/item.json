@@ -1,6 +1,6 @@
 {
   "parent": "block/block",
-  "loader": "forge:obj",
+  "loader": "neoforge:obj",
   "porting_lib:loader": "porting_lib:obj",
   "model": "tramways:models/block/auxiliary_sign/item.obj",
   "flip_v": true,

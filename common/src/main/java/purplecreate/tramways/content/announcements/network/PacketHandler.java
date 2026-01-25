@@ -1,8 +1,8 @@
 package purplecreate.tramways.content.announcements.network;
 
-import com.mojang.blaze3d.audio.OggAudioStream;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.sounds.AudioStream;
+import net.minecraft.client.sounds.JOrbisAudioStream;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
@@ -56,7 +56,7 @@ public class PacketHandler {
         List<AudioStream> streams = new ArrayList<>();
 
         for (String part : content.getMessage()) {
-          List<Resource> resources = manager.getResourceStack(new ResourceLocation(part));
+          List<Resource> resources = manager.getResourceStack(ResourceLocation.tryParse(part));
 
           if (resources.isEmpty())
             continue;
@@ -66,7 +66,7 @@ public class PacketHandler {
             if (part.endsWith(".mp3"))
               streams.add(new MP3AudioStream(resourceStream));
             else if (part.endsWith(".ogg"))
-              streams.add(new OggAudioStream(resourceStream));
+              streams.add(new JOrbisAudioStream(resourceStream));
           } catch (IOException e) {
           }
         }

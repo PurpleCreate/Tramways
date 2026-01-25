@@ -3,6 +3,7 @@ package purplecreate.tramways;
 import dev.architectury.injectables.annotations.ExpectPlatform;
 import io.netty.buffer.Unpooled;
 import net.minecraft.client.Minecraft;
+import net.minecraft.network.DisconnectionDetails;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
@@ -55,9 +56,11 @@ public class TNetworking {
         return;
 
       mc.getConnection().onDisconnect(
-        Component.literal(
-          "Create: Tramways network versions do not match! Server expected %s, client has %s"
-            .formatted(serverVersion, TNetworking.VERSION)
+        new DisconnectionDetails(
+          Component.literal(
+            "Create: Tramways network versions do not match! Server expected %s, client has %s"
+              .formatted(serverVersion, TNetworking.VERSION)
+          )
         )
       );
     }

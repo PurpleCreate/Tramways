@@ -1,5 +1,6 @@
 package purplecreate.tramways.content.announcements;
 
+import com.mojang.serialization.MapCodec;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
 import purplecreate.tramways.TNetworking;
@@ -22,11 +23,17 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
 public class SpeakerBlock extends DirectionalBlock implements IWrenchable {
+  private static final MapCodec<SpeakerBlock> CODEC = simpleCodec(SpeakerBlock::new);
   private static final VoxelShaper SHAPE =
     new AllShapes.Builder(box(2, 0, 2, 14, 1, 14)).forDirectional();
 
   public SpeakerBlock(Properties properties) {
     super(properties);
+  }
+
+  @Override
+  protected MapCodec<? extends DirectionalBlock> codec() {
+    return CODEC;
   }
 
   @Override

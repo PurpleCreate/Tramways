@@ -7,15 +7,23 @@ loom {
 }
 
 dependencies {
+  // these three fix things
+  compileOnly("net.neoforged:neoforge:${neoforge_version}")
+  compileOnly("com.google.code.findbugs:jsr305:3.0.2")
+
   modImplementation("net.fabricmc:fabric-loader:${fabric_loader_version}")
-  modImplementation("com.simibubi.create:create-fabric:${create_fabric_version}-mc${minecraft_version}")
+  //modImplementation("com.simibubi.create:create-fabric:${create_fabric_version}-mc${minecraft_version}")
+  // we'll use create neoforge on common for now
+  modImplementation("com.simibubi.create:create-${minecraft_version}:${create_forge_version}:slim") { transitive = false }
+  modImplementation("com.tterrag.registrate:Registrate:${registrate_forge_version}")
+  modImplementation("net.createmod.ponder:ponder-neoforge:${ponder_forge_version}+mc${minecraft_version}")
+  modCompileOnly("dev.engine-room.flywheel:flywheel-neoforge-api-${minecraft_version}:${flywheel_forge_version}")
+  modRuntimeOnly("dev.engine-room.flywheel:flywheel-neoforge-${minecraft_version}:${flywheel_forge_version}")
 
   implementation("javazoom:jlayer:${jlayer_version}")
 
-  annotationProcessor(implementation("io.github.llamalad7:mixinextras-common:${mixin_extras_version}"))
-
   // Compat
-  modCompileOnly("com.railwayteam.railways:Steam_Rails-common-${minecraft_version}:${railways_common_version}") { transitive = false }
+  //modCompileOnly("com.railwayteam.railways:Steam_Rails-common-${minecraft_version}:${railways_common_version}") { transitive = false }
   modCompileOnly("maven.modrinth:create-railways-navigator:${crn_fabric_version}")
   modCompileOnly("de.mrjulsen.mcdragonlib:dragonlib-fabric:${minecraft_version}-${dragonlib_version}")
 }

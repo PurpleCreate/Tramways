@@ -34,7 +34,7 @@ public enum Mods {
   }
 
   public ResourceLocation rl(String path) {
-    return new ResourceLocation(id, path);
+    return ResourceLocation.fromNamespaceAndPath(id, path);
   }
 
   public Block getBlock(String path) {

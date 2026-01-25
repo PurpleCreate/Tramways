@@ -1,6 +1,7 @@
 package purplecreate.tramways.content.signs;
 
 import com.simibubi.create.content.trains.signal.SignalBlockEntity;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.phys.AABB;
@@ -142,8 +143,8 @@ public class TramSignBlockEntity extends SmartBlockEntity implements Transformab
   }
 
   @Override
-  protected void read(CompoundTag tag, boolean clientPacket) {
-    super.read(tag, clientPacket);
+  protected void read(CompoundTag tag, HolderLookup.Provider registries, boolean clientPacket) {
+    super.read(tag, registries, clientPacket);
 
     overlay = NBTHelper.readEnum(tag, "Overlay", SignalBlockEntity.OverlayState.class);
 
@@ -159,8 +160,8 @@ public class TramSignBlockEntity extends SmartBlockEntity implements Transformab
   }
 
   @Override
-  protected void write(CompoundTag tag, boolean clientPacket) {
-    super.write(tag, clientPacket);
+  protected void write(CompoundTag tag, HolderLookup.Provider registries, boolean clientPacket) {
+    super.write(tag, registries, clientPacket);
 
     NBTHelper.writeEnum(
       tag,
@@ -178,6 +179,9 @@ public class TramSignBlockEntity extends SmartBlockEntity implements Transformab
 
   @Override
   protected AABB createRenderBoundingBox() {
-    return new AABB(worldPosition, edgePoint.getGlobalPosition()).inflate(2);
+    return new AABB(
+      worldPosition.getCenter(),
+      edgePoint.getGlobalPosition().getCenter()
+    ).inflate(2);
   }
 }

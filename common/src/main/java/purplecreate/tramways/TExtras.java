@@ -1,5 +1,6 @@
 package purplecreate.tramways;
 
+import com.simibubi.create.api.behaviour.display.DisplayTarget;
 import com.simibubi.create.content.trains.graph.EdgePointType;
 
 import com.simibubi.create.content.trains.schedule.destination.ScheduleInstruction;
@@ -50,7 +51,7 @@ public class TExtras {
   }
 
   public static class DisplayTargets {
-    public static final RegistryEntry<SpeakerDisplayTarget> SPEAKER = Tramways.REGISTRATE.displayTarget("speaker", SpeakerDisplayTarget::new).register();
+    public static final RegistryEntry<DisplayTarget, SpeakerDisplayTarget> SPEAKER = Tramways.REGISTRATE.displayTarget("speaker", SpeakerDisplayTarget::new).register();
 
     public static void register() {}
   }

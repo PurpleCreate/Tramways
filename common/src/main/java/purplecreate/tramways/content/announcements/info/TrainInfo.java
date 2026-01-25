@@ -36,7 +36,7 @@ public class TrainInfo {
   }
 
   public boolean travellingToWaypoint(ScheduleInstruction instruction) {
-    return instruction.getId().equals(new ResourceLocation("railways", "waypoint_destination"));
+    return instruction.getId().equals(ResourceLocation.fromNamespaceAndPath("railways", "waypoint_destination"));
   }
 
   private List<StationInfo> getCallingAt() {

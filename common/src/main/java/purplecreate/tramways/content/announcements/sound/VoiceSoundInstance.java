@@ -17,7 +17,7 @@ public class VoiceSoundInstance extends AbstractSoundInstance {
 
   protected VoiceSoundInstance(AudioStream stream, BlockPos pos) {
     super(
-      new ResourceLocation("minecraft", "ambient.cave"),
+      ResourceLocation.fromNamespaceAndPath("minecraft", "ambient.cave"),
       SoundSource.BLOCKS,
       RandomSource.create()
     );
@@ -35,6 +35,6 @@ public class VoiceSoundInstance extends AbstractSoundInstance {
 
   @Override
   public Sound getSound() {
-    return new Sound(sound.getPath().getPath(), sound.getVolume(), sound.getPitch(), sound.getWeight(), Sound.Type.FILE, true, false, 16);
+    return new Sound(sound.getPath(), sound.getVolume(), sound.getPitch(), sound.getWeight(), Sound.Type.FILE, true, false, 16);
   }
 }

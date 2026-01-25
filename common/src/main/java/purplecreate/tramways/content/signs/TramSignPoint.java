@@ -10,6 +10,7 @@ import net.createmod.catnip.data.Couple;
 import net.createmod.catnip.data.Iterate;
 import net.createmod.catnip.nbt.NBTHelper;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtUtils;
@@ -18,6 +19,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import purplecreate.tramways.content.signs.demands.SignDemand;
+import purplecreate.tramways.util.NBT;
 
 import java.util.*;
 
@@ -114,8 +116,8 @@ public class TramSignPoint extends TrackEdgePoint {
   }
 
   @Override
-  public void read(CompoundTag tag, boolean migration, DimensionPalette dimensions) {
-    super.read(tag, migration, dimensions);
+  public void read(CompoundTag tag, HolderLookup.Provider registries, boolean migration, DimensionPalette dimensions) {
+    super.read(tag, registries, migration, dimensions);
 
     if (migration) return;
 
@@ -138,8 +140,8 @@ public class TramSignPoint extends TrackEdgePoint {
   }
 
   @Override
-  public void write(CompoundTag tag, DimensionPalette dimensions) {
-    super.write(tag, dimensions);
+  public void write(CompoundTag tag, HolderLookup.Provider registries, DimensionPalette dimensions) {
+    super.write(tag, registries, dimensions);
 
     for (boolean front : Iterate.trueAndFalse) {
       ListTag posList = new ListTag();
@@ -186,7 +188,7 @@ public class TramSignPoint extends TrackEdgePoint {
     }
 
     public void read(CompoundTag posTag, CompoundTag dataTag) {
-      pos = NbtUtils.readBlockPos(posTag);
+      pos = NBT.readBlockPosOld(posTag);
 
       if (dataTag.contains("Demand"))
         demand = SignDemand.demands.get(NBTHelper.readResourceLocation(dataTag, "Demand"));
@@ -195,7 +197,7 @@ public class TramSignPoint extends TrackEdgePoint {
     }
 
     public void write(CompoundTag posTag, CompoundTag dataTag) {
-      posTag.merge(NbtUtils.writeBlockPos(pos));
+      posTag.merge(NBT.writeBlockPosOld(pos));
 
       if (demand != null)
         NBTHelper.writeResourceLocation(dataTag, "Demand", demand.id);

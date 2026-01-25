@@ -5,11 +5,12 @@ import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.chat.FormattedText;
 import net.minecraft.network.chat.Style;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Blocks;
@@ -45,25 +46,25 @@ public class NameSignBlockEntity extends SmartBlockEntity {
     return safe.subList(0, 4);
   }
 
-  public InteractionResult applyItem(ItemStack stack) {
+  public ItemInteractionResult applyItem(ItemStack stack) {
     if (stack.getItem() instanceof BlockItem blockItem) {
       BlockState wood = blockItem.getBlock().defaultBlockState();
       if (wood == this.wood)
-        return InteractionResult.PASS;
+        return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
       if (!wood.is(TTags.NAME_SIGN_INNER))
-        return InteractionResult.PASS;
+        return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
       if (level.isClientSide())
-        return InteractionResult.SUCCESS;
+        return ItemInteractionResult.SUCCESS;
       this.wood = wood;
       notifyUpdate();
-      return InteractionResult.SUCCESS;
+      return ItemInteractionResult.SUCCESS;
     }
-    return InteractionResult.PASS;
+    return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
   }
 
   @Override
-  protected void read(CompoundTag tag, boolean clientPacket) {
-    super.read(tag, clientPacket);
+  protected void read(CompoundTag tag, HolderLookup.Provider registries, boolean clientPacket) {
+    super.read(tag, registries, clientPacket);
     wood = NbtUtils.readBlockState(blockHolderGetter(), tag.getCompound("Wood"));
 
     if (!tag.contains("Text")) {
@@ -82,8 +83,8 @@ public class NameSignBlockEntity extends SmartBlockEntity {
   }
 
   @Override
-  protected void write(CompoundTag tag, boolean clientPacket) {
-    super.write(tag, clientPacket);
+  protected void write(CompoundTag tag,HolderLookup.Provider registries,  boolean clientPacket) {
+    super.write(tag, registries, clientPacket);
     tag.put("Wood", NbtUtils.writeBlockState(wood));
     List<String> lines = getLinesSafe();
     for (int i = 0; i < 4; i++)

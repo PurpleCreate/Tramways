@@ -1,0 +1,45 @@
+modLoader="javafml"
+loaderVersion = "[4,)"
+issueTrackerURL="https://github.com/PurpleCreate/Tramways"
+license="MIT"
+
+[[mods]]
+modId="${mod_id}"
+version="${version}"
+displayName="Create: Tramways"
+authors="Purple Create, C1200"
+description='''
+Create: Tramways adds a bunch of tram-related features. These features mainly
+relate to signalling and signage used on UK tramways and railways.
+
+a Purple Create mod
+'''
+logoFile="logo.png"
+displayURL="https://modrinth.com/mod/tramways"
+updateJSONURL="https://api.modrinth.com/updates/tramways/forge_updates.json"
+
+[[dependencies.${mod_id}]]
+    modId="neoforge"
+    type = "required"
+    versionRange = "[${neoforge_version},)"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.${mod_id}]]
+    modId="minecraft"
+    type = "required"
+    versionRange = "[${minecraft_version}]"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.${mod_id}]]
+    modId="create"
+    type = "required"
+    versionRange="${create_version_range}"
+    ordering="NONE"
+    side="BOTH"
+
+[[mixins]]
+    config = "tramways-common.mixins.json"
+[[mixins]]
+    config = "tramways-forge.mixins.json"

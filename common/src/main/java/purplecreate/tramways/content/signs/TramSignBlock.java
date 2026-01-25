@@ -1,5 +1,6 @@
 package purplecreate.tramways.content.signs;
 
+import com.mojang.serialization.MapCodec;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.world.level.Level;
@@ -22,13 +23,18 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
-import purplecreate.tramways.util.Env;
 
 public class TramSignBlock extends HorizontalDirectionalBlock implements IBE<TramSignBlockEntity>, IWrenchable {
   public enum SignType {
-    TRAM,
-    RAILWAY,
-    AUXILIARY,
+    TRAM(simpleCodec(TramSignBlock::newTramSign)),
+    RAILWAY(simpleCodec(TramSignBlock::newRailwaySign)),
+    AUXILIARY(simpleCodec(TramSignBlock::newAuxiliarySign));
+
+    public final MapCodec<TramSignBlock> codec;
+
+    SignType(MapCodec<TramSignBlock> codec) {
+      this.codec = codec;
+    }
   }
 
   public final SignType signType;
@@ -48,6 +54,11 @@ public class TramSignBlock extends HorizontalDirectionalBlock implements IBE<Tra
 
   public static TramSignBlock newAuxiliarySign(Properties properties) {
     return new TramSignBlock(SignType.AUXILIARY, properties);
+  }
+
+  @Override
+  protected MapCodec<? extends HorizontalDirectionalBlock> codec() {
+    return signType.codec;
   }
 
   @Override
