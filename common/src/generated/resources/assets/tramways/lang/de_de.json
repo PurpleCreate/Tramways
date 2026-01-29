@@ -46,7 +46,7 @@
   "tramways.ponder.tram_signs_speed_limit.text_3": "Sollte er schneller werden dürfen, tut er dies nachdem er das Schild gänzlich passiert hat",
   "tramways.ponder.tram_signs_temporary_limits.header": "Vorschriftsschild: temporäres Geschwindigkeitslimit",
   "tramways.ponder.tram_signs_temporary_limits.text_1": "Das temporäre Geschwindigkeitslimitschild ändert das Geschwindigkeitslimit eines automatischen Zuges",
-  "tramways.ponder.tram_signs_temporary_limits.text_2": "Diese Limit ist aktiv, bis ein Endschild erreicht wird",
+  "tramways.ponder.tram_signs_temporary_limits.text_2": "Dieses Limit ist aktiv, bis ein Endschild erreicht wird",
   "tramways.ponder.tram_signs_temporary_limits.text_3": "Wenn das Endschild erreicht ist, fährt der Zug mit dessen vorherigen Geschwindigkeit weiter",
   "tramways.ponder.tram_signs_temporary_limits.text_4": "Der Zug wird alle anderen Geschwindigkeitlimits ignorieren, wenn er sich in einem temporären Geschwindigkeitslimit befindet",
   "tramways.ponder.tram_signs_whistle.header": "Vorschriftsschild: Pfeifen",
