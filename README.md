@@ -1,4 +1,4 @@
-<p align="center"><img src="https://github.com/PurpleCreate/Tramways/raw/main/.github/logo.png" width="200" /></p>
+<p align="center"><img src="https://github.com/PurpleCreate/Tramways/raw/1.20.1/dev/.github/logo.png" width="200" /></p>
 
 <h1 align="center">Create: Tramways</h1>
 
