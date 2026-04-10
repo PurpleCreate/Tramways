@@ -1,15 +1,17 @@
 {
   "replace": false,
   "values": [
-    "tramways:tram_signal",
     "tramways:tram_sign",
     "tramways:railway_sign",
-    "create:metal_girder",
+    "tramways:auxiliary_sign",
+    "tramways:four_aspect_signal",
+    "tramways:theatre_signal",
+    "tramways:tram_signal",
     "create:metal_girder_encased_shaft",
     {
       "id": "railways:semaphore",
       "required": false
     },
-    "#minecraft:fences"
+    "#tramways:attachment_pole/all"
   ]
 }

@@ -10,7 +10,7 @@ import net.minecraft.client.sounds.AudioStream;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
-import purplecreate.tramways.mixins.ChannelMixin;
+import purplecreate.tramways.mixins.ChannelAccessor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +39,7 @@ public class MinimalSoundEngine {
   public static void play(SoundInstance instance) {
     instance.resolve(Minecraft.getInstance().getSoundManager());
 
-    Channel channel = ChannelMixin.createChannel();
+    Channel channel = ChannelAccessor.createChannel();
     Sound sound = instance.getSound();
 
     float volumeMultiplier = instance.getVolume();

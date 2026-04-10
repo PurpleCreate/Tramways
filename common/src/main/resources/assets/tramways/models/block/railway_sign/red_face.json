@@ -1,14 +1,13 @@
 {
 	"credit": "Made with Blockbench",
-	"parent": "block/block",
 	"textures": {
 		"face": "tramways:block/railway_sign/red_face"
 	},
 	"elements": [
 		{
-			"from": [3, 3, 3],
-			"to": [13, 13, 4],
-			"rotation": {"angle": 0, "axis": "y", "origin": [0, 0, 2]},
+			"from": [3, 3, 15],
+			"to": [13, 13, 16],
+			"rotation": {"angle": 0, "axis": "y", "origin": [0, 0, 14]},
 			"faces": {
 				"north": {"uv": [0, 0, 10, 10], "texture": "#face"},
 				"east": {"uv": [0, 0, 1, 10], "texture": "#face"},

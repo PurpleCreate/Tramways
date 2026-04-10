@@ -5,7 +5,6 @@ package purplecreate.tramways.ponder;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.content.trains.signal.SignalBlockEntity;
 import com.simibubi.create.foundation.ponder.CreateSceneBuilder;
-import net.createmod.ponder.api.PonderPalette;
 import net.createmod.ponder.api.element.ElementLink;
 import net.createmod.ponder.api.element.ParrotPose;
 import net.createmod.ponder.api.scene.SceneBuilder;
@@ -17,13 +16,8 @@ import net.createmod.ponder.api.scene.Selection;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.phys.Vec3;
 import purplecreate.tramways.TBlocks;
-import purplecreate.tramways.content.signals.TramSignalBlock;
-import purplecreate.tramways.content.signals.TramSignalState;
 import purplecreate.tramways.content.signs.TramSignBlock;
-
-import java.util.Optional;
 
 public class TramSignalScenes {
   // https://github.com/Layers-of-Railways/Railway/blob/ac1937f95bdaa6f6463dda547f73a5d5b279ac42/common/src/main/java/com/railwayteam/railways/ponder/TrainScenes.java#L652
@@ -58,12 +52,12 @@ public class TramSignalScenes {
     });
   }*/
 
-  private static void setTramSignalState(SceneBuilder scene, BlockPos tramSignal, TramSignalState next) {
-    scene.world().modifyBlock(
+  private static void setTramSignalState(SceneBuilder scene, BlockPos tramSignal/*, TramSignalState next*/) {
+    /*scene.world().modifyBlock(
       tramSignal,
       (state) -> state.setValue(TramSignalBlock.STATE, next),
       false
-    );
+    );*/
   }
 
   public static void trackSignals(SceneBuilder _scene, SceneBuildingUtil util) {
@@ -141,7 +135,7 @@ public class TramSignalScenes {
     scene.idle(10);
 
     scene.world().changeSignalState(trackSignal, SignalBlockEntity.SignalState.RED);
-    setTramSignalState(scene, tramSignal, TramSignalState.STOP);
+    setTramSignalState(scene, tramSignal/*, TramSignalState.STOP*/);
     scene.idle(10);
 
     scene.overlay().showText(60)

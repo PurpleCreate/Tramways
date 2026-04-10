@@ -1,8 +1,6 @@
 package purplecreate.tramways;
 
 import com.google.gson.JsonSyntaxException;
-import com.simibubi.create.foundation.data.CreateRegistrate;
-import com.tterrag.registrate.Registrate;
 import net.createmod.ponder.foundation.PonderIndex;
 import net.minecraft.network.chat.Component;
 import purplecreate.tramways.config.Config;
@@ -11,6 +9,7 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import org.slf4j.Logger;
 import purplecreate.tramways.util.Env;
+import purplecreate.tramways.util.TramwaysRegistrate;
 
 import java.io.IOException;
 
@@ -18,15 +17,18 @@ import static net.createmod.catnip.lang.LangBuilder.resolveBuilders;
 
 public class Tramways {
   public static final String ID = "tramways";
-  public static final CreateRegistrate REGISTRATE =
-    CreateRegistrate.create(ID)
+  public static final TramwaysRegistrate REGISTRATE =
+    TramwaysRegistrate.create(ID)
       .defaultCreativeTab(TCreativeTabs.getBaseTab());
   public static final Logger LOGGER = LogUtils.getLogger();
 
   public static void init() {
     TBlocks.register();
+    TItems.register();
     TBlockEntities.register();
+    TSignalTypes.register();
     TTags.register();
+    TExtras.register();
 
     Env.unsafeRunWhenOn(Env.CLIENT, () ->
       TPartialModels::register

@@ -3,6 +3,8 @@ package purplecreate.tramways.mixins;
 import com.simibubi.create.content.trains.schedule.Schedule;
 import com.simibubi.create.content.trains.schedule.ScheduleEntry;
 import com.simibubi.create.content.trains.schedule.ScheduleRuntime;
+import com.simibubi.create.content.trains.signal.SignalBlock;
+import com.simibubi.create.content.trains.signal.SignalBoundary;
 import com.simibubi.create.content.trains.station.GlobalStation;
 import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Unique;
@@ -23,14 +25,16 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import purplecreate.tramways.mixinInterfaces.IRoutedSignal;
 import purplecreate.tramways.mixinInterfaces.ITram;
 import purplecreate.tramways.mixinInterfaces.IStopRequestableNavigation;
 
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Mixin(value = Navigation.class, remap = false)
 public abstract class NavigationMixin implements IStopRequestableNavigation {
+  @Unique private final List<Pair<SignalBoundary, Boolean>> tramways$chainSignals = new ArrayList<>();
+  @Unique private final List<Pair<IRoutedSignal, Boolean>> tramways$notifiedSignals = new ArrayList<>();
   @Unique private boolean tramways$routeCancelled;
   @Shadow public Train train;
   @Shadow public double distanceToDestination;
@@ -70,6 +74,25 @@ public abstract class NavigationMixin implements IStopRequestableNavigation {
         cir.setReturnValue(false);
       }
     }
+
+    // ↓ route selection ↓
+
+    if (couple.getFirst() instanceof SignalBoundary signal) {
+      UUID entering = signal.getGroup(couple.getSecond().getSecond());
+      boolean front = entering.equals(signal.groups.getFirst());
+
+      if (signal.types.get(front) == SignalBlock.SignalType.CROSS_SIGNAL) {
+        tramways$chainSignals.add(Pair.of(signal, front));
+      } else if (!tramways$chainSignals.isEmpty()) {
+        tramways$chainSignals.forEach(pair -> {
+          if (!(pair.getFirst() instanceof IRoutedSignal routedSignal)) return;
+
+          routedSignal.tramways$notifySelectedRoute(pair.getSecond(), train, Pair.of(signal, front));
+          tramways$notifiedSignals.add(Pair.of(routedSignal, pair.getSecond()));
+        });
+        tramways$chainSignals.clear();
+      }
+    }
   }
 
   @Inject(method = "tick", at = @At("HEAD"))
@@ -77,6 +100,16 @@ public abstract class NavigationMixin implements IStopRequestableNavigation {
     if ((train instanceof ITram tram)) {
       tram.tramways$clearSigns();
     }
+    tramways$chainSignals.clear();
+
+    tramways$notifiedSignals.forEach(pair ->
+      pair.getFirst().tramways$unnotifySelectedRoute(pair.getSecond(), train)
+    );
+    tramways$notifiedSignals.clear();
+
+    // ↑     other rubbish       ↑
+    // ↓ request stop tick logic ↓
+
     Schedule schedule = train.runtime.getSchedule();
 
     if (

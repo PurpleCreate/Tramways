@@ -28,14 +28,17 @@ public class TramSignRenderer extends SmartBlockEntityRenderer<TramSignBlockEnti
                             MultiBufferSource buffer,
                             int light,
                             int overlay) {
+    if (!(be.getBlockState().getBlock() instanceof TramSignBlock block)) return;
+
+    var msr = TransformStack.of(ms);
+
     ms.pushPose();
 
     ms.pushPose();
     if (be.getOverlay() != SignalBlockEntity.OverlayState.SKIP) {
       BlockPos targetPosition = be.edgePoint.getGlobalPosition();
 
-      TransformStack.of(ms)
-        .translate(targetPosition.subtract(be.getBlockPos()));
+      msr.translate(targetPosition.subtract(be.getBlockPos()));
 
       TrackTargetingBehaviour.render(
         be.getLevel(),
@@ -62,6 +65,8 @@ public class TramSignRenderer extends SmartBlockEntityRenderer<TramSignBlockEnti
       ? TPartialModels.TRAM_FACE
       : demand.getSignFace(be.getSignType());
 
+    msr.translate(block.getRenderOffset(be.getBlockState()));
+
     CachedBuffers
       .partial(signFace, be.getBlockState())
       .center()
@@ -72,13 +77,13 @@ public class TramSignRenderer extends SmartBlockEntityRenderer<TramSignBlockEnti
       .light(light)
       .renderInto(ms, buffer.getBuffer(RenderType.solid()));
 
-    TransformStack.of(ms)
+    msr
       .center()
       .rotateYDegrees(AngleHelper.horizontalAngle(
         facing
       ))
       .uncenter()
-      .translate(0, 0, 13.01 / 16f);
+      .translate(0, 0, 1.01 / 16f);
 
     if (demand != null) {
       demand.render(

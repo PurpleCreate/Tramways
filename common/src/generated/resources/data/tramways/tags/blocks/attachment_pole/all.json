@@ -1,0 +1,21 @@
+{
+  "replace": false,
+  "values": [
+    "#tramways:attachment_pole/1px",
+    "#tramways:attachment_pole/2px",
+    "#tramways:attachment_pole/3px",
+    "#tramways:attachment_pole/4px",
+    "#tramways:attachment_pole/5px",
+    "#tramways:attachment_pole/6px",
+    "#tramways:attachment_pole/7px",
+    "#tramways:attachment_pole/8px",
+    "#tramways:attachment_pole/9px",
+    "#tramways:attachment_pole/10px",
+    "#tramways:attachment_pole/11px",
+    "#tramways:attachment_pole/12px",
+    "#tramways:attachment_pole/13px",
+    "#tramways:attachment_pole/14px",
+    "#tramways:attachment_pole/15px",
+    "#tramways:attachment_pole/16px"
+  ]
+}

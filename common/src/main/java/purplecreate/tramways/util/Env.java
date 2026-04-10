@@ -13,6 +13,16 @@ public enum Env {
     throw new AssertionError();
   }
 
+  @ExpectPlatform
+  public static boolean isDevVersion() {
+    throw new AssertionError();
+  }
+
+  @ExpectPlatform
+  public static String getVersion() {
+    throw new AssertionError();
+  }
+
   public static void unsafeRunWhenOn(Env env, Supplier<Runnable> toRun) {
     if (getEnv() == env) {
       toRun.get().run();

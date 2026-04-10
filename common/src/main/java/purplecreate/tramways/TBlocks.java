@@ -1,21 +1,16 @@
 package purplecreate.tramways;
 
-import com.simibubi.create.content.decoration.girder.ConnectedGirderModel;
 import com.simibubi.create.content.trains.track.TrackTargetingBlockItem;
 import com.simibubi.create.foundation.block.DyedBlockList;
 import com.simibubi.create.foundation.data.CreateRegistrate;
-import com.tterrag.registrate.providers.DataGenContext;
-import com.tterrag.registrate.providers.RegistrateBlockstateProvider;
-import com.tterrag.registrate.providers.RegistrateItemModelProvider;
 import com.tterrag.registrate.util.entry.BlockEntry;
-import dev.architectury.injectables.annotations.ExpectPlatform;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.ButtonBlock;
+import com.tterrag.registrate.util.nullness.NonNullConsumer;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.material.MapColor;
 import com.simibubi.create.foundation.data.SharedProperties;
+import purplecreate.tramways.content.signals.block.SignAttachedToPoleBlock;
+import purplecreate.tramways.content.signals.models.SignAttachedToPoleModel;
+import purplecreate.tramways.datagen.BlockStateBuilders;
 
 import static com.simibubi.create.api.behaviour.display.DisplayTarget.displayTarget;
 import static com.simibubi.create.api.behaviour.movement.MovementBehaviour.movementBehaviour;
@@ -26,34 +21,20 @@ import static com.simibubi.create.foundation.data.TagGen.pickaxeOnly;
 import purplecreate.tramways.content.announcements.SpeakerMovementBehaviour;
 import purplecreate.tramways.content.requestStop.station.RequestStopButtonBlock;
 import purplecreate.tramways.content.requestStop.station.RequestStopButtonItem;
-import purplecreate.tramways.content.signals.TramSignalBlock;
 import purplecreate.tramways.content.signs.TramSignBlock;
 import purplecreate.tramways.content.announcements.SpeakerBlock;
 import purplecreate.tramways.content.stationDeco.nameSign.NameSignBlock;
 import purplecreate.tramways.content.stationDeco.nameSign.NameSignItem;
 
 public class TBlocks {
-  public static final BlockEntry<TramSignalBlock> TRAM_SIGNAL =
-    Tramways.REGISTRATE.block("tram_signal", TramSignalBlock::new)
-      .initialProperties(SharedProperties::softMetal)
-      .properties(properties -> properties.mapColor(MapColor.COLOR_GRAY).sound(SoundType.NETHERITE_BLOCK))
-      .blockstate(TBlocks::complexTramSignal)
-      .transform(pickaxeOnly())
-      .onRegister(CreateRegistrate.blockModel(() -> ConnectedGirderModel::new))
-      .lang("Tram Signal")
-      .item()
-      .transform(customItemModel())
-      .register();
-
   public static final BlockEntry<TramSignBlock> TRAM_SIGN =
     Tramways.REGISTRATE.block("tram_sign", TramSignBlock::newTramSign)
       .initialProperties(SharedProperties::softMetal)
       .properties(properties -> properties.mapColor(MapColor.COLOR_GRAY).sound(SoundType.NETHERITE_BLOCK))
-      .blockstate((context, provider) ->
-        simpleHorizontalBlock(context, provider, "block/tram_sign/girder")
-      )
+      .blockstate(BlockStateBuilders.empty())
+      .tag(TTags.pole())
       .transform(pickaxeOnly())
-      .onRegister(CreateRegistrate.blockModel(() -> ConnectedGirderModel::new))
+      .onRegister(attachedBlock())
       .lang("Tram Sign")
       .item(TrackTargetingBlockItem.ofType(TExtras.EdgePointTypes.TRAM_SIGN))
       .transform(customItemModel())
@@ -63,11 +44,10 @@ public class TBlocks {
     Tramways.REGISTRATE.block("railway_sign", TramSignBlock::newRailwaySign)
       .initialProperties(SharedProperties::softMetal)
       .properties(properties -> properties.mapColor(MapColor.COLOR_GRAY).sound(SoundType.NETHERITE_BLOCK))
-      .blockstate((context, provider) ->
-        simpleHorizontalBlock(context, provider, "block/tram_sign/girder")
-      )
+      .blockstate(BlockStateBuilders.empty())
+      .tag(TTags.pole())
       .transform(pickaxeOnly())
-      .onRegister(CreateRegistrate.blockModel(() -> ConnectedGirderModel::new))
+      .onRegister(attachedBlock())
       .lang("Railway Sign")
       .item(TrackTargetingBlockItem.ofType(TExtras.EdgePointTypes.TRAM_SIGN))
       .transform(customItemModel())
@@ -77,11 +57,10 @@ public class TBlocks {
     Tramways.REGISTRATE.block("auxiliary_sign", TramSignBlock::newAuxiliarySign)
       .initialProperties(SharedProperties::softMetal)
       .properties(properties -> properties.mapColor(MapColor.COLOR_GRAY).sound(SoundType.NETHERITE_BLOCK))
-      .blockstate((context, provider) ->
-        simpleHorizontalBlock(context, provider, "block/tram_sign/girder")
-      )
+      .blockstate(BlockStateBuilders.empty())
+      .tag(TTags.pole())
       .transform(pickaxeOnly())
-      .onRegister(CreateRegistrate.blockModel(() -> ConnectedGirderModel::new))
+      .onRegister(attachedBlock())
       .lang("Auxiliary Rail Sign")
       .item()
       .transform(customItemModel())
@@ -91,9 +70,7 @@ public class TBlocks {
     Tramways.REGISTRATE.block("speaker", SpeakerBlock::new)
       .initialProperties(SharedProperties::wooden)
       .properties(properties -> properties.mapColor(MapColor.COLOR_BROWN).sound(SoundType.WOOD))
-      .blockstate((context, provider) ->
-        simpleDirectionalBlock(context, provider, "block/speaker")
-      )
+      .blockstate(BlockStateBuilders.directionalBlock("block/speaker"))
       .transform(axeOnly())
       .transform(displayTarget(TExtras.DisplayTargets.SPEAKER))
       .onRegister(movementBehaviour(new SpeakerMovementBehaviour()))
@@ -104,9 +81,7 @@ public class TBlocks {
   public static final BlockEntry<RequestStopButtonBlock> REQUEST_STOP_BUTTON =
     Tramways.REGISTRATE.block("request_stop_button", RequestStopButtonBlock::new)
       .initialProperties(SharedProperties::stone)
-      .blockstate((context, provider) ->
-        buttonBlock(context, provider, Tramways.rl("block/request_stop_button"))
-      )
+      .blockstate(BlockStateBuilders.buttonBlock(Tramways.rl("block/request_stop_button")))
       .transform(pickaxeOnly())
       .lang("Request Stop Button")
       .item(RequestStopButtonItem::new)
@@ -119,70 +94,17 @@ public class TBlocks {
 
     return Tramways.REGISTRATE.block(id, NameSignBlock::new)
       .initialProperties(SharedProperties::wooden)
-      .blockstate((context, provider) ->
-        complexStationNameSign(context, provider, colorId)
-      )
+      .blockstate(BlockStateBuilders.stationNameSign(colorId))
       .transform(axeOnly())
       .item(NameSignItem::new)
-      .model((context, provider) ->
-        complexStationNameSignItem(context, provider, colorId)
-      )
+      .model(BlockStateBuilders.stationNameSignItem(colorId))
       .tag(TTags.NAME_SIGN)
       .build()
       .register();
   });
 
-  @ExpectPlatform
-  public static <T extends Block> void complexTramSignal(
-    DataGenContext<Block, T> context,
-    RegistrateBlockstateProvider provider
-  ) {
-    throw new AssertionError();
-  }
-
-  @ExpectPlatform
-  public static <T extends Block> void complexStationNameSign(
-    DataGenContext<Block, T> context,
-    RegistrateBlockstateProvider provider,
-    String color
-  ) {
-    throw new AssertionError();
-  }
-
-  @ExpectPlatform
-  public static <T extends Item> void complexStationNameSignItem(
-    DataGenContext<Item, T> context,
-    RegistrateItemModelProvider provider,
-    String color
-  ) {
-    throw new AssertionError();
-  }
-
-  @ExpectPlatform
-  public static <T extends Block> void simpleHorizontalBlock(
-    DataGenContext<Block, T> context,
-    RegistrateBlockstateProvider provider,
-    String existingModelPath
-  ) {
-    throw new AssertionError();
-  }
-
-  @ExpectPlatform
-  public static <T extends Block> void simpleDirectionalBlock(
-    DataGenContext<Block, T> context,
-    RegistrateBlockstateProvider provider,
-    String existingModelPath
-  ) {
-    throw new AssertionError();
-  }
-
-  @ExpectPlatform
-  public static <T extends ButtonBlock> void buttonBlock(
-    DataGenContext<Block, T> context,
-    RegistrateBlockstateProvider provider,
-    ResourceLocation texture
-  ) {
-    throw new AssertionError();
+  public static NonNullConsumer<? super SignAttachedToPoleBlock> attachedBlock() {
+    return CreateRegistrate.blockModel(() -> SignAttachedToPoleModel::create);
   }
 
   public static void register() {}

@@ -23,6 +23,11 @@ loom {
       environmentVariable("DATAGEN", "TRUE")
     }
   }
+
+  runs.configureEach {
+    vmArg("-Dmixin.debug=true")
+    vmArg("-Dmixin.debug.export=true")
+  }
 }
 
 configurations {

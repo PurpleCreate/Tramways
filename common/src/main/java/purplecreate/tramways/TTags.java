@@ -12,10 +12,12 @@ import com.tterrag.registrate.providers.RegistrateTagsProvider;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Block;
+import purplecreate.tramways.content.signals.block.SignAttachedToPoleBlock;
 
 public class TTags {
   public static final TagKey<Item> NAME_SIGN = createItemTag("name_sign");
   public static final TagKey<Block> SIGNAL_POLE = createBlockTag("signal_pole");
+  public static final TagKey<Block> ATTACHMENT_POLE_ALL = createBlockTag("attachment_pole/all");
   public static final TagKey<Block> NAME_SIGN_INNER = createBlockTag("name_sign_inner");
   public static final TagKey<Block> SEMAPHORE_POLE = createBlockTag(Mods.RAILWAYS.id, "semaphore_poles");
 
@@ -45,26 +47,30 @@ public class TTags {
     TagGen.CreateTagsProvider<Block> provider = new TagGen.CreateTagsProvider<>(p, Block::builtInRegistryHolder);
 
     provider.tag(SIGNAL_POLE)
-      .add(
-        TBlocks.TRAM_SIGNAL.get(),
-        TBlocks.TRAM_SIGN.get(),
-        TBlocks.RAILWAY_SIGN.get(),
-        AllBlocks.METAL_GIRDER.get(),
-        AllBlocks.METAL_GIRDER_ENCASED_SHAFT.get()
-      )
+      .add(AllBlocks.METAL_GIRDER_ENCASED_SHAFT.get())
       .addOptional(Mods.RAILWAYS.rl("semaphore"))
-      .addTag(BlockTags.FENCES);
+      .addTag(ATTACHMENT_POLE_ALL);
 
     provider.tag(NAME_SIGN_INNER)
       .add(Blocks.NETHER_BRICKS)
       .addTag(BlockTags.PLANKS);
 
-    provider.tag(SEMAPHORE_POLE)
-      .add(
-        TBlocks.TRAM_SIGNAL.get(),
-        TBlocks.TRAM_SIGN.get(),
-        TBlocks.RAILWAY_SIGN.get()
-      );
+    var attachmentPoleBuilder = provider.tag(ATTACHMENT_POLE_ALL);
+    for (int i = 1; i < 17; i++) {
+      provider.tag(SignAttachedToPoleBlock.tagForPoleSized(i));
+      attachmentPoleBuilder.addTag(SignAttachedToPoleBlock.tagForPoleSized(i));
+    }
+
+    provider.tag(SignAttachedToPoleBlock.tagForPoleSized(4))
+      .addTag(BlockTags.FENCES);
+
+    provider.tag(SignAttachedToPoleBlock.tagForPoleSized(8))
+      .add(AllBlocks.METAL_GIRDER.get())
+      .addTag(BlockTags.WALLS);
+  }
+
+  public static TagKey<Block>[] pole() {
+    return new TagKey[]{SEMAPHORE_POLE, SIGNAL_POLE};
   }
 
   public static void register() {

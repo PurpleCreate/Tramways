@@ -20,7 +20,7 @@ public class TPonders implements PonderPlugin {
     PonderSceneRegistrationHelper<ItemProviderEntry<?>> HELPER = helper.withKeyFunction(RegistryEntry::getId);
 
     HELPER
-      .forComponents(TBlocks.TRAM_SIGNAL)
+      .forComponents(TSignalTypes.TRAM_SIGNAL)
       .addStoryBoard("tram_signal/track_signals", TramSignalScenes::trackSignals);
 
     /*if (Mods.RAILWAYS.loaded())

@@ -14,6 +14,11 @@ loom {
     convertAccessWideners = true
     extraAccessWideners.add loom.accessWidenerPath.get().asFile.name
   }
+
+  runs.configureEach {
+    vmArg("-Dmixin.debug=true")
+    vmArg("-Dmixin.debug.export=true")
+  }
 }
 
 configurations {
@@ -29,8 +34,8 @@ dependencies {
   common(project(path: ":common", configuration: "namedElements")) { transitive = false }
   shadowCommon(project(path: ":common", configuration: "transformProductionForge")) { transitive = false }
 
-  compileOnly("io.github.llamalad7:mixinextras-common:${mixin_extras_version}")
-  annotationProcessor(implementation(include("io.github.llamalad7:mixinextras-forge:${mixin_extras_version}")))
+  compileOnly(annotationProcessor("io.github.llamalad7:mixinextras-common:${mixin_extras_version}"))
+  implementation(include("io.github.llamalad7:mixinextras-forge:${mixin_extras_version}"))
 
   forgeRuntimeLibrary(implementation(shadowCommon("javazoom:jlayer:${jlayer_version}")))
 

@@ -4,15 +4,18 @@ import com.simibubi.create.AllBlocks;
 import com.tterrag.registrate.util.entry.BlockEntry;
 import net.minecraft.world.level.block.state.BlockState;
 import purplecreate.tramways.TBlocks;
+import purplecreate.tramways.TSignalTypes;
 
 import java.util.List;
 
 public class GirderLikeUtil {
-  private static List<BlockEntry> allowed = List.of(
+  private static final List<BlockEntry<?>> allowed = List.of(
     TBlocks.TRAM_SIGN,
     TBlocks.RAILWAY_SIGN,
     TBlocks.AUXILIARY_SIGN,
-    TBlocks.TRAM_SIGNAL,
+    TSignalTypes.FOUR_ASPECT_SIGNAL,
+    TSignalTypes.THEATRE_SIGNAL,
+    TSignalTypes.TRAM_SIGNAL,
     AllBlocks.METAL_GIRDER
   );
 

@@ -14,6 +14,8 @@ import purplecreate.tramways.content.announcements.network.PlayVoiceS2CPacket;
 import purplecreate.tramways.content.announcements.network.PlayMovingVoiceS2CPacket;
 import purplecreate.tramways.content.requestStop.network.RequestStopC2SPacket;
 import purplecreate.tramways.content.requestStop.network.StoppingBroadcastS2CPacket;
+import purplecreate.tramways.content.signals.item.CycleItemC2SPacket;
+import purplecreate.tramways.content.signals.routing.UpdateSignalC2SPacket;
 import purplecreate.tramways.content.signs.network.SaveSignSettingsC2SPacket;
 import purplecreate.tramways.content.stationDeco.nameSign.network.UpdateNameSignC2SPacket;
 import purplecreate.tramways.util.C2SPacket;
@@ -25,7 +27,7 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 
 public class TNetworking {
-  private static final String VERSION = "4";
+  private static final String VERSION = "5";
   private static int id = 0;
 
   private static Map<Class<? extends C2SPacket>, Integer> c2sIdentifiers = new HashMap<>();
@@ -169,6 +171,16 @@ public class TNetworking {
     registerC2S(
       UpdateNameSignC2SPacket.class,
       UpdateNameSignC2SPacket::read
+    );
+
+    registerC2S(
+      UpdateSignalC2SPacket.class,
+      UpdateSignalC2SPacket::read
+    );
+
+    registerC2S(
+      CycleItemC2SPacket.class,
+      CycleItemC2SPacket::read
     );
   }
 }

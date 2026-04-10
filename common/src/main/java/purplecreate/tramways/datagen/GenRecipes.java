@@ -19,6 +19,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
 import purplecreate.tramways.TBlocks;
+import purplecreate.tramways.TSignalTypes;
 import purplecreate.tramways.TTags;
 import purplecreate.tramways.Tramways;
 import purplecreate.tramways.content.stationDeco.nameSign.NameSignBlock;
@@ -77,7 +78,7 @@ public class GenRecipes {
       .save(provider);
 
     ShapedRecipeBuilder
-      .shaped(RecipeCategory.TRANSPORTATION, TBlocks.TRAM_SIGNAL)
+      .shaped(RecipeCategory.TRANSPORTATION, TSignalTypes.TRAM_SIGNAL)
       .unlockedBy("has_item", unlockedByItem(AllItems.IRON_SHEET))
       .define('E', AllItems.ELECTRON_TUBE)
       .define('S', AllItems.IRON_SHEET)

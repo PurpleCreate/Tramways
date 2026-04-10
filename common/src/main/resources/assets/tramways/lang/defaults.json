@@ -12,7 +12,11 @@
   "tramways.sign_demand.arrow_aux.left": "Left",
   "tramways.sign_demand.arrow_aux.right": "Right",
 
+  "tramways.display_source.signal": "Advanced Signal Source",
   "tramways.display_target.speaker": "Speaker",
+  "tramways.display_target.signal": "Advanced Signal",
+
+  "tramways.contraption.controls.approach_junction": "Use %1$s %2$s to select a route. Press %3$s to navigate towards %4$s.",
 
   "tramways.request_stop.stopping": "Stopping!",
   "tramways.request_stop.countdown": "Press %1$s to request stop at %2$s",
