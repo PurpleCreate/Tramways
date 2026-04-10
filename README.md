@@ -22,6 +22,8 @@ idea. If you do find a bug, please report it!
 - Polish (Craft1User)
 - Simplified Chinese (DF5-1762)
 - Swedish (DanteMinecraft)
+- German (Doppel_R)
+- Portuguese (Aquela limonada)
 
 ---
 
