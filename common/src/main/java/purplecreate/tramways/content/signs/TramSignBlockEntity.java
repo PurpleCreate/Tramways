@@ -134,7 +134,7 @@ public class TramSignBlockEntity extends SmartBlockEntity implements Transformab
 
     TramSignPoint.SignData data = point.getSignData(worldPosition);
 
-    if (data.demand != demand || data.demandExtra != demandExtra) {
+    if (data != null && (data.demand != demand || data.demandExtra != demandExtra)) {
       demand = data.demand;
       demandExtra = data.demandExtra;
       notifyUpdate();
