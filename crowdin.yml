@@ -1,2 +1,6 @@
-bundles:
-  - 2
+"files": [
+    {
+        "source": "/common/src/generated/resources/assets/tramways/lang/en_us.json",
+        "translation": "/common/src/main/resources/assets/tramways/lang/%locale_with_underscore%.json"
+    }
+]
