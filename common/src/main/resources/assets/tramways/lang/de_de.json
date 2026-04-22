@@ -23,7 +23,6 @@
   "block.tramways.yellow_station_name_sign": "Gelbes Bahnhofsschild",
   "create.schedule.instruction.request_stop.summary": "Haltewunschhalt:",
   "create.schedule.instruction.set_primary_limit.summary": "Setzt das primäre Geschwindigkeitslimit auf %1$s",
-  "tramways.creative_tab.main": "Create: Tramways",
   "tramways.display_target.speaker": "Lautsprecher",
   "tramways.ponder.speaker_station.header": "Lautsprecher an Bahnhöfen",
   "tramways.ponder.speaker_station.text_1": "Nutze einen Anzeige-Link an einem Bahnhof, um dessen Ankünfte anzusagen",
