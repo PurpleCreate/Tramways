@@ -23,7 +23,6 @@
   "block.tramways.yellow_station_name_sign": "Gul stationsnamnsskylt",
   "create.schedule.instruction.request_stop.summary": "Begär stopp:",
   "create.schedule.instruction.set_primary_limit.summary": "Ange primär hastighetsgräns till %1$s",
-  "tramways.creative_tab.main": "Create: Tramways",
   "tramways.display_target.speaker": "Högtalare",
   "tramways.ponder.speaker_station.header": "Högtalare på stationer",
   "tramways.ponder.speaker_station.text_1": "Använd en informationslänk på en station för att ropa ut stationens ankomster",
