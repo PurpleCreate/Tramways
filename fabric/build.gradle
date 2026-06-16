@@ -57,6 +57,10 @@ dependencies {
   // Create - dependencies are added transitively
   modImplementation("com.simibubi.create:create-fabric:${create_fabric_version}-mc${minecraft_version}")
 
+  // Compat
+  modImplementation("de.mrjulsen.crn:createrailwaysnavigator-fabric:${minecraft_version}-${crn_version}")
+  modImplementation("de.mrjulsen.mcdragonlib:dragonlib-fabric:${minecraft_version}-${dragonlib_version}")
+
   // Development QOL
   modLocalRuntime("maven.modrinth:lazydfu:${lazydfu_version}")
   modLocalRuntime("com.terraformersmc:modmenu:${modmenu_version}")
@@ -80,6 +84,7 @@ processResources {
     "minecraft_version", minecraft_version,
     "create_version", create_fabric_version,
     "create_version_range", create_fabric_version_range,
+    "crn_version_range", crn_fabric_version_range
   )
   properties.forEach((k, v) -> inputs.property(k, v))
 
@@ -134,8 +139,7 @@ publishMods {
     modLoaders.add("fabric")
 
     requires("create-fabric")
-    optional("create-steam-n-rails")
-    optional("create-railways-navigator")
+    requires("create-railways-navigator")
   }
 
   modrinth {
@@ -146,7 +150,6 @@ publishMods {
     modLoaders.add("fabric")
 
     requires("create-fabric")
-    optional("create-steam-n-rails")
-    optional("create-railways-navigator")
+    requires("create-railways-navigator")
   }
 }

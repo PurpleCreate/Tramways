@@ -38,3 +38,10 @@ updateJSONURL="https://api.modrinth.com/updates/tramways/forge_updates.json"
     versionRange="${create_version_range}"
     ordering="NONE"
     side="BOTH"
+
+[[dependencies.${mod_id}]]
+    modId="createrailwaysnavigator"
+    mandatory=true
+    versionRange="${crn_version_range}"
+    ordering="NONE"
+    side="BOTH"

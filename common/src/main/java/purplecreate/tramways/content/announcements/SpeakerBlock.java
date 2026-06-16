@@ -1,27 +1,25 @@
 package purplecreate.tramways.content.announcements;
 
+import com.simibubi.create.foundation.block.IBE;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
-import purplecreate.tramways.TNetworking;
-import purplecreate.tramways.config.MessageConfig;
-import purplecreate.tramways.content.announcements.network.PlayVoiceS2CPacket;
 import com.simibubi.create.AllShapes;
 import com.simibubi.create.content.equipment.wrench.IWrenchable;
 import net.createmod.catnip.math.VoxelShaper;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.context.BlockPlaceContext;
-import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.DirectionalBlock;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
+import purplecreate.tramways.TBlockEntities;
 
-public class SpeakerBlock extends DirectionalBlock implements IWrenchable {
+public class SpeakerBlock extends DirectionalBlock implements IWrenchable, IBE<SpeakerBlockEntity> {
   private static final VoxelShaper SHAPE =
     new AllShapes.Builder(box(2, 0, 2, 14, 1, 14)).forDirectional();
 
@@ -59,17 +57,12 @@ public class SpeakerBlock extends DirectionalBlock implements IWrenchable {
   }
 
   @Override
-  public InteractionResult onWrenched(BlockState state, UseOnContext context) {
-    if (!context.getLevel().isClientSide) {
-      TNetworking.sendToAll(
-        new PlayVoiceS2CPacket(
-          "en-GB-SoniaNeural",
-          MessageConfig.simple("This is a test!"),
-          context.getClickedPos()
-        )
-      );
-    }
+  public Class<SpeakerBlockEntity> getBlockEntityClass() {
+    return SpeakerBlockEntity.class;
+  }
 
-    return IWrenchable.super.onWrenched(state, context);
+  @Override
+  public BlockEntityType<? extends SpeakerBlockEntity> getBlockEntityType() {
+    return TBlockEntities.SPEAKER.get();
   }
 }

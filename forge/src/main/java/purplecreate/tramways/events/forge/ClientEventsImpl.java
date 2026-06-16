@@ -19,6 +19,11 @@ public class ClientEventsImpl {
   }
 
   @SubscribeEvent
+  public static void onJoin(ClientPlayerNetworkEvent.LoggingIn event) {
+    ClientEvents.onJoin();
+  }
+
+  @SubscribeEvent
   public static void onLeave(ClientPlayerNetworkEvent.LoggingOut event) {
     ClientEvents.onLeave();
   }

@@ -13,12 +13,10 @@ import purplecreate.tramways.content.signals.models.SignAttachedToPoleModel;
 import purplecreate.tramways.datagen.BlockStateBuilders;
 
 import static com.simibubi.create.api.behaviour.display.DisplayTarget.displayTarget;
-import static com.simibubi.create.api.behaviour.movement.MovementBehaviour.movementBehaviour;
 import static com.simibubi.create.foundation.data.ModelGen.customItemModel;
 import static com.simibubi.create.foundation.data.TagGen.axeOnly;
 import static com.simibubi.create.foundation.data.TagGen.pickaxeOnly;
 
-import purplecreate.tramways.content.announcements.SpeakerMovementBehaviour;
 import purplecreate.tramways.content.requestStop.station.RequestStopButtonBlock;
 import purplecreate.tramways.content.requestStop.station.RequestStopButtonItem;
 import purplecreate.tramways.content.signs.TramSignBlock;
@@ -73,7 +71,6 @@ public class TBlocks {
       .blockstate(BlockStateBuilders.directionalBlock("block/speaker"))
       .transform(axeOnly())
       .transform(displayTarget(TExtras.DisplayTargets.SPEAKER))
-      .onRegister(movementBehaviour(new SpeakerMovementBehaviour()))
       .lang("Speaker")
       .simpleItem()
       .register();

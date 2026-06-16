@@ -1,8 +1,11 @@
 package purplecreate.tramways.mixins;
 
 import com.llamalad7.mixinextras.sugar.Local;
+import com.simibubi.create.content.trains.entity.Navigation;
 import com.simibubi.create.content.trains.graph.DimensionPalette;
 import com.simibubi.create.content.trains.graph.TrackGraph;
+import com.simibubi.create.content.trains.schedule.ScheduleRuntime;
+import de.mrjulsen.crn.data.train.portable.TrainDisplayData;
 import net.createmod.catnip.data.Pair;
 import net.createmod.catnip.nbt.NBTHelper;
 import net.minecraft.nbt.CompoundTag;
@@ -11,6 +14,11 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import purplecreate.tramways.TExtras;
+import purplecreate.tramways.TNetworking;
+import purplecreate.tramways.content.announcements.config.AnnouncementConfig;
+import purplecreate.tramways.content.announcements.config.AnnouncementEvent;
+import purplecreate.tramways.content.announcements.config.AnnouncementVariant;
+import purplecreate.tramways.content.announcements.network.TrainAnnouncementEventS2CPacket;
 import purplecreate.tramways.content.signs.TramSignPoint;
 import com.simibubi.create.content.trains.entity.Train;
 import org.spongepowered.asm.mixin.Mixin;
@@ -26,10 +34,43 @@ import java.util.*;
 public class TrainMixin implements ITram {
   @Shadow public double throttle;
   @Shadow public TrackGraph graph;
+  @Shadow public Navigation navigation;
+  @Shadow public ScheduleRuntime runtime;
 
+  @Shadow public UUID id;
   @Unique private Double tramways$storedPermanent;
   @Unique private double tramways$primaryLimit = 1;
   @Unique private Map<Pair<UUID, Boolean>, Double> tramways$signs = new HashMap<>();
+  @Unique private AnnouncementConfig tramways$announcementConfig = new AnnouncementConfig(true);
+  @Unique private AnnouncementEvent tramways$lastAnnouncementEvent = null;
+
+  @Inject(method = "tick", at = @At(value = "HEAD"))
+  private void tramways$tickSpeakers(Level level, CallbackInfo ci) {
+    if (level.isClientSide) return;
+
+    AnnouncementConfig config = tramways$announcementConfig;
+
+    double start = navigation.distanceStartedAt;
+    double distanceToDestination = navigation.distanceToDestination;
+
+    AnnouncementEvent event = null;
+    if (runtime.state == ScheduleRuntime.State.POST_TRANSIT || distanceToDestination == 0) {
+      event = AnnouncementEvent.STOPPED_AT;
+    } else if (distanceToDestination < Math.min(100, start / 4)) {
+      event = AnnouncementEvent.APPROACHING_STATION;
+    } else if (start - distanceToDestination > Math.min(30, start / 4)) {
+      event = AnnouncementEvent.DEPARTING_STATION;
+    }
+
+    if (event == null || tramways$lastAnnouncementEvent == event) return;
+    tramways$lastAnnouncementEvent = event;
+
+    AnnouncementVariant variant = config.getVariantFor(event);
+    if (variant == null || variant.count() < 1) return;
+
+    TrainDisplayData data = TrainDisplayData.of((Train)(Object)this);
+    TNetworking.sendToAll(new TrainAnnouncementEventS2CPacket(id, variant, data));
+  }
 
   @Inject(method = "tick", at = @At(value = "INVOKE", target = "Lcom/simibubi/create/content/trains/entity/Navigation;tick(Lnet/minecraft/world/level/Level;)V", shift = At.Shift.AFTER), remap = true)
   private void tramways$tickSigns(Level level, CallbackInfo ci) {
@@ -150,6 +191,10 @@ public class TrainMixin implements ITram {
         tramways$putSign(t.getUUID("Id"), t.getBoolean("Primary"), t.getDouble("Distance"));
       });
     }
+
+    if (tag.contains("Tramways$AnnouncementConfig")) {
+      tramways$announcementConfig = AnnouncementConfig.fromNbt(tag.getCompound("Tramways$AnnouncementConfig"), true);
+    }
   }
 
   @Inject(method = "write", at = @At("RETURN"))
@@ -175,6 +220,7 @@ public class TrainMixin implements ITram {
 
       return t;
     }));
+    tag.put("Tramways$AnnouncementConfig", tramways$announcementConfig.toNbt());
   }
 
   @Unique
@@ -205,5 +251,17 @@ public class TrainMixin implements ITram {
   @Override
   public void tramways$clearSigns() {
     tramways$signs.clear();
+  }
+
+  @Unique
+  @Override
+  public AnnouncementConfig tramways$getAnnouncementConfig() {
+    return tramways$announcementConfig;
+  }
+
+  @Unique
+  @Override
+  public void tramways$setAnnouncementConfig(AnnouncementConfig config) {
+    tramways$announcementConfig = config;
   }
 }

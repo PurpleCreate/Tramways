@@ -1,16 +1,23 @@
 package purplecreate.tramways;
 
+import com.simibubi.create.AllBlocks;
 import com.simibubi.create.api.behaviour.display.DisplaySource;
+import com.simibubi.create.api.registry.CreateBuiltInRegistries;
+import com.simibubi.create.api.registry.CreateRegistries;
 import com.simibubi.create.content.trains.graph.EdgePointType;
 
 import com.simibubi.create.content.trains.schedule.destination.ScheduleInstruction;
+import com.tterrag.registrate.AbstractRegistrate;
 import com.tterrag.registrate.util.entry.RegistryEntry;
 import net.createmod.catnip.data.Pair;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
-import purplecreate.tramways.compat.Mods;
-import purplecreate.tramways.compat.createrailwaysnavigator.CRNTrainInfo;
-import purplecreate.tramways.content.announcements.SpeakerDisplayTarget;
-import purplecreate.tramways.content.announcements.info.TrainInfo;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.block.Block;
+import purplecreate.tramways.content.announcements.config.instructions.*;
+import purplecreate.tramways.content.announcements.station.SpeakerDisplayTarget;
+import purplecreate.tramways.content.announcements.station.StationSpeakerDisplaySource;
+import purplecreate.tramways.content.announcements.train.ConfigureAnnouncementsInstruction;
 import purplecreate.tramways.content.requestStop.train.RequestStopInstruction;
 import purplecreate.tramways.content.signals.SignalDisplaySource;
 import purplecreate.tramways.content.signals.SignalDisplayTarget;
@@ -32,6 +39,7 @@ public class TExtras {
     public static void register() {
       registerInstruction("request_stop", RequestStopInstruction::new);
       registerInstruction("set_primary_limit", SetPrimaryLimitInstruction::new);
+      registerInstruction("configure_announcements", ConfigureAnnouncementsInstruction::new);
     }
   }
 
@@ -54,14 +62,55 @@ public class TExtras {
     }
   }
 
+  public static class AnnouncementInstructions {
+    public static void register() {
+      AnnouncementInstruction.register(new PlayFileInstruction());
+      AnnouncementInstruction.register(new PlayTTSInstruction());
+      AnnouncementInstruction.register(new SetAnnouncerInstruction());
+      AnnouncementInstruction.register(new PlayFileForEachInstruction());
+    }
+  }
+
   public static class DisplaySources {
-    private static final SignalDisplaySource signalInstance = new SignalDisplaySource();
-    public static final RegistryEntry<SignalDisplaySource> SIGNAL = Tramways.REGISTRATE.displaySource("signal", () -> signalInstance).register();
+    public static final RegistryEntry<SignalDisplaySource> SIGNAL = Tramways.REGISTRATE.displaySource("signal", SignalDisplaySource::new).register();
+    public static final RegistryEntry<StationSpeakerDisplaySource> STATION_SPEAKER = Tramways.REGISTRATE.displaySource("station_speaker", StationSpeakerDisplaySource::new).register();
+
+    private static void checkAndAssign(Pair<Block, DisplaySource> pair) {
+      if (pair.getFirst() == null || pair.getSecond() == null) return;
+      DisplaySource.BY_BLOCK.add(pair.getFirst(), pair.getSecond());
+    }
+
+    private static void assign(AbstractRegistrate<?> blockReg, ResourceLocation blockId, AbstractRegistrate<?> sourceReg, ResourceLocation sourceId) {
+      Pair<Block, DisplaySource> pair = Pair.of(null, null);
+
+      if (BuiltInRegistries.BLOCK.containsKey(blockId)) {
+        pair.setFirst(BuiltInRegistries.BLOCK.get(blockId));
+      } else {
+        blockReg.addRegisterCallback(blockId.getPath(), Registries.BLOCK, block -> {
+          pair.setFirst(block);
+          checkAndAssign(pair);
+        });
+      }
+
+      if (CreateBuiltInRegistries.DISPLAY_SOURCE.containsKey(blockId)) {
+        pair.setSecond(CreateBuiltInRegistries.DISPLAY_SOURCE.get(sourceId));
+      } else {
+        sourceReg.addRegisterCallback(sourceId.getPath(), CreateRegistries.DISPLAY_SOURCE, source -> {
+          pair.setSecond(source);
+          checkAndAssign(pair);
+        });
+      }
+    }
 
     public static void register() {
-      CreateAccessor.getRegistrate().addRegisterCallback("track_signal", Registries.BLOCK, block -> {
-        DisplaySource.BY_BLOCK.add(block, signalInstance);
-      });
+      assign(
+        CreateAccessor.getRegistrate(), AllBlocks.TRACK_SIGNAL.getId(),
+        Tramways.REGISTRATE, SIGNAL.getId()
+      );
+      assign(
+        CreateAccessor.getRegistrate(), AllBlocks.TRACK_STATION.getId(),
+        Tramways.REGISTRATE, STATION_SPEAKER.getId()
+      );
     }
   }
 
@@ -83,9 +132,6 @@ public class TExtras {
     Schedule.register();
     EdgePointTypes.register();
     SignDemands.register();
-
-    Mods.CREATERAILWAYSNAVIGATOR.ifLoadedRun(() -> () ->
-      TrainInfo.registerPropertyGetter("crn", new CRNTrainInfo())
-    );
+    AnnouncementInstructions.register();
   }
 }

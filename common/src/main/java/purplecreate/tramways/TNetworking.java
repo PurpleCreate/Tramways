@@ -10,14 +10,14 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
-import purplecreate.tramways.content.announcements.network.PlayVoiceS2CPacket;
-import purplecreate.tramways.content.announcements.network.PlayMovingVoiceS2CPacket;
+import purplecreate.tramways.content.announcements.network.*;
 import purplecreate.tramways.content.requestStop.network.RequestStopC2SPacket;
 import purplecreate.tramways.content.requestStop.network.StoppingBroadcastS2CPacket;
 import purplecreate.tramways.content.signals.item.CycleItemC2SPacket;
 import purplecreate.tramways.content.signals.routing.UpdateSignalC2SPacket;
 import purplecreate.tramways.content.signs.network.SaveSignSettingsC2SPacket;
 import purplecreate.tramways.content.stationDeco.nameSign.network.UpdateNameSignC2SPacket;
+import purplecreate.tramways.util.BiPacket;
 import purplecreate.tramways.util.C2SPacket;
 import purplecreate.tramways.util.S2CPacket;
 
@@ -83,6 +83,14 @@ public class TNetworking {
     c2sReaders.put(packetId, read);
   }
 
+  private static <T extends BiPacket> void registerBi(
+    Class<T> clazz,
+    Function<FriendlyByteBuf, T> read
+  ) {
+    registerC2S(clazz, read);
+    registerS2C(clazz, read);
+  }
+
   public static <T extends C2SPacket> void sendInternal(T message, Consumer<FriendlyByteBuf> consumer) {
     FriendlyByteBuf buf = new FriendlyByteBuf(Unpooled.buffer());
     buf.writeVarInt(c2sIdentifiers.get(message.getClass()));
@@ -143,16 +151,6 @@ public class TNetworking {
       CheckVersionS2CPacket::read
     );
 
-    registerS2C(
-      PlayVoiceS2CPacket.class,
-      PlayVoiceS2CPacket::read
-    );
-
-    registerS2C(
-      PlayMovingVoiceS2CPacket.class,
-      PlayMovingVoiceS2CPacket::read
-    );
-
     registerC2S(
       SaveSignSettingsC2SPacket.class,
       SaveSignSettingsC2SPacket::read
@@ -181,6 +179,51 @@ public class TNetworking {
     registerC2S(
       CycleItemC2SPacket.class,
       CycleItemC2SPacket::read
+    );
+
+    registerBi(
+      StartTransmittingBiPacket.class,
+      StartTransmittingBiPacket::read
+    );
+
+    registerBi(
+      UpdateStatusBiPacket.class,
+      UpdateStatusBiPacket::read
+    );
+
+    registerBi(
+      TransmitChunkBiPacket.class,
+      TransmitChunkBiPacket::read
+    );
+
+    registerS2C(
+      DatabaseSyncS2CPacket.class,
+      DatabaseSyncS2CPacket::read
+    );
+
+    registerC2S(
+      RequestFilesC2SPacket.class,
+      RequestFilesC2SPacket::read
+    );
+
+    registerC2S(
+      UpdateFileNameC2SPacket.class,
+      UpdateFileNameC2SPacket::read
+    );
+
+    registerC2S(
+      DeleteFileC2SPacket.class,
+      DeleteFileC2SPacket::read
+    );
+
+    registerS2C(
+      StationAnnouncementEventS2CPacket.class,
+      StationAnnouncementEventS2CPacket::read
+    );
+
+    registerS2C(
+      TrainAnnouncementEventS2CPacket.class,
+      TrainAnnouncementEventS2CPacket::read
     );
   }
 }

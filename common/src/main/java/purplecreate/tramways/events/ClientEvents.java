@@ -1,7 +1,8 @@
 package purplecreate.tramways.events;
 
 import net.minecraft.client.Minecraft;
-import purplecreate.tramways.content.announcements.sound.MinimalSoundEngine;
+import purplecreate.tramways.content.announcements.engine.SoundEngine;
+import purplecreate.tramways.content.announcements.engine.files.ClientFileManager;
 import purplecreate.tramways.content.requestStop.RequestStopClient;
 
 public class ClientEvents {
@@ -12,7 +13,8 @@ public class ClientEvents {
       return;
 
     RequestStopClient.tick(mc);
-    MinimalSoundEngine.tick();
+    SoundEngine.tick();
+    ClientFileManager.getInstance().tick();
 
     boolean paused = mc.isPaused();
     if (paused != lastPauseState) {
@@ -23,13 +25,18 @@ public class ClientEvents {
 
   public static void onClientPauseChange(boolean paused) {
     if (paused)
-      MinimalSoundEngine.pauseAll();
+      SoundEngine.pauseAll();
     else
-      MinimalSoundEngine.resumeAll();
+      SoundEngine.resumeAll();
+  }
+
+  public static void onJoin() {
+    ClientFileManager.getInstance().init();
   }
 
   public static void onLeave() {
-    MinimalSoundEngine.stopAll();
+    SoundEngine.clean();
+    ClientFileManager.getInstance().destroy();
   }
 
   protected static boolean isGameActive() {
