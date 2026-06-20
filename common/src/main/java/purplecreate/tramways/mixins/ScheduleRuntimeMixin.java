@@ -10,7 +10,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import purplecreate.tramways.content.requestStop.RequestStopServer;
-import purplecreate.tramways.mixinInterfaces.IStopRequestableNavigation;
+import purplecreate.tramways.mixinInterfaces.ITramNavigation;
 
 @Mixin(value = ScheduleRuntime.class, remap = false)
 public class ScheduleRuntimeMixin {
@@ -27,7 +27,7 @@ public class ScheduleRuntimeMixin {
     tramways$lastEntry = currentEntry;
 
     RequestStopServer.removeRequest(train);
-    if (train.navigation instanceof IStopRequestableNavigation nav)
+    if (train.navigation instanceof ITramNavigation nav)
       nav.tramways$resetRouteCancelled();
   }
 }

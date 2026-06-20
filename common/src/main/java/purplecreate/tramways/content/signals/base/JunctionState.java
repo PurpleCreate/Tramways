@@ -1,5 +1,7 @@
 package purplecreate.tramways.content.signals.base;
 
+import com.simibubi.create.content.trains.signal.SignalBoundary;
+import net.createmod.catnip.data.Pair;
 import net.createmod.catnip.nbt.NBTHelper;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -70,5 +72,11 @@ public class JunctionState {
     RIGHT_45,
     RIGHT_90,
     RIGHT_135
+  }
+
+  public record SignalInfo(SignalBoundary signal, Boolean forward, JunctionState state) {
+    public Pair<SignalBoundary, Boolean> asPair() {
+      return Pair.of(signal, forward);
+    }
   }
 }

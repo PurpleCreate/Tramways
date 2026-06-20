@@ -39,7 +39,7 @@ public abstract class SignalBoundaryMixin implements IRoutedSignal.Internal {
   @Unique private UUID tramways$routeSelectedBy = null;
   @Unique private final Couple<JunctionState> tramways$route = Couple.create(() -> null);
   @Unique private final Couple<Pair<SignalBoundary, Boolean>> tramways$selectedRoute = Couple.create(() -> null);
-  @Unique private final Couple<Map<UUID, JunctionState>> tramways$possibleRoutes = Couple.create(HashMap::new);
+  @Unique private final Couple<Map<Pair<SignalBoundary, Boolean>, JunctionState>> tramways$possibleRoutes = Couple.create(HashMap::new);
   @Unique private final Couple<List<Pair<SignalBoundary, Boolean>>> tramways$nextSignals = Couple.create(() -> null);
 
   @Override
@@ -206,7 +206,7 @@ public abstract class SignalBoundaryMixin implements IRoutedSignal.Internal {
   @Override
   public @Nullable JunctionState tramways$getSelectedRoute(boolean front) {
     Pair<SignalBoundary, Boolean> route = tramways$selectedRoute.get(front);
-    return route == null ? null : tramways$possibleRoutes.get(front).get(route.getFirst().id);
+    return route == null ? null : tramways$possibleRoutes.get(front).get(route);
   }
 
   @Override
@@ -221,13 +221,19 @@ public abstract class SignalBoundaryMixin implements IRoutedSignal.Internal {
   }
 
   @Override
-  public List<JunctionState> tramways$getPossibleRoutes(boolean front) {
-    return tramways$possibleRoutes.get(front).values().stream().toList();
+  public List<JunctionState.SignalInfo> tramways$getPossibleRoutes(boolean front) {
+    return tramways$possibleRoutes.get(front)
+      .entrySet()
+      .stream()
+      .map(entry ->
+        new JunctionState.SignalInfo(entry.getKey().getFirst(), entry.getKey().getSecond(), entry.getValue())
+      )
+      .toList();
   }
 
   @Override
-  public Map<UUID, JunctionState> tramways$getPossibleRoutes(TrackGraph graph, boolean front) {
-    Map<UUID, JunctionState> routes = new HashMap<>();
+  public Map<Pair<SignalBoundary, Boolean>, JunctionState> tramways$getPossibleRoutes(TrackGraph graph, boolean front) {
+    Map<Pair<SignalBoundary, Boolean>, JunctionState> routes = new HashMap<>();
     Map<UUID, Boolean> chain = chainedSignals.get(front);
 
     if (types.get(front) != SignalBlock.SignalType.CROSS_SIGNAL || chain == null) return routes;
@@ -242,7 +248,7 @@ public abstract class SignalBoundaryMixin implements IRoutedSignal.Internal {
         routes.putAll(otherRouted.tramways$getPossibleRoutes(graph, otherSide));
       } else {
         JunctionState route = otherRouted.tramways$getRoute(otherSide);
-        if (route != null) routes.put(id, route);
+        if (route != null) routes.put(Pair.of(otherSignal, otherSide), route);
       }
     }
 

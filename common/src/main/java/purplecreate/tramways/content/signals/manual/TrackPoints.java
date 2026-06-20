@@ -22,7 +22,7 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class TrackPoints {
-  public Pair<SignalBoundary, Boolean> findNearestJunction(Train train, boolean forward) {
+  public static Pair<SignalBoundary, Boolean> findNearestJunction(Train train, boolean forward) {
     AtomicReference<Pair<SignalBoundary, Boolean>> result = new AtomicReference<>(null);
 
     double acceleration = train.acceleration();
@@ -52,11 +52,54 @@ public class TrackPoints {
     return result.get();
   }
 
-  public void search(Train train, double maxDistance, boolean forward, PointTest pointTest) {
+  public static DiscoveredPath findPathThroughJunction(Train train, SignalBoundary exit, boolean forward) {
+    AtomicReference<DiscoveredPath> result = new AtomicReference<>(null);
+
+    TrackGraph graph = train.graph;
+
+    TravellingPoint initialPoint = forward
+      ? train.carriages.get(0).getLeadingPoint()
+      : train.carriages.get(train.carriages.size() - 1).getTrailingPoint();
+    TrackEdge initialEdge = forward
+      ? initialPoint.edge
+      : graph.getConnectionsFrom(initialPoint.node2).get(initialPoint.node1);
+
+    search(train, Double.MAX_VALUE, Double.MAX_VALUE, forward, (distance, cost, reachedVia, current, edgePoint) -> {
+      if (edgePoint != exit) return false;
+
+      TrackEdge edge = current.getSecond();
+      TrackNode node1 = current.getFirst().getFirst();
+      TrackNode node2 = current.getFirst().getSecond();
+
+      List<Couple<TrackNode>> currentPath = new ArrayList<>();
+      Pair<Boolean, Couple<TrackNode>> backTrack = reachedVia.get(edge);
+      Couple<TrackNode> toReach = Couple.create(node1, node2);
+      TrackEdge edgeReached = edge;
+      while (backTrack != null) {
+        if (edgeReached == initialEdge)
+          break;
+        if (backTrack.getFirst())
+          currentPath.add(0, toReach);
+        toReach = backTrack.getSecond();
+        edgeReached = graph.getConnection(toReach);
+        backTrack = reachedVia.get(edgeReached);
+      }
+
+      double position = edge.getLength() - exit.getLocationOn(edge);
+      double distanceToDestination = distance - position;
+      result.set(new DiscoveredPath((forward ? 1 : -1) * distanceToDestination, cost, currentPath, null));
+
+      return true;
+    });
+
+    return result.get();
+  }
+
+  public static void search(Train train, double maxDistance, boolean forward, PointTest pointTest) {
     search(train, maxDistance, -1, forward, pointTest);
   }
 
-  public void search(Train train, double maxDistance, double maxCost, boolean forward, PointTest pointTest) {
+  public static void search(Train train, double maxDistance, double maxCost, boolean forward, PointTest pointTest) {
     TrackGraph graph = train.graph;
     if (graph == null)
       return;

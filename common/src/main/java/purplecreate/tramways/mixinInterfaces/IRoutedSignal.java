@@ -12,7 +12,6 @@ import purplecreate.tramways.content.signals.base.JunctionState;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 import java.util.function.Function;
 
 public interface IRoutedSignal {
@@ -39,8 +38,8 @@ public interface IRoutedSignal {
     return ((Internal)this).tramways$getSide(pos, null, this::tramways$getRoute);
   }
 
-  List<JunctionState> tramways$getPossibleRoutes(boolean front);
-  default List<JunctionState> tramways$getPossibleRoutes(BlockPos pos) {
+  List<JunctionState.SignalInfo> tramways$getPossibleRoutes(boolean front);
+  default List<JunctionState.SignalInfo> tramways$getPossibleRoutes(BlockPos pos) {
     return ((Internal)this).tramways$getSide(pos, new ArrayList<>(), this::tramways$getPossibleRoutes);
   }
 
@@ -54,7 +53,7 @@ public interface IRoutedSignal {
 
   interface Internal extends IRoutedSignal {
     <T> T tramways$getSide(BlockPos pos, T defaultValue, Function<Boolean, T> func);
-    Map<UUID, JunctionState> tramways$getPossibleRoutes(TrackGraph graph, boolean front);
+    Map<Pair<SignalBoundary, Boolean>, JunctionState> tramways$getPossibleRoutes(TrackGraph graph, boolean front);
     ExtendedSignalState tramways$getExtendedState(boolean front, int depth);
   }
 }

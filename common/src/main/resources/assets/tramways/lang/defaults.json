@@ -17,7 +17,8 @@
   "tramways.display_target.speaker": "Speaker",
   "tramways.display_target.signal": "Advanced Signal",
 
-  "tramways.contraption.controls.approach_junction": "Use %1$s %2$s to select a route. Press %3$s to navigate towards %4$s.",
+  "tramways.contraption.controls.approach_junction": "Use %1$s %2$s to select a route. Press %3$s to travel via %4$s.",
+  "tramways.contraption.controls.locked_route": "Travelling via %1$s. Press %2$s to cancel.",
 
   "tramways.request_stop.stopping": "Stopping!",
   "tramways.request_stop.countdown": "Press %1$s to request stop at %2$s",

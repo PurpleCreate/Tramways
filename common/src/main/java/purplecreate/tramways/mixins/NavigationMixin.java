@@ -1,5 +1,9 @@
 package purplecreate.tramways.mixins;
 
+import com.simibubi.create.content.trains.entity.TravellingPoint;
+import com.simibubi.create.content.trains.graph.DiscoveredPath;
+import com.simibubi.create.content.trains.graph.TrackEdge;
+import com.simibubi.create.content.trains.graph.TrackGraph;
 import com.simibubi.create.content.trains.schedule.Schedule;
 import com.simibubi.create.content.trains.schedule.ScheduleEntry;
 import com.simibubi.create.content.trains.schedule.ScheduleRuntime;
@@ -27,20 +31,24 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import purplecreate.tramways.mixinInterfaces.IRoutedSignal;
 import purplecreate.tramways.mixinInterfaces.ITram;
-import purplecreate.tramways.mixinInterfaces.IStopRequestableNavigation;
+import purplecreate.tramways.mixinInterfaces.ITramNavigation;
 
 import java.util.*;
 
 @Mixin(value = Navigation.class, remap = false)
-public abstract class NavigationMixin implements IStopRequestableNavigation {
+public abstract class NavigationMixin implements ITramNavigation {
   @Unique private final List<Pair<SignalBoundary, Boolean>> tramways$chainSignals = new ArrayList<>();
   @Unique private final List<Pair<IRoutedSignal, Boolean>> tramways$notifiedSignals = new ArrayList<>();
   @Unique private boolean tramways$routeCancelled;
+  @Unique private DiscoveredPath tramways$junctionRoute;
+  @Unique private Runnable tramways$junctionRouteCompleted;
+
   @Shadow public Train train;
   @Shadow public double distanceToDestination;
   @Shadow public double distanceStartedAt;
   @Shadow private List<Couple<TrackNode>> currentPath;
   @Shadow public GlobalStation destination;
+  @Shadow protected abstract Map.Entry<TrackNode, TrackEdge> navigateOptions(List<Couple<TrackNode>> path, TrackGraph graph, List<Map.Entry<TrackNode, TrackEdge>> options);
 
   @Unique
   private void tramways$cancelRoute() {
@@ -142,6 +150,39 @@ public abstract class NavigationMixin implements IStopRequestableNavigation {
         train,
         (float) ((distanceToDestination - brakingDistance)
           / (distanceStartedAt - brakingDistance))
+      );
+    }
+  }
+
+  // junction control
+
+  @Unique
+  @Override
+  public void tramways$setRouteThroughJunction(DiscoveredPath path, Runnable onComplete) {
+    tramways$junctionRoute = path;
+    tramways$junctionRouteCompleted = onComplete;
+  }
+
+  @Override
+  public void tramways$cancelRouteThroughJunction() {
+    tramways$junctionRoute = null;
+    tramways$junctionRouteCompleted = null;
+  }
+
+  @Inject(method = "control", at = @At("HEAD"), cancellable = true)
+  public void tramways$junctionControl(TravellingPoint mp, CallbackInfoReturnable<TravellingPoint.ITrackSelector> cir) {
+    if (tramways$junctionRoute == null) return;
+
+    if (tramways$junctionRoute.path.isEmpty()) {
+      if (tramways$junctionRouteCompleted != null) {
+        tramways$junctionRouteCompleted.run();
+      }
+
+      tramways$junctionRoute = null;
+      tramways$junctionRouteCompleted = null;
+    } else if (destination == null) {
+      cir.setReturnValue((graph, pair) ->
+        navigateOptions(tramways$junctionRoute.path, graph, pair.getSecond())
       );
     }
   }
