@@ -8,7 +8,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import purplecreate.tramways.events.CommonEvents;
 
-@Mixin(value = ServerLevel.class, remap = false)
+@Mixin(value = ServerLevel.class)
 public class ServerLevelMixin {
   @Inject(method = "save", at = @At("TAIL"))
   public void tramways$dispatchSaveEvent(ProgressListener progress, boolean flush, boolean skipSave, CallbackInfo ci) {
