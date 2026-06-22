@@ -17,6 +17,14 @@
   "tramways.display_target.speaker": "Speaker",
   "tramways.display_target.signal": "Advanced Signal",
 
+  "tramways.route_configurator.modal_title": "Route Configuration",
+  "tramways.route_configurator.name_title": "Friendly Name",
+  "tramways.route_configurator.name_hint": "Shown to manual drivers approaching this junction",
+  "tramways.route_configurator.letter_title": "Alphanumerical Indicator",
+  "tramways.route_configurator.letter_hint": "Shown on signals such as the Theatre Signal",
+  "tramways.route_configurator.direction_title": "Directional Indicator",
+  "tramways.route_configurator.direction_hint": "Shown on signals such as the Feather Signal",
+
   "tramways.contraption.controls.approach_junction": "Use %1$s %2$s to select a route. Press %3$s to travel via %4$s.",
   "tramways.contraption.controls.locked_route": "Travelling via %1$s. Press %2$s to cancel.",
 
