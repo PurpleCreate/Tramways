@@ -109,7 +109,6 @@ public class RouteConfiguratorScreen extends AbstractSimiScreen {
   public void onClose() {
     super.onClose();
 
-    JunctionState defaults = JunctionState.unknown();
     String letter = letterBox.getValue();
     String name = nameBox.getValue();
     DirectionalJunctionState direction = DirectionalJunctionState.values()[directionBox.getState()];
@@ -120,8 +119,8 @@ public class RouteConfiguratorScreen extends AbstractSimiScreen {
     }
 
     TNetworking.sendToServer(new UpdateSignalC2SPacket(signal.getBlockPos(), new JunctionState(
-      letter.isBlank() ? defaults.getLetter() : letter.charAt(0),
-      name.isBlank() ? defaults.getName() : Component.literal(name),
+      letter.isBlank() ? '?' : letter.charAt(0),
+      name.isBlank() ? Tramways.translatable("junction_state.unknown") : Component.literal(name),
       direction
     )));
   }

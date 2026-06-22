@@ -212,9 +212,7 @@ public abstract class SignalBoundaryMixin implements IRoutedSignal.Internal {
   @Override
   public JunctionState tramways$getRoute(boolean front) {
     if (types.get(front) == SignalBlock.SignalType.ENTRY_SIGNAL) {
-      JunctionState route = tramways$route.get(front);
-      if (route == null) return JunctionState.unknown();
-      return route;
+      return tramways$route.get(front);
     }
 
     return null;

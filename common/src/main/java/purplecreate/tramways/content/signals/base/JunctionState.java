@@ -20,10 +20,6 @@ public class JunctionState {
     this.direction = direction;
   }
 
-  public static JunctionState unknown() {
-    return new JunctionState('?', Tramways.translatable("junction_state.unknown"), DirectionalJunctionState.NONE);
-  }
-
   public char getLetter() {
     return letter;
   }
