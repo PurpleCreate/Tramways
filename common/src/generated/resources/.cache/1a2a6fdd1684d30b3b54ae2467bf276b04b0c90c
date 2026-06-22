@@ -1,4 +1,4 @@
-// 1.20.1	2026-06-22T14:43:01.4480626	Create: Tramways/Registrate Provider for tramways [Recipes, Advancements, Loot Tables, Tags (blocks), Tags (items), Tags (fluids), Tags (entity_types), Blockstates, Item models, Lang (en_us/en_ud)]
+// 1.20.1	2026-06-22T14:52:40.9586248	Create: Tramways/Registrate Provider for tramways [Recipes, Advancements, Loot Tables, Tags (blocks), Tags (items), Tags (fluids), Tags (entity_types), Blockstates, Item models, Lang (en_us/en_ud)]
 abdd0a6441d670edd67d4a98560e165f7df8cc68 assets\tramways\models\block\station_name_sign\gray_extended.json
 8b89ef871b4ef0e921acec7616b6b01d503763d1 assets\tramways\blockstates\purple_station_name_sign.json
 b0e3ef57e6ea61ce6bd4e90c25102e55387d90cb assets\tramways\models\item\cyan_station_name_sign.json
@@ -27,8 +27,8 @@ bdb3fe0dc6e790ae92e3afc9d9233e739459422a data\tramways\advancements\recipes\deco
 1269922f209c86d038af4ec6ec619a655ed8efd4 assets\tramways\models\item\red_station_name_sign.json
 633a98dc3b3441ad73b5f06babbd4fc0b7fe2c04 data\tramways\advancements\recipes\decorations\blue_station_name_sign__dyed.json
 91ef767a2a4421f1fe5fa6833fc993ed46a556be assets\tramways\models\block\station_name_sign\purple_extended.json
-0bcd74ee33918b5d51469d067edbeee1f6a4bf00 assets\tramways\blockstates\light_gray_station_name_sign.json
 7549c0d7f399e0a30a931e555135fca467d82276 assets\tramways\blockstates\light_blue_station_name_sign.json
+0bcd74ee33918b5d51469d067edbeee1f6a4bf00 assets\tramways\blockstates\light_gray_station_name_sign.json
 264fa0877bb6ebe4ce1d467115a8fbbc10665d24 assets\tramways\models\block\station_name_sign\cyan_extended.json
 0106c41c2ef169dc3c6e0d2a41eac36f89c15246 assets\tramways\blockstates\cyan_station_name_sign.json
 dff8bce9f8b1678b3111faa2e29e1fe9fcd3ed96 assets\tramways\blockstates\tram_signal.json
@@ -62,8 +62,8 @@ f9fab8cc06e61e557127a3c572cc2f0a156f62a8 data\tramways\advancements\recipes\tran
 c8cfe85daeea327c4713fdf47a36849e52a193da assets\tramways\models\block\station_name_sign\gray.json
 8b8002ce8a76bc04b3392d78f8e5cebe7ad7b4e3 assets\tramways\models\block\station_name_sign\white_extended.json
 68f0de2616a722732db0ae4b3cb310e47b411781 data\tramways\loot_tables\blocks\tram_signal.json
-7ab858317292fa6702edbd3261e680ee66e18d73 assets\tramways\models\item\magenta_station_name_sign.json
 408c592974ba65474e99d38dd3019f1d6e62d46c assets\tramways\models\item\light_gray_station_name_sign.json
+7ab858317292fa6702edbd3261e680ee66e18d73 assets\tramways\models\item\magenta_station_name_sign.json
 093872734fb0d354e1122c7dc9ea37fdf0c29edb data\tramways\advancements\recipes\decorations\green_station_name_sign__dyed.json
 dfae01a58fa3656785d71b75563148e136e950ba assets\tramways\models\item\pink_station_name_sign.json
 2cb7b8ba8f2b24fd3ab92fe4bfea3e04a69092c8 assets\tramways\models\item\brown_station_name_sign.json
@@ -120,7 +120,7 @@ c01c43f64222eb254a5db2070e325e64d55e7bb0 data\tramways\tags\blocks\name_sign_inn
 38a7b99a7e1930990ce5672d23aed0a1105520c8 data\tramways\loot_tables\blocks\theatre_signal.json
 c36c0f4ba51b2f0119e82ef69d77a2dc68cc9a37 data\tramways\loot_tables\blocks\request_stop_button.json
 0af8e4b1dc7b4d87e0184755ba3037a3ef28c524 data\tramways\tags\blocks\signal_pole.json
-99f8b315a72f54afb2d06b0102870f0e196810e0 assets\tramways\lang\en_ud.json
+beb78578144e61e4c8edcb73742cffe594487957 assets\tramways\lang\en_ud.json
 cb8453cac1cca0cd2c414e5ae28799708ef3a306 data\tramways\recipes\auxiliary_sign.json
 4c90465f54bce64c8010b8f5291a18331050cb98 assets\tramways\models\item\light_blue_station_name_sign.json
 338292a0c892006aa08f347dfd2a60bf5ec14a89 data\tramways\loot_tables\blocks\gray_station_name_sign.json
@@ -137,7 +137,7 @@ e6a9ef084155e07f9172f005eba707f539b3e3ef data\tramways\advancements\recipes\tran
 e1fa1acb9e48accfda447efd3e731edaffc59b34 data\tramways\loot_tables\blocks\blue_station_name_sign.json
 ab1b3845958c0990764c511dba92374638534554 assets\tramways\models\block\station_name_sign\magenta_extended.json
 b73fe60083aeea0f313b1aac73a9d0c1f58f0a8b data\tramways\recipes\brown_station_name_sign__dyed.json
-e4c822566bb785ba889871df8d6407d344fd234e assets\tramways\lang\en_us.json
+db940c5eaf32b17c007aca7bb758ff5f8a9786ed assets\tramways\lang\en_us.json
 8c98cc13ea582ebfd401cf369822c1a06a0636f2 data\tramways\advancements\recipes\decorations\brown_station_name_sign__dyed.json
 01ecdee7293e3b899d1b0a579383aeb8bff6662e data\tramways\recipes\magenta_station_name_sign__dyed.json
 d4f2d2bb509aca91d844df8130b1daefae4a5061 assets\tramways\models\block\station_name_sign\blue.json
@@ -146,8 +146,8 @@ e327be1aaabdefad6bf3b157cef7f552d89bb90c assets\tramways\blockstates\request_sto
 589c8cf9b474d79570ec079da3d02db0eea42411 assets\tramways\blockstates\magenta_station_name_sign.json
 8a23702b05296c8af5014d6aa6e9265ded85c7d9 data\tramways\tags\blocks\attachment_pole\10px.json
 a028aeaebecf17930a6ca3c2055f9d9e4d7d015e assets\tramways\models\block\station_name_sign\lime_extended.json
-26775bd9393ba9cd93044700e74a14e04cdd86cd assets\tramways\blockstates\auxiliary_sign.json
 369077875c9179f0e1559a0ea2bbb13979337b46 assets\tramways\models\block\station_name_sign\light_gray_extended.json
+26775bd9393ba9cd93044700e74a14e04cdd86cd assets\tramways\blockstates\auxiliary_sign.json
 dff8bce9f8b1678b3111faa2e29e1fe9fcd3ed96 assets\tramways\blockstates\theatre_signal.json
 33cd823838b7e24cdc7a4bcf89834fd7d3a11ad6 data\tramways\recipes\yellow_station_name_sign__dyed.json
 9681bd0432481084e6202ada650eae89f5ba79bb assets\tramways\models\block\station_name_sign\red_extended.json
@@ -167,8 +167,8 @@ f0916df6275c4c8b9e29681afd536514b844167d data\tramways\advancements\recipes\tran
 3218f39baa028cbcee581d4964f503fd4072fe78 data\tramways\loot_tables\blocks\magenta_station_name_sign.json
 b94615c7c9fb361854a624fc3432d99a3e4063e5 data\tramways\recipes\white_station_name_sign__dyed.json
 75ecacae6795aed3006ffabfe5ba4d8a55fcb66e data\tramways\recipes\white_station_name_sign.json
-acd46be413d7827b86dfbec2ff55274ea461b27e data\tramways\loot_tables\blocks\purple_station_name_sign.json
 5de0c68cb2b2aa7d91d7707b1b58af259562151c data\tramways\loot_tables\blocks\four_aspect_signal.json
+acd46be413d7827b86dfbec2ff55274ea461b27e data\tramways\loot_tables\blocks\purple_station_name_sign.json
 53c5d3b3a256c30af571d77c35115d30098ede48 assets\tramways\models\block\station_name_sign\yellow_extended.json
 ff96987088093b2d9a8d62390fac578f53835742 data\tramways\recipes\pink_station_name_sign__dyed.json
 3ea726afe8233096dc2048355e04f18bcdf6a540 data\tramways\advancements\recipes\decorations\purple_station_name_sign__dyed.json

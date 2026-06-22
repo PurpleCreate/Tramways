@@ -121,7 +121,7 @@
   "tramways.route_configurator.modal_title": "Route Configuration",
   "tramways.route_configurator.name_hint": "Shown to manual drivers approaching this junction",
   "tramways.route_configurator.name_title": "Friendly Name",
-  "tramways.route_configurator.remove_config": "Removed Route Configuration!",
+  "tramways.route_configurator.remove_config": "Successfully removed route configuration",
   "tramways.route_configurator.used_on_brass": "This cannot be used on brass signals",
   "tramways.route_configurator.used_on_invalid": "This signal is invalid",
   "tramways.schedule.instruction.configure_announcements": "Configure Announcements",
