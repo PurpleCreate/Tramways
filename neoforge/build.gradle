@@ -56,7 +56,7 @@ processResources {
   Map<String, String> properties = Map.of(
     "mod_id", mod_id,
     "version", mod_version,
-    "neoforge_version", neoforge_version.split("\\.")[0],
+    "neoforge_version", neoforge_version,
     "minecraft_version", minecraft_version,
     "create_version", create_forge_version.split("-")[0],
     "create_version_range", create_forge_version_range,

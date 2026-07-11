@@ -7,12 +7,11 @@ import de.mrjulsen.crn.data.TrainLine;
 import de.mrjulsen.crn.data.train.TrainData;
 import de.mrjulsen.crn.data.train.TrainListener;
 import de.mrjulsen.crn.data.train.TrainPrediction;
-// import de.mrjulsen.crn.util.ETimeFormat;
-// import de.mrjulsen.mcdragonlib.util.time.ConfiguredTimeSystem;
-// import de.mrjulsen.mcdragonlib.util.time.DLTime;
-// import de.mrjulsen.mcdragonlib.util.time.ITimeSystem;
-// import de.mrjulsen.mcdragonlib.util.time.TimeContext;
-import de.mrjulsen.mcdragonlib.util.TimeUtils;
+import de.mrjulsen.crn.util.ETimeFormat;
+import de.mrjulsen.mcdragonlib.util.time.ConfiguredTimeSystem;
+import de.mrjulsen.mcdragonlib.util.time.DLTime;
+import de.mrjulsen.mcdragonlib.util.time.ITimeSystem;
+import de.mrjulsen.mcdragonlib.util.time.TimeContext;
 import purplecreate.tramways.content.announcements.info.TrainInfo.PropertyGetter;
 
 import java.util.HashMap;
@@ -37,14 +36,14 @@ public class CRNTrainInfo implements PropertyGetter {
       props.put("group", group == null ? "" : group.getCategoryName());
       props.put("line", line == null ? "" : line.getLineName());
 
-      // dragonlib3
-      // ITimeSystem timeSystem = new ConfiguredTimeSystem();
+      ITimeSystem timeSystem = ConfiguredTimeSystem.INSTANCE;
+      long arrivalTicks = trainPrediction == null ? 0 : trainPrediction.scheduled().arrivalTime();
+      long departureTicks = trainPrediction == null ? 0 : trainPrediction.scheduled().departureTime();
 
-      // String arrivalTime = DLTime.fromTicks(trainPrediction == null ? 0 : trainPrediction.scheduled().arrivalTime(), timeSystem).format(ETimeFormat.HOURS_24.getFormat(), TimeContext.INGAME);
-      // String departureTime = DLTime.fromTicks(trainPrediction == null ? 0 : trainPrediction.scheduled().departureTime(), timeSystem).format(ETimeFormat.HOURS_24.getFormat(), TimeContext.INGAME);
-
-      String arrivalTime = TimeUtils.formatTime(trainPrediction == null ? 0 : trainPrediction.scheduled().arrivalTime(), TimeUtils.TimeFormat.HOURS_24);
-      String departureTime = TimeUtils.formatTime(trainPrediction == null ? 0 : trainPrediction.scheduled().departureTime(), TimeUtils.TimeFormat.HOURS_24);
+      String arrivalTime = DLTime.fromGameTicks(arrivalTicks, timeSystem)
+        .format(ETimeFormat.HOURS_24.getFormat(), TimeContext.INGAME, timeSystem);
+      String departureTime = DLTime.fromGameTicks(departureTicks, timeSystem)
+        .format(ETimeFormat.HOURS_24.getFormat(), TimeContext.INGAME, timeSystem);
       props.put("arrival_time", arrivalTime);
       props.put("departure_time", departureTime);
       props.put("arrival_time_hours", arrivalTime.split(":")[0]);
