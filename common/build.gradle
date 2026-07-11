@@ -24,8 +24,8 @@ dependencies {
 
   // Compat
   //modCompileOnly("com.railwayteam.railways:Steam_Rails-common-${minecraft_version}:${railways_common_version}") { transitive = false }
-  modCompileOnly("maven.modrinth:create-railways-navigator:${crn_fabric_version}")
-  modCompileOnly("de.mrjulsen.mcdragonlib:dragonlib-fabric:${minecraft_version}-${dragonlib_version}")
+  compileOnly("maven.modrinth:create-railways-navigator:${crn_neoforge_version}") { transitive = false }
+  compileOnly("de.mrjulsen.mcdragonlib:dragonlib-neoforge:${minecraft_version}-${dragonlib_version}") { transitive = false }
 }
 
 sourceSets {

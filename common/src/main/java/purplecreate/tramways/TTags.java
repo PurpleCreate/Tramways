@@ -44,20 +44,20 @@ public class TTags {
   private static void genBlockTags(RegistrateTagsProvider<Block> p) {
     TagGen.CreateTagsProvider<Block> provider = new TagGen.CreateTagsProvider<>(p, Block::builtInRegistryHolder);
 
-    provider.tag(SIGNAL_POLE)
-      .add(
-        TBlocks.TRAM_SIGNAL.get(),
-        TBlocks.TRAM_SIGN.get(),
-        TBlocks.RAILWAY_SIGN.get(),
-        AllBlocks.METAL_GIRDER.get(),
-        AllBlocks.METAL_GIRDER_ENCASED_SHAFT.get()
-      )
-      .addOptional(Mods.RAILWAYS.rl("semaphore"))
-      .addTag(BlockTags.FENCES);
+    TagGen.CreateTagAppender<Block> signalPoles = provider.tag(SIGNAL_POLE);
+    signalPoles.add(
+      TBlocks.TRAM_SIGNAL.get(),
+      TBlocks.TRAM_SIGN.get(),
+      TBlocks.RAILWAY_SIGN.get(),
+      AllBlocks.METAL_GIRDER.get(),
+      AllBlocks.METAL_GIRDER_ENCASED_SHAFT.get()
+    );
+    signalPoles.addOptional(Mods.RAILWAYS.rl("semaphore"));
+    signalPoles.addTag(BlockTags.FENCES);
 
-    provider.tag(NAME_SIGN_INNER)
-      .add(Blocks.NETHER_BRICKS)
-      .addTag(BlockTags.PLANKS);
+    TagGen.CreateTagAppender<Block> nameSignInner = provider.tag(NAME_SIGN_INNER);
+    nameSignInner.add(Blocks.NETHER_BRICKS);
+    nameSignInner.addTag(BlockTags.PLANKS);
 
     provider.tag(SEMAPHORE_POLE)
       .add(

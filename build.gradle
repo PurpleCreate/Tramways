@@ -1,7 +1,7 @@
 plugins {
-  id "architectury-plugin" version "3.4-SNAPSHOT"
-  id "dev.architectury.loom" version "1.11-SNAPSHOT" apply false
-  id "io.github.p03w.machete" version "1.+" // automatic jar compressing on build
+  id "architectury-plugin" version "3.4.164"
+  id "dev.architectury.loom" version "1.11.458" apply false
+  id "io.github.p03w.machete" version "1.2.0" // automatic jar compressing on build
   id "me.modmuss50.mod-publish-plugin" version "0.7.4" apply false
 }
 
@@ -91,6 +91,9 @@ allprojects {
   }
 
   java {
+    toolchain {
+      languageVersion = JavaLanguageVersion.of(21)
+    }
     withSourcesJar()
   }
 
@@ -112,6 +115,31 @@ tasks.create("publishTramways") {
       dependsOn "${platform}:build", "${platform}:publishMods"
       break
   }
+}
+
+// The root project has no mod sources. Do not emit empty jars that can be
+// mistaken for the installable NeoForge artifact.
+tasks.named("jar") {
+  enabled = false
+}
+
+tasks.named("sourcesJar") {
+  enabled = false
+}
+
+tasks.register("packageNeoForge", Copy) {
+  dependsOn(":neoforge:remapJar")
+  from(project(":neoforge").tasks.named("remapJar").flatMap { it.archiveFile })
+  into(layout.projectDirectory.dir("dist"))
+  rename { "create-tramways-${mod_version}-mc${minecraft_version}-neoforge.jar" }
+}
+
+tasks.named("build") {
+  dependsOn("packageNeoForge")
+}
+
+tasks.named("clean") {
+  delete(layout.projectDirectory.dir("dist"))
 }
 
 tasks.register('javadocAll', Javadoc) {
