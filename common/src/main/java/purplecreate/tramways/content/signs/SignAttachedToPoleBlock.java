@@ -1,4 +1,4 @@
-package purplecreate.tramways.content.signals.block;
+package purplecreate.tramways.content.signs;
 
 import com.simibubi.create.AllShapes;
 import com.simibubi.create.content.equipment.wrench.IWrenchable;
@@ -81,7 +81,7 @@ public abstract class SignAttachedToPoleBlock extends HorizontalDirectionalBlock
     return pos.relative(state.getValue(FACING).getOpposite());
   }
 
-  protected abstract VoxelShape getFaceShape(Direction direction);
+  protected abstract VoxelShape getFaceShape(BlockState state, BlockGetter level, BlockPos pos);
 
   @Override
   protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
@@ -117,13 +117,12 @@ public abstract class SignAttachedToPoleBlock extends HorizontalDirectionalBlock
   public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
     if (state.getValue(GIRDER)) return AllShapes.EIGHT_VOXEL_POLE.get(Direction.Axis.Y);
 
-    Direction facing = state.getValue(FACING);
     Vec3 offset = getRenderOffset(state);
-    return getFaceShape(facing).move(offset.x, offset.y, offset.z);
+    return getFaceShape(state, level, pos).move(offset.x, offset.y, offset.z);
   }
 
-  @Override
-  public VoxelShape getInteractionShape(BlockState state, BlockGetter level, BlockPos pos) {
-    return getShape(state, level, pos, CollisionContext.empty());
-  }
+  //@Override
+  //public VoxelShape getInteractionShape(BlockState state, BlockGetter level, BlockPos pos) {
+  //  return getShape(state, level, pos, CollisionContext.empty());
+  //}
 }

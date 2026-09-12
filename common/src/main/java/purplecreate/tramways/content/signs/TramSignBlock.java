@@ -3,6 +3,7 @@ package purplecreate.tramways.content.signs;
 import net.createmod.catnip.math.VoxelShaper;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import purplecreate.tramways.TBlockEntities;
 import com.simibubi.create.AllShapes;
@@ -15,7 +16,6 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import purplecreate.tramways.content.signals.block.SignAttachedToPoleBlock;
 
 public class TramSignBlock extends SignAttachedToPoleBlock implements IBE<TramSignBlockEntity> {
   private static final VoxelShaper shape = new AllShapes.Builder(box(2, 2, 14, 14, 14, 16)).forHorizontal(Direction.NORTH);
@@ -46,8 +46,8 @@ public class TramSignBlock extends SignAttachedToPoleBlock implements IBE<TramSi
   }
 
   @Override
-  protected VoxelShape getFaceShape(Direction direction) {
-    return shape.get(direction);
+  protected VoxelShape getFaceShape(BlockState state, BlockGetter level, BlockPos pos) {
+    return shape.get(state.getValue(FACING));
   }
 
   @Override

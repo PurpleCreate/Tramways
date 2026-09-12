@@ -8,7 +8,6 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import purplecreate.tramways.Tramways;
 import purplecreate.tramways.config.forge.TConfigsImpl;
-import purplecreate.tramways.util.forge.TramwaysRegistrateImpl;
 
 @Mod(Tramways.ID)
 public class TramwaysImpl {
@@ -17,7 +16,7 @@ public class TramwaysImpl {
 
     Tramways.init();
     TConfigsImpl.register(ModLoadingContext.get());
-    ((TramwaysRegistrateImpl) Tramways.REGISTRATE).registerEventListeners(modEventBus);
+    Tramways.REGISTRATE.registerEventListeners(modEventBus);
     TCreativeTabsImpl.register(modEventBus);
     modEventBus.addListener(this::commonSetup);
     modEventBus.addListener(this::clientSetup);

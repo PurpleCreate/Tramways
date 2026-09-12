@@ -8,7 +8,8 @@ import com.tterrag.registrate.util.nullness.NonNullConsumer;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.material.MapColor;
 import com.simibubi.create.foundation.data.SharedProperties;
-import purplecreate.tramways.content.signals.block.SignAttachedToPoleBlock;
+import purplecreate.tramways.content.signals.block.GenericSignalBlock;
+import purplecreate.tramways.content.signs.SignAttachedToPoleBlock;
 import purplecreate.tramways.content.signals.models.SignAttachedToPoleModel;
 import purplecreate.tramways.datagen.BlockStateBuilders;
 
@@ -25,6 +26,19 @@ import purplecreate.tramways.content.stationDeco.nameSign.NameSignBlock;
 import purplecreate.tramways.content.stationDeco.nameSign.NameSignItem;
 
 public class TBlocks {
+  public static final BlockEntry<GenericSignalBlock> GENERIC_SIGNAL =
+    Tramways.REGISTRATE.block("generic_signal", GenericSignalBlock::new)
+      .initialProperties(SharedProperties::softMetal)
+      .properties(properties -> properties.mapColor(MapColor.COLOR_GRAY).sound(SoundType.NETHERITE_BLOCK))
+      .blockstate(BlockStateBuilders.empty())
+      .tag(TTags.pole())
+      .transform(pickaxeOnly())
+      .transform(displayTarget(TExtras.DisplayTargets.SIGNAL))
+      .onRegister(attachedBlock())
+      .lang("Generic Signal")
+      .simpleItem()
+      .register();
+
   public static final BlockEntry<TramSignBlock> TRAM_SIGN =
     Tramways.REGISTRATE.block("tram_sign", TramSignBlock::newTramSign)
       .initialProperties(SharedProperties::softMetal)

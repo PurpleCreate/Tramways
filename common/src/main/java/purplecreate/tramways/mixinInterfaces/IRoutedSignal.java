@@ -25,7 +25,7 @@ public interface IRoutedSignal {
     return ((Internal)this).tramways$getSide(pos, ExtendedSignalState.INVALID, this::tramways$getExtendedState);
   }
 
-  void tramways$notifySelectedRoute(boolean front, Train train, Pair<SignalBoundary, Boolean> exit);
+  void tramways$notifySelectedRoute(boolean front, Train train, List<Pair<SignalBoundary, Boolean>> path);
   void tramways$unnotifySelectedRoute(boolean front, Train train);
 
   @Nullable JunctionState tramways$getSelectedRoute(boolean front);
@@ -53,7 +53,8 @@ public interface IRoutedSignal {
 
   interface Internal extends IRoutedSignal {
     <T> T tramways$getSide(BlockPos pos, T defaultValue, Function<Boolean, T> func);
-    Map<Pair<SignalBoundary, Boolean>, JunctionState> tramways$getPossibleRoutes(TrackGraph graph, boolean front);
+    Map<Pair<SignalBoundary, Boolean>, JunctionState> tramways$getPossibleRoutes(TrackGraph graph, boolean front, int ttl);
     ExtendedSignalState tramways$getExtendedState(boolean front, int depth);
+    ExtendedSignalState tramways$getOccupied(boolean front);
   }
 }

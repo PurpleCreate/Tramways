@@ -2,16 +2,13 @@ package purplecreate.tramways.content.signals.base;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.createmod.catnip.render.SuperBufferFactory;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
-import purplecreate.tramways.content.signals.block.SignalBlockEntity;
+import purplecreate.tramways.content.signals.block.GenericSignalBlockEntity;
 import purplecreate.tramways.mixinInterfaces.IRGBItemRenderer;
 
 @Environment(EnvType.CLIENT)
@@ -20,7 +17,7 @@ public abstract class StateHolder {
   protected JunctionState junctionState;
 
 
-  public static StateHolder forBlockEntity(SignalBlockEntity be) {
+  public static StateHolder forBlockEntity(GenericSignalBlockEntity be) {
     return new BlockStateHolder(be);
   }
 
@@ -43,9 +40,9 @@ public abstract class StateHolder {
   }
 
   private static class BlockStateHolder extends StateHolder {
-    private final SignalBlockEntity be;
+    private final GenericSignalBlockEntity be;
 
-    public BlockStateHolder(SignalBlockEntity be) {
+    public BlockStateHolder(GenericSignalBlockEntity be) {
       this.be = be;
       this.signalState = be.getSignalState();
       this.junctionState = be.getJunctionState();

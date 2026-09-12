@@ -10,7 +10,7 @@ import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.block.state.BlockState;
 import org.joml.Vector3f;
 import purplecreate.tramways.TPartialModels;
-import purplecreate.tramways.content.signals.block.SignAttachedToPoleBlock;
+import purplecreate.tramways.content.signs.SignAttachedToPoleBlock;
 
 import java.util.function.Supplier;
 

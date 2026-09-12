@@ -15,7 +15,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "tramways:tram_signal"
+        "recipe": "tramways:generic_signal"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -28,7 +28,7 @@
   ],
   "rewards": {
     "recipes": [
-      "tramways:tram_signal"
+      "tramways:generic_signal"
     ]
   },
   "sends_telemetry_event": false

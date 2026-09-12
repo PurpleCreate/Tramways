@@ -11,6 +11,7 @@ dependencies {
   modImplementation("com.simibubi.create:create-fabric:${create_fabric_version}-mc${minecraft_version}")
 
   implementation("javazoom:jlayer:${jlayer_version}")
+  implementation("org.apache.commons:commons-jexl3:${jexl_version}")
 
   annotationProcessor(implementation("io.github.llamalad7:mixinextras-common:${mixin_extras_version}"))
 

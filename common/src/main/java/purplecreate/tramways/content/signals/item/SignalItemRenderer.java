@@ -8,18 +8,28 @@ import net.createmod.catnip.animation.AnimationTickHolder;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
-import purplecreate.tramways.content.signals.base.Aspect;
-import purplecreate.tramways.content.signals.base.StateHolder;
-
-import java.util.List;
+//import purplecreate.tramways.content.signals.base.StateHolder;
+import purplecreate.tramways.content.signals.render.Renderer;
+import purplecreate.tramways.content.signals.render.SignalType;
 
 public class SignalItemRenderer extends CustomRenderedItemModelRenderer {
-  private List<Aspect<?>> aspects;
-  private ItemAnimator animator;
+  //private List<Aspect<?>> aspects;
+  //private ItemAnimator animator;
 
   @Override
   protected void render(ItemStack stack, CustomRenderedItemModel model, PartialItemModelRenderer renderer, ItemDisplayContext transformType, PoseStack ms, MultiBufferSource buffer, int light, int overlay) {
-    if (!(stack.getItem() instanceof SignalItem item)) return;
+    //if (!(stack.getItem() instanceof SignalItem item)) return;
+
+    SignalType signalType = SignalItem.getSignalType(stack);
+    if (signalType == null) return;
+    signalType.render(
+      new Renderer.Item(stack, transformType, ms, buffer),
+      AnimationTickHolder.getPartialTicks(),
+      light,
+      overlay
+    );
+
+    /*
     renderer.render(model.getOriginalModel(), light);
 
     if (aspects == null) {
@@ -44,5 +54,6 @@ public class SignalItemRenderer extends CustomRenderedItemModelRenderer {
     );
 
     ms.popPose();
+    */
   }
 }

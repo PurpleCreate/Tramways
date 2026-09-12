@@ -3,7 +3,13 @@ package purplecreate.tramways.content.signals.manual;
 import com.simibubi.create.content.trains.entity.CarriageContraptionEntity;
 import com.simibubi.create.content.trains.entity.Train;
 import com.simibubi.create.content.trains.graph.DiscoveredPath;
+import com.simibubi.create.content.trains.graph.EdgeData;
+import com.simibubi.create.content.trains.graph.TrackEdge;
+import com.simibubi.create.content.trains.graph.TrackNode;
+import com.simibubi.create.content.trains.signal.SignalBlock;
 import com.simibubi.create.content.trains.signal.SignalBoundary;
+import com.simibubi.create.content.trains.signal.TrackEdgePoint;
+import net.createmod.catnip.data.Couple;
 import net.createmod.catnip.data.Pair;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
@@ -15,11 +21,14 @@ import purplecreate.tramways.mixinInterfaces.IRoutedSignal;
 import purplecreate.tramways.mixinInterfaces.ITramNavigation;
 import purplecreate.tramways.mixins.CarriageContraptionEntityAccessor;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 public class RouteSelectionHUD {
   private final CarriageContraptionEntity cce;
+
+  private final List<Pair<IRoutedSignal, Boolean>> notifiedSignals = new ArrayList<>();
 
   private List<JunctionState.SignalInfo> routes;
   private int selectedRoute = 0;
@@ -40,14 +49,18 @@ public class RouteSelectionHUD {
     Pair<SignalBoundary, Boolean> signal = TrackPoints.findNearestJunction(train, forward);
 
     if (signal == null) {
-      routes = null;
-      selectedRoute = 0;
+      if (locked) {
+        refreshRoutePrompt(player);
+      } else {
+        routes = null;
+        selectedRoute = 0;
+        clearPrompt(player);
+      }
 
       leftDownLast = heldControls.contains(2);
       rightDownLast = heldControls.contains(3);
       jumpDownLast = heldControls.contains(4);
 
-      clearPrompt(player);
       return false;
     }
 
@@ -70,18 +83,54 @@ public class RouteSelectionHUD {
       if (locked) {
         locked = false;
         nav.tramways$cancelRouteThroughJunction();
-        routed.tramways$unnotifySelectedRoute(signalForward, train);
+        notifiedSignals.forEach(pair -> {
+          pair.getFirst().tramways$unnotifySelectedRoute(pair.getSecond(), train);
+        });
       } else {
         locked = true;
         JunctionState.SignalInfo route = routes.get(selectedRoute);
 
         DiscoveredPath path = TrackPoints.findPathThroughJunction(train, route.signal(), forward);
         nav.tramways$setRouteThroughJunction(path, () -> {
-          routed.tramways$unnotifySelectedRoute(signalForward, train);
+          notifiedSignals.forEach(pair -> {
+            pair.getFirst().tramways$unnotifySelectedRoute(pair.getSecond(), train);
+          });
           locked = false;
         });
 
-        routed.tramways$notifySelectedRoute(signalForward, train, route.asPair());
+        List<Pair<SignalBoundary, Boolean>> signalPath = new ArrayList<>();
+        signalPath.add(signal);
+
+        everything:
+        for (Couple<TrackNode> nodes : path.path) {
+          TrackEdge edge = train.graph.getConnection(nodes);
+          EdgeData data = edge.getEdgeData();
+          if (!data.hasSignalBoundaries()) continue;
+
+          for (TrackEdgePoint point : data.getPoints()) {
+            if (!(point instanceof SignalBoundary boundary)) continue;
+            boolean front = boundary.isPrimary(nodes.getSecond());
+            if (route.signal() == boundary && route.forward() == front) break everything;
+            signalPath.add(Pair.of(boundary, front));
+          }
+        }
+
+        signalPath.add(route.asPair());
+
+        for (int i = 0; i < signalPath.size(); i++) {
+          Pair<SignalBoundary, Boolean> pair = signalPath.get(i);
+          if (
+            pair.getFirst().types.get(pair.getSecond()) != SignalBlock.SignalType.CROSS_SIGNAL
+              || !(pair.getFirst() instanceof IRoutedSignal routedSignal)
+          ) continue;
+
+          routedSignal.tramways$notifySelectedRoute(
+            pair.getSecond(),
+            train,
+            signalPath.subList(i, signalPath.size())
+          );
+          notifiedSignals.add(Pair.of(routedSignal, pair.getSecond()));
+        }
       }
     }
 

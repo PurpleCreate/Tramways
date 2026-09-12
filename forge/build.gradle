@@ -38,6 +38,8 @@ dependencies {
   implementation(include("io.github.llamalad7:mixinextras-forge:${mixin_extras_version}"))
 
   forgeRuntimeLibrary(implementation(shadowCommon("javazoom:jlayer:${jlayer_version}")))
+  forgeRuntimeLibrary(implementation("org.apache.commons:commons-jexl3:${jexl_version}")) // fixes stuff in dev
+  forgeRuntimeLibrary(implementation(shadowCommon("org.apache.commons:commons-jexl3:${jexl_version}") { transitive = false }))
 
   // Create and its dependencies
   modImplementation("com.simibubi.create:create-${minecraft_version}:${create_forge_version}:slim") { transitive = false }
@@ -85,6 +87,7 @@ shadowJar {
   archiveClassifier = "dev-shadow"
 
   relocate("javazoom.jl", "purplecreate.tramways.javazoom.jl")
+  relocate("org.apache.commons.jexl3", "purplecreate.tramways.org.apache.commons.jexl3")
 }
 
 remapJar {

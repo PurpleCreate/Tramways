@@ -28,4 +28,15 @@ public enum Env {
       toRun.get().run();
     }
   }
+
+  public static <T> T unsafeEvaluateWhenOn(Env env, Supplier<Supplier<T>> toEvaluate) {
+    return unsafeEvaluateWhenOn(env, toEvaluate, null);
+  }
+
+  public static <T> T unsafeEvaluateWhenOn(Env env, Supplier<Supplier<T>> toEvaluate, T defaultValue) {
+    if (getEnv() == env) {
+      return toEvaluate.get().get();
+    }
+    return defaultValue;
+  }
 }

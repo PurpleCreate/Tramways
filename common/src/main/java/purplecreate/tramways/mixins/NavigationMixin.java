@@ -92,12 +92,17 @@ public abstract class NavigationMixin implements ITramNavigation {
       if (signal.types.get(front) == SignalBlock.SignalType.CROSS_SIGNAL) {
         tramways$chainSignals.add(Pair.of(signal, front));
       } else if (!tramways$chainSignals.isEmpty()) {
-        tramways$chainSignals.forEach(pair -> {
-          if (!(pair.getFirst() instanceof IRoutedSignal routedSignal)) return;
+        for (int i = 0; i < tramways$chainSignals.size(); i++) {
+          Pair<SignalBoundary, Boolean> pair = tramways$chainSignals.get(i);
+          if (!(pair.getFirst() instanceof IRoutedSignal routedSignal)) continue;
 
-          routedSignal.tramways$notifySelectedRoute(pair.getSecond(), train, Pair.of(signal, front));
+          routedSignal.tramways$notifySelectedRoute(
+            pair.getSecond(),
+            train,
+            tramways$chainSignals.subList(i, tramways$chainSignals.size())
+          );
           tramways$notifiedSignals.add(Pair.of(routedSignal, pair.getSecond()));
-        });
+        }
         tramways$chainSignals.clear();
       }
     }

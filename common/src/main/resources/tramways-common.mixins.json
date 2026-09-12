@@ -5,6 +5,7 @@
   "compatibilityLevel": "JAVA_17",
   "mixins": [
     "AbstractContraptionEntityAccessor",
+    "BlockEntityMixin",
     "CarriageBogeyAccessor",
     "CarriageContraptionEntityAccessor",
     "CarriageContraptionEntityMixin",
@@ -25,6 +26,7 @@
   ],
   "client": [
     "ChannelAccessor",
+    "ModelBakeryMixin",
     "ScheduleScreenAccessor",
     "SplashManagerMixin"
   ],

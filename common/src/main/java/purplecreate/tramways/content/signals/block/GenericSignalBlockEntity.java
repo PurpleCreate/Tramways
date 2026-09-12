@@ -3,34 +3,43 @@ package purplecreate.tramways.content.signals.block;
 import com.simibubi.create.AllBlockEntityTypes;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.content.redstone.displayLink.DisplayLinkBlockEntity;
+import com.simibubi.create.content.trains.signal.SignalBlockEntity;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import net.createmod.catnip.nbt.NBTHelper;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 import purplecreate.tramways.TTags;
+import purplecreate.tramways.Tramways;
 import purplecreate.tramways.content.signals.SignalDisplaySource;
 import purplecreate.tramways.content.signals.base.ExtendedSignalState;
 import purplecreate.tramways.content.signals.base.JunctionState;
 import purplecreate.tramways.content.signals.render.SignalType;
 import purplecreate.tramways.content.signals.render.SignalTypes;
 import purplecreate.tramways.mixinInterfaces.IRoutedSignal;
+import purplecreate.tramways.util.Env;
 
 import java.util.*;
 
-public class SignalBlockEntity extends SmartBlockEntity {
+public class GenericSignalBlockEntity extends SmartBlockEntity {
+  public static final ResourceLocation DEFAULT_SIGNAL_TYPE = Tramways.rl("lrv_signal");
+
   @Nullable private DisplayLinkBlockEntity boundDisplayLink;
-  
-  private SignalType signalType;
+  @Nullable private SignalType signalTypeInstance;
+
+  private ResourceLocation signalType = DEFAULT_SIGNAL_TYPE;
   private ExtendedSignalState signalState = ExtendedSignalState.INVALID;
   @Nullable private JunctionState junctionState;
   @Nullable private BlockPos boundSignal;
 
-  public SignalBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
+  public GenericSignalBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
     super(type, pos, state);
   }
 
@@ -44,9 +53,17 @@ public class SignalBlockEntity extends SmartBlockEntity {
   @Override
   public void tick() {
     super.tick();
+
+    Env.unsafeRunWhenOn(Env.CLIENT, () -> () -> {
+      SignalType signalType = getSignalType();
+      if (signalType != null) {
+        signalType.tick(this);
+      }
+    });
+
     if (level == null || level.isClientSide) return;
 
-    Optional<com.simibubi.create.content.trains.signal.SignalBlockEntity> optional = findTrackSignal();
+    Optional<SignalBlockEntity> optional = findTrackSignal();
     ExtendedSignalState nextSignalState;
     JunctionState nextJunctionState;
 
@@ -68,13 +85,13 @@ public class SignalBlockEntity extends SmartBlockEntity {
     }
   }
 
-  private Optional<com.simibubi.create.content.trains.signal.SignalBlockEntity> getTrackSignalAt(BlockPos pos) {
+  private Optional<SignalBlockEntity> getTrackSignalAt(BlockPos pos) {
     if (level == null || pos == null) return Optional.empty();
     return level.getBlockEntity(pos, AllBlockEntityTypes.TRACK_SIGNAL.get());
   }
 
-  private Optional<com.simibubi.create.content.trains.signal.SignalBlockEntity> findTrackSignal() {
-    if (level == null || !(getBlockState().getBlock() instanceof SignalBlock block))
+  private Optional<SignalBlockEntity> findTrackSignal() {
+    if (level == null || !(getBlockState().getBlock() instanceof GenericSignalBlock block))
       return Optional.empty();
 
     if (boundDisplayLink != null && !boundDisplayLink.isRemoved()) {
@@ -110,6 +127,15 @@ public class SignalBlockEntity extends SmartBlockEntity {
     return Optional.empty();
   }
 
+  @Environment(EnvType.CLIENT)
+  @Nullable
+  public SignalType getSignalType() {
+    if (signalTypeInstance == null || !signalTypeInstance.getId().equals(signalType)) {
+      signalTypeInstance = SignalTypes.get(signalType);
+    }
+    return signalTypeInstance;
+  }
+
   public ExtendedSignalState getSignalState() {
     return signalState;
   }
@@ -123,7 +149,10 @@ public class SignalBlockEntity extends SmartBlockEntity {
   protected void read(CompoundTag tag, boolean clientPacket) {
     super.read(tag, clientPacket);
 
-    signalType = SignalTypes.get(NBTHelper.readResourceLocation(tag, "SignalType"));
+    if (tag.contains("SignalType", 8)) {
+      signalType = NBTHelper.readResourceLocation(tag, "SignalType");
+    }
+
     boundSignal = tag.contains("BoundSignal", 10) ? NbtUtils.readBlockPos(tag.getCompound("BoundSignal")) : null;
     junctionState = tag.contains("JunctionState", 10) ? JunctionState.fromNbt(tag.getCompound("JunctionState")) : null;
     signalState = NBTHelper.readEnum(tag, "SignalState", ExtendedSignalState.class);
@@ -133,7 +162,7 @@ public class SignalBlockEntity extends SmartBlockEntity {
   protected void write(CompoundTag tag, boolean clientPacket) {
     super.write(tag, clientPacket);
 
-    NBTHelper.writeResourceLocation(tag, "SignalType", signalType.getId());
+    NBTHelper.writeResourceLocation(tag, "SignalType", signalType);
 
     if (boundSignal != null) {
       tag.put("BoundSignal", NbtUtils.writeBlockPos(boundSignal));

@@ -1,4 +1,9 @@
 {
   "replace": false,
-  "values": []
+  "values": [
+    "minecraft:iron_bars",
+    "create:andesite_bars",
+    "create:brass_bars",
+    "create:copper_bars"
+  ]
 }

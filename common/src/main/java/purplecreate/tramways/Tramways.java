@@ -1,5 +1,6 @@
 package purplecreate.tramways;
 
+import com.simibubi.create.foundation.data.CreateRegistrate;
 import net.createmod.ponder.foundation.PonderIndex;
 import net.minecraft.network.chat.Component;
 import com.mojang.logging.LogUtils;
@@ -8,14 +9,13 @@ import net.minecraft.resources.ResourceLocation;
 import org.slf4j.Logger;
 import purplecreate.tramways.content.announcements.engine.tts.TTSVoices;
 import purplecreate.tramways.util.Env;
-import purplecreate.tramways.util.TramwaysRegistrate;
 
 import static net.createmod.catnip.lang.LangBuilder.resolveBuilders;
 
 public class Tramways {
   public static final String ID = "tramways";
-  public static final TramwaysRegistrate REGISTRATE =
-    TramwaysRegistrate.create(ID)
+  public static final CreateRegistrate REGISTRATE =
+    CreateRegistrate.create(ID)
       .defaultCreativeTab(TCreativeTabs.getBaseTab());
   public static final Logger LOGGER = LogUtils.getLogger();
 
@@ -23,7 +23,6 @@ public class Tramways {
     TBlocks.register();
     TItems.register();
     TBlockEntities.register();
-    TSignalTypes.register();
     TTags.register();
     TExtras.register();
 

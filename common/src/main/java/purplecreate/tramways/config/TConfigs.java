@@ -1,6 +1,5 @@
 package purplecreate.tramways.config;
 
-import dev.architectury.injectables.annotations.ExpectPlatform;
 import net.createmod.catnip.config.ConfigBase;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.fml.config.ModConfig;

@@ -12,7 +12,7 @@ import com.tterrag.registrate.providers.RegistrateTagsProvider;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Block;
-import purplecreate.tramways.content.signals.block.SignAttachedToPoleBlock;
+import purplecreate.tramways.content.signs.SignAttachedToPoleBlock;
 
 public class TTags {
   public static final TagKey<Item> NAME_SIGN = createItemTag("name_sign");
@@ -67,6 +67,12 @@ public class TTags {
     provider.tag(SignAttachedToPoleBlock.tagForPoleSized(8))
       .add(AllBlocks.METAL_GIRDER.get())
       .addTag(BlockTags.WALLS);
+
+    provider.tag(SignAttachedToPoleBlock.tagForPoleSized(2))
+      .add(Blocks.IRON_BARS)
+      .add(AllBlocks.ANDESITE_BARS.get())
+      .add(AllBlocks.BRASS_BARS.get())
+      .add(AllBlocks.COPPER_BARS.get());
   }
 
   public static TagKey<Block>[] pole() {

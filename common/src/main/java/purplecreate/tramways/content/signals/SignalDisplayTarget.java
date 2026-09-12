@@ -6,14 +6,14 @@ import com.simibubi.create.content.redstone.displayLink.target.DisplayTargetStat
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import purplecreate.tramways.Tramways;
-import purplecreate.tramways.content.signals.block.SignalBlockEntity;
+import purplecreate.tramways.content.signals.block.GenericSignalBlockEntity;
 
 import java.util.List;
 
 public class SignalDisplayTarget extends DisplayTarget {
   @Override
   public void acceptText(int i, List<MutableComponent> list, DisplayLinkContext context) {
-    if (!(context.getTargetBlockEntity() instanceof SignalBlockEntity be)) return;
+    if (!(context.getTargetBlockEntity() instanceof GenericSignalBlockEntity be)) return;
     be.bindDisplayLink(context.blockEntity());
   }
 

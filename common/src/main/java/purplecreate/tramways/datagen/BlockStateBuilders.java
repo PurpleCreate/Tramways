@@ -9,7 +9,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.ButtonBlock;
-import purplecreate.tramways.content.signals.block.SignAttachedToPoleBlock;
+import purplecreate.tramways.content.signs.SignAttachedToPoleBlock;
 
 public class BlockStateBuilders {
   public interface BlockConsumer<T extends Block> extends NonNullBiConsumer<DataGenContext<Block, T>, RegistrateBlockstateProvider> {}

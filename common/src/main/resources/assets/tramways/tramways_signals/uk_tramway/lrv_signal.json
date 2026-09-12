@@ -1,0 +1,68 @@
+{
+  "model": "tramways:block/signals/tram_signal",
+  "model_type": "girder",
+  "binding_type": "signal",
+  "from_bound": [2, 2, 14],
+  "to_bound": [14, 14, 16],
+  "aspects": [
+    {
+      "type": "square",
+      "center": [8, 8, 1],
+      "radius": 0.33,
+      "color": "signal != invalid && signal != no_route_set ? white : off_white"
+    },
+
+    {
+      "type": "square",
+      "center": [8, 5.36, 1],
+      "radius": 0.33,
+      "color": "signal != invalid && signal != no_route_set && signal != danger ? white : off_white"
+    },
+    {
+      "type": "square",
+      "center": [8, 6.68, 1],
+      "radius": 0.33,
+      "color": "signal != invalid && signal != no_route_set && signal != danger ? white : off_white"
+    },
+    {
+      "type": "square",
+      "center": [8, 9.32, 1],
+      "radius": 0.33,
+      "color": "signal != invalid && signal != no_route_set && signal != danger ? white : off_white"
+    },
+    {
+      "type": "square",
+      "center": [8, 10.64, 1],
+      "radius": 0.33,
+      "color": "signal != invalid && signal != no_route_set && signal != danger ? white : off_white"
+    },
+
+    {
+      "type": "square",
+      "center": [5.36, 8, 1],
+      "radius": 0.33,
+      "color": "signal == no_route_set || signal == danger ? white : off_white"
+    },
+    {
+      "type": "square",
+      "center": [6.68, 8, 1],
+      "radius": 0.33,
+      "color": "signal == no_route_set || signal == danger ? white : off_white"
+    },
+    {
+      "type": "square",
+      "center": [9.32, 8, 1],
+      "radius": 0.33,
+      "color": "signal == no_route_set || signal == danger ? white : off_white"
+    },
+    {
+      "type": "square",
+      "center": [10.64, 8, 1],
+      "radius": 0.33,
+      "color": "signal == no_route_set || signal == danger ? white : off_white"
+    }
+  ],
+  "item_anim": [
+    "signal:clear"
+  ]
+}

@@ -9,7 +9,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.ButtonBlock;
 import net.minecraft.world.level.block.state.properties.AttachFace;
 import purplecreate.tramways.Tramways;
-import purplecreate.tramways.content.signals.block.SignAttachedToPoleBlock;
+import purplecreate.tramways.content.signs.SignAttachedToPoleBlock;
 import purplecreate.tramways.content.stationDeco.nameSign.NameSignBlock;
 import purplecreate.tramways.datagen.BlockStateBuilders.BlockConsumer;
 import purplecreate.tramways.datagen.BlockStateBuilders.ItemConsumer;

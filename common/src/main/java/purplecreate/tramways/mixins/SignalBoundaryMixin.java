@@ -19,6 +19,7 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import purplecreate.tramways.Tramways;
 import purplecreate.tramways.content.signals.base.ExtendedSignalState;
 import purplecreate.tramways.content.signals.base.JunctionState;
 import purplecreate.tramways.mixinInterfaces.IRoutedSignal;
@@ -31,14 +32,14 @@ public abstract class SignalBoundaryMixin implements IRoutedSignal.Internal {
   @Shadow public Couple<Map<BlockPos, Boolean>> blockEntities;
   @Shadow public Couple<SignalBlock.SignalType> types;
   @Shadow public Couple<UUID> groups;
+  @Shadow public Couple<Boolean> sidesToUpdate;
   @Shadow private Couple<Map<UUID, Boolean>> chainedSignals;
 
   @Shadow public abstract boolean isForcedRed(boolean primary);
 
-  @Shadow public Couple<Boolean> sidesToUpdate;
-  @Unique private UUID tramways$routeSelectedBy = null;
   @Unique private final Couple<JunctionState> tramways$route = Couple.create(() -> null);
-  @Unique private final Couple<Pair<SignalBoundary, Boolean>> tramways$selectedRoute = Couple.create(() -> null);
+  @Unique private final Couple<UUID> tramways$routeSelectedBy = Couple.create(() -> null);
+  @Unique private final Couple<List<Pair<SignalBoundary, Boolean>>> tramways$selectedRoute = Couple.create(() -> null);
   @Unique private final Couple<Map<Pair<SignalBoundary, Boolean>, JunctionState>> tramways$possibleRoutes = Couple.create(HashMap::new);
   @Unique private final Couple<List<Pair<SignalBoundary, Boolean>>> tramways$nextSignals = Couple.create(() -> null);
 
@@ -56,9 +57,11 @@ public abstract class SignalBoundaryMixin implements IRoutedSignal.Internal {
   @Override
   public List<Pair<SignalBoundary, Boolean>> tramways$getNextSignal(boolean front) {
     if (types.get(front) == SignalBlock.SignalType.CROSS_SIGNAL) {
-      Pair<SignalBoundary, Boolean> pair = tramways$selectedRoute.get(front);
-      if (pair == null || !(pair.getFirst() instanceof IRoutedSignal routedSignal)) return null;
-      return routedSignal.tramways$getNextSignal(pair.getSecond());
+      List<Pair<SignalBoundary, Boolean>> route = tramways$selectedRoute.get(front);
+      if (route == null) return null;
+      Pair<SignalBoundary, Boolean> exit = route.get(route.size() - 1);
+      if (!(exit.getFirst() instanceof IRoutedSignal routedSignal)) return null;
+      return routedSignal.tramways$getNextSignal(exit.getSecond());
     } else {
       return tramways$nextSignals.get(front);
     }
@@ -129,6 +132,27 @@ public abstract class SignalBoundaryMixin implements IRoutedSignal.Internal {
   }
 
   @Override
+  public ExtendedSignalState tramways$getOccupied(boolean front) {
+    UUID groupId = groups.get(front);
+    SignalEdgeGroup group = Create.RAILWAYS.signalEdgeGroups.get(groupId);
+    if (groupId == groups.get(!front) || group == null) return ExtendedSignalState.INVALID;
+
+    if (isForcedRed(front)) {
+      return ExtendedSignalState.DANGER;
+    } else {
+      for (SignalEdgeGroup current : group.intersectingResolved) {
+        for (Train train : current.trains) {
+          if (train.occupiedSignalBlocks.containsKey(current.id)) {
+            return ExtendedSignalState.DANGER;
+          }
+        }
+      }
+    }
+
+    return ExtendedSignalState.CLEAR;
+  }
+
+  @Override
   public ExtendedSignalState tramways$getExtendedState(boolean front) {
     return tramways$getExtendedState(front, 0);
   }
@@ -137,27 +161,10 @@ public abstract class SignalBoundaryMixin implements IRoutedSignal.Internal {
   public ExtendedSignalState tramways$getExtendedState(boolean front, int depth) {
     if (depth > 2) return ExtendedSignalState.INVALID;
 
-    UUID groupId = groups.get(front);
-    SignalEdgeGroup group = Create.RAILWAYS.signalEdgeGroups.get(groupId);
-    if (groupId == groups.get(!front) || group == null) return ExtendedSignalState.INVALID;
+    ExtendedSignalState occupied = tramways$getOccupied(front);
 
-    boolean occupied = false;
-    if (isForcedRed(front)) {
-      occupied = true;
-    } else {
-      everything:
-      for (SignalEdgeGroup current : group.intersectingResolved) {
-        for (Train train : current.trains) {
-          if (train.occupiedSignalBlocks.containsKey(current.id)) {
-            occupied = true;
-            break everything;
-          }
-        }
-      }
-    }
-
-    if (occupied) {
-      return ExtendedSignalState.DANGER;
+    if (occupied != ExtendedSignalState.CLEAR) {
+      return occupied;
     } else if (tramways$getPossibleRoutes(front).isEmpty()) {
       List<Pair<SignalBoundary, Boolean>> nextSignals = tramways$getNextSignal(front);
       if (nextSignals == null) return ExtendedSignalState.CLEAR;
@@ -182,31 +189,48 @@ public abstract class SignalBoundaryMixin implements IRoutedSignal.Internal {
         return ExtendedSignalState.CLEAR;
       }
     } else {
-      Pair<SignalBoundary, Boolean> route = tramways$selectedRoute.get(front);
+      List<Pair<SignalBoundary, Boolean>> route = tramways$selectedRoute.get(front);
       if (route == null) return ExtendedSignalState.NO_ROUTE_SET;
-      if (!(route.getFirst() instanceof IRoutedSignal.Internal signal)) return ExtendedSignalState.INVALID;
-      return signal.tramways$getExtendedState(route.getSecond(), depth);
+
+      for (int i = 0; i < route.size() - 1; i++) {
+        Pair<SignalBoundary, Boolean> pair = route.get(i);
+
+        switch (pair.getFirst().cachedStates.get(pair.getSecond())) {
+          case INVALID -> {
+            return ExtendedSignalState.INVALID;
+          }
+          case RED -> {
+            return ExtendedSignalState.DANGER;
+          }
+        }
+      }
+
+      Pair<SignalBoundary, Boolean> exit = route.get(route.size() - 1);
+      if (!(exit.getFirst() instanceof IRoutedSignal.Internal signal)) return ExtendedSignalState.INVALID;
+      return signal.tramways$getExtendedState(exit.getSecond(), depth);
     }
   }
 
   @Override
-  public void tramways$notifySelectedRoute(boolean front, Train train, Pair<SignalBoundary, Boolean> exit) {
-    if (tramways$routeSelectedBy != null) return;
-    tramways$routeSelectedBy = train.id;
-    tramways$selectedRoute.set(front, exit);
+  public void tramways$notifySelectedRoute(boolean front, Train train, List<Pair<SignalBoundary, Boolean>> path) {
+    if (tramways$routeSelectedBy.get(front) != null) return;
+    tramways$routeSelectedBy.set(front, train.id);
+    tramways$selectedRoute.set(front, path);
   }
 
   @Override
   public void tramways$unnotifySelectedRoute(boolean front, Train train) {
-    if (tramways$routeSelectedBy != train.id) return;
-    tramways$routeSelectedBy = null;
+    if (tramways$routeSelectedBy.get(front) != train.id) return;
+    tramways$routeSelectedBy.set(front, null);
     tramways$selectedRoute.set(front, null);
   }
 
   @Override
   public @Nullable JunctionState tramways$getSelectedRoute(boolean front) {
-    Pair<SignalBoundary, Boolean> route = tramways$selectedRoute.get(front);
-    return route == null ? null : tramways$possibleRoutes.get(front).get(route);
+    List<Pair<SignalBoundary, Boolean>> route = tramways$selectedRoute.get(front);
+    if (route == null) return null;
+    Pair<SignalBoundary, Boolean> exit = route.get(route.size() - 1);
+    return tramways$possibleRoutes.get(front).get(exit);
   }
 
   @Override
@@ -230,10 +254,11 @@ public abstract class SignalBoundaryMixin implements IRoutedSignal.Internal {
   }
 
   @Override
-  public Map<Pair<SignalBoundary, Boolean>, JunctionState> tramways$getPossibleRoutes(TrackGraph graph, boolean front) {
+  public Map<Pair<SignalBoundary, Boolean>, JunctionState> tramways$getPossibleRoutes(TrackGraph graph, boolean front, int ttl) {
     Map<Pair<SignalBoundary, Boolean>, JunctionState> routes = new HashMap<>();
     Map<UUID, Boolean> chain = chainedSignals.get(front);
 
+    if (ttl <= 0) return routes;
     if (types.get(front) != SignalBlock.SignalType.CROSS_SIGNAL || chain == null) return routes;
 
     for (Map.Entry<UUID, Boolean> entry : chain.entrySet()) {
@@ -243,7 +268,7 @@ public abstract class SignalBoundaryMixin implements IRoutedSignal.Internal {
       if (!(otherSignal instanceof IRoutedSignal.Internal otherRouted)) continue;
 
       if (otherSignal.types.get(otherSide) == SignalBlock.SignalType.CROSS_SIGNAL) {
-        routes.putAll(otherRouted.tramways$getPossibleRoutes(graph, otherSide));
+        routes.putAll(otherRouted.tramways$getPossibleRoutes(graph, otherSide, ttl - 1));
       } else {
         JunctionState route = otherRouted.tramways$getRoute(otherSide);
         if (route != null) routes.put(Pair.of(otherSignal, otherSide), route);
@@ -263,7 +288,7 @@ public abstract class SignalBoundaryMixin implements IRoutedSignal.Internal {
     if (!preTrains) return;
 
     for (boolean front : Iterate.trueAndFalse) {
-      tramways$possibleRoutes.set(front, tramways$getPossibleRoutes(graph, front));
+      tramways$possibleRoutes.set(front, tramways$getPossibleRoutes(graph, front, 50));
 
       if (tramways$nextSignals.get(front) == null || sidesToUpdate.get(front))
         tramways$nextSignals.set(front, tramways$getNextSignal(graph, front));

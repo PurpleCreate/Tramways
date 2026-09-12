@@ -53,6 +53,7 @@ dependencies {
   modImplementation("net.fabricmc.fabric-api:fabric-api:${fabric_api_version}")
 
   implementation(shadowCommon("javazoom:jlayer:${jlayer_version}"))
+  implementation(shadowCommon("org.apache.commons:commons-jexl3:${jexl_version}") { transitive = false })
 
   // Create - dependencies are added transitively
   modImplementation("com.simibubi.create:create-fabric:${create_fabric_version}-mc${minecraft_version}")
@@ -100,6 +101,7 @@ shadowJar {
   archiveClassifier = "dev-shadow"
 
   relocate("javazoom.jl", "purplecreate.tramways.javazoom.jl")
+  relocate("org.apache.commons.jexl3", "purplecreate.tramways.org.apache.commons.jexl3")
 }
 
 remapJar {

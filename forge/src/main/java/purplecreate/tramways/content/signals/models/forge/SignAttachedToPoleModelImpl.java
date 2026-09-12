@@ -17,7 +17,7 @@ import net.minecraftforge.client.model.data.ModelProperty;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import purplecreate.tramways.TPartialModels;
-import purplecreate.tramways.content.signals.block.SignAttachedToPoleBlock;
+import purplecreate.tramways.content.signs.SignAttachedToPoleBlock;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,27 +1,31 @@
 package purplecreate.tramways.content.signals.item;
 
 import com.simibubi.create.foundation.item.render.CustomRenderedItemModelRenderer;
-import com.tterrag.registrate.util.nullness.NonNullBiFunction;
+import net.createmod.catnip.nbt.NBTHelper;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
-import purplecreate.tramways.content.signals.base.SignalType;
+import org.jetbrains.annotations.Nullable;
+import purplecreate.tramways.content.signals.render.SignalType;
+import purplecreate.tramways.content.signals.render.SignalTypes;
 import purplecreate.tramways.util.IHaveItemRenderer;
 
-public class SignalItem extends CyclableItem implements IHaveItemRenderer {
-  private final SignalType signalType;
-
-  protected SignalItem(Block block, Properties properties, SignalType signalType, String category) {
-    super(block, properties, CycleRegistries.SIGNALS, category);
-    this.signalType = signalType;
+public class SignalItem extends BlockItem implements IHaveItemRenderer {
+  public SignalItem(Block block, Properties properties) {
+    super(block, properties);
   }
 
-  public static NonNullBiFunction<Block, Properties, SignalItem> of(SignalType signalType, String category) {
-    return (block, properties) -> new SignalItem(block, properties, signalType, category);
-  }
+  @Environment(EnvType.CLIENT)
+  @Nullable
+  public static SignalType getSignalType(ItemStack stack) {
+    CompoundTag tag = getBlockEntityData(stack);
 
-  public SignalType getSignalType() {
-    return signalType;
+    return tag != null
+      ? SignalTypes.get(NBTHelper.readResourceLocation(tag, "SignalType"))
+      : SignalTypes.getDefault();
   }
 
   @Override

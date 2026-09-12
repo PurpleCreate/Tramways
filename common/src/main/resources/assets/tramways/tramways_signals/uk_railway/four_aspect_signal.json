@@ -1,0 +1,43 @@
+{
+  "model": "tramways:block/signals/four_aspect_signal",
+  "model_type": "girder",
+  "binding_type": "signal",
+  "from_bound": [2, -1, 12],
+  "to_bound": [14, 30, 16],
+  "aspects": [
+    {
+      "type": "square",
+      "center": [8, -9, 1],
+      "radius": 3,
+      "color": "signal == pre_caution ? yellow : off_yellow"
+    },
+    {
+      "type": "square",
+      "center": [8, -2, 1],
+      "radius": 3,
+      "color": "signal == clear ? green : off_green"
+    },
+    {
+      "type": "square",
+      "center": [8, 5, 1],
+      "radius": 3,
+      "color": "signal == pre_caution || signal == caution ? yellow : off_yellow"
+    },
+    {
+      "type": "square",
+      "center": [8, 12, 1],
+      "radius": 3,
+      "color": "signal == danger || signal == no_route_set ? red : off_red"
+    }
+  ],
+  "item_anim": [
+    "signal:danger",
+    "sleep:1",
+    "signal:caution",
+    "sleep:1",
+    "signal:pre_caution",
+    "sleep:1",
+    "signal:clear",
+    "sleep:1"
+  ]
+}

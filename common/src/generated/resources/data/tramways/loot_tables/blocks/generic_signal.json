@@ -11,11 +11,11 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "tramways:theatre_signal"
+          "name": "tramways:generic_signal"
         }
       ],
       "rolls": 1.0
     }
   ],
-  "random_sequence": "tramways:blocks/theatre_signal"
+  "random_sequence": "tramways:blocks/generic_signal"
 }
