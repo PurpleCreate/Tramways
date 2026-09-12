@@ -24,6 +24,8 @@ idea. If you do find a bug, please report it!
 - Swedish (DanteMinecraft)
 - German (Doppel_R)
 - Portuguese (Aquela limonada)
+- Japanese (Koronteto)
+- Russian (Ephodoko)
 
 ---
 
