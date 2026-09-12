@@ -1,1 +1,27 @@
-{}
+{
+  "block.tramways.black_station_name_sign": "黒色の駅名看板",
+  "block.tramways.blue_station_name_sign": "青色の駅名看板",
+  "block.tramways.brown_station_name_sign": "茶色の駅名看板",
+  "block.tramways.cyan_station_name_sign": "水色の駅名看板",
+  "block.tramways.gray_station_name_sign": "灰色の駅名看板",
+  "block.tramways.green_station_name_sign": "緑色の駅名看板",
+  "block.tramways.light_blue_station_name_sign": "空色の駅名看板",
+  "block.tramways.light_gray_station_name_sign": "薄灰色の駅名看板",
+  "block.tramways.lime_station_name_sign": "黄緑色の駅名看板",
+  "block.tramways.magenta_station_name_sign": "赤紫色の駅名看板",
+  "block.tramways.orange_station_name_sign": "橙色の駅名看板",
+  "block.tramways.pink_station_name_sign": "桃色の駅名看板",
+  "block.tramways.purple_station_name_sign": "紫色の駅名看板",
+  "block.tramways.railway_sign": "鉄道用看板",
+  "block.tramways.red_station_name_sign": "赤色の駅名看板",
+  "block.tramways.speaker": "スピーカー",
+  "block.tramways.tram_sign": "路面鉄道看板",
+  "block.tramways.tram_signal": "路面鉄道信号機",
+  "block.tramways.white_station_name_sign": "白色の駅名看板",
+  "block.tramways.yellow_station_name_sign": "黄色の駅名看板",
+  "tramways.creative_tab.main": "Create: Tramways",
+  "tramways.display_target.speaker": "スピーカー",
+  "tramways.ponder.tram_signs_placing.header": "路面鉄道信号機の設置",
+  "tramways.request_stop.next_train.title": "次の列車：",
+  "tramways.request_stop.stopping": "停止中！"
+}

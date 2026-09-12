@@ -23,7 +23,6 @@
   "block.tramways.yellow_station_name_sign": "Placa amarela do nome da estação",
   "create.schedule.instruction.request_stop.summary": "Pedir para parar:",
   "create.schedule.instruction.set_primary_limit.summary": "Definir o limite de velociade primário para %1$s",
-  "tramways.creative_tab.main": "Create: Tramways",
   "tramways.display_target.speaker": "Altifalante",
   "tramways.ponder.speaker_station.header": "Altifalantes nas estações",
   "tramways.ponder.speaker_station.text_1": "Utilize um Link de ligação numa estação para anunciar os próximos comboios",

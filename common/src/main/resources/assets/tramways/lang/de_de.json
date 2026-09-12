@@ -40,7 +40,7 @@
   "tramways.ponder.tram_signs_placing.text_3": "Klick mit einem Schraubenschlüssel auf ein Schild, um dessen Einstellungen anzupassen",
   "tramways.ponder.tram_signs_placing.text_4": "Es gibt sogar unterschiedliche Designs für Eisenbahnstrecken",
   "tramways.ponder.tram_signs_speed_limit.header": "Vorschriftsschild: Geschwindigkeitslimit",
-  "tramways.ponder.tram_signs_speed_limit.text_1": "Das Geschwindigkeitslimitschild ändert die Geschwindigkeit eines automatischen Zuges",
+  "tramways.ponder.tram_signs_speed_limit.text_1": "Das Geschwindigkeitslimitsschild ändert die Geschwindigkeit eines automatischen Zuges",
   "tramways.ponder.tram_signs_speed_limit.text_2": "Wenn ein Zug dafür bremsen muss, tut er dies vor dem Schild",
   "tramways.ponder.tram_signs_speed_limit.text_3": "Sollte er schneller werden dürfen, tut er dies nachdem er das Schild gänzlich passiert hat",
   "tramways.ponder.tram_signs_temporary_limits.header": "Vorschriftsschild: temporäres Geschwindigkeitslimit",
