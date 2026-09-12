@@ -3,8 +3,9 @@ package purplecreate.tramways.events.forge;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.event.server.ServerStartingEvent;
+import net.minecraftforge.event.server.ServerStoppingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.common.Mod;
 import purplecreate.tramways.events.CommonEvents;
 
@@ -17,11 +18,19 @@ public class CommonEventsImpl {
   }
 
   @SubscribeEvent
-  public static void onLevelTick(TickEvent.LevelTickEvent event) {
+  public static void onServerTick(TickEvent.ServerTickEvent event) {
     if (event.phase == TickEvent.Phase.START)
       return;
-    if (event.side == LogicalSide.CLIENT)
-      return;
-    CommonEvents.onLevelTick(event.level);
+    CommonEvents.onServerTick(event.getServer());
+  }
+
+  @SubscribeEvent
+  public static void onServerStarting(ServerStartingEvent event) {
+    CommonEvents.onServerStarting(event.getServer());
+  }
+
+  @SubscribeEvent
+  public static void onServerStopping(ServerStoppingEvent event) {
+    CommonEvents.onServerStopping(event.getServer());
   }
 }

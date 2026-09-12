@@ -6,6 +6,8 @@ import com.simibubi.create.content.trains.station.GlobalStation;
 import com.simibubi.create.content.trains.station.StationBlockEntity;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
+import de.mrjulsen.crn.data.train.TrainData;
+import de.mrjulsen.crn.data.train.TrainListener;
 import net.createmod.catnip.lang.LangBuilder;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -15,10 +17,8 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import purplecreate.tramways.Tramways;
-import purplecreate.tramways.content.announcements.info.TrainInfo;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 public class RequestStopButtonBlockEntity extends SmartBlockEntity implements IHaveHoveringInformation {
@@ -66,17 +66,19 @@ public class RequestStopButtonBlockEntity extends SmartBlockEntity implements IH
     }
 
     Train train = getLinkedStation().getNearestTrain();
-    TrainInfo trainInfo = TrainInfo.fromTrain(train);
-    Map<String, String> props = trainInfo.getProperties();
+    TrainData data = TrainListener.getTrainData(train).orElse(null);
+    if (data == null) return;
+
+    String destination = data.getCurrentSection().getDestinationStationName();
 
     boolean changed =
       !nearestTrain
         || nearestTrainName != train.name
-        || !Objects.equals(nearestTrainTerminus, props.get("end"));
+        || !Objects.equals(nearestTrainTerminus, destination);
 
     nearestTrain = true;
     nearestTrainName = train.name;
-    nearestTrainTerminus = props.get("end");
+    nearestTrainTerminus = destination;
     if (changed) notifyUpdate();
   }
 

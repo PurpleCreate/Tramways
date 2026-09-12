@@ -11,6 +11,7 @@ import purplecreate.tramways.events.ClientEvents;
 public class ClientEventsImpl {
   public static void register() {
     ClientTickEvents.START_CLIENT_TICK.register(ClientEvents::onClientTickStart);
+    ClientPlayConnectionEvents.JOIN.register((listener, sender, mc) -> ClientEvents.onJoin());
     ClientPlayConnectionEvents.DISCONNECT.register((listener, mc) -> ClientEvents.onLeave());
 
     ResourceManagerHelper.get(PackType.CLIENT_RESOURCES)

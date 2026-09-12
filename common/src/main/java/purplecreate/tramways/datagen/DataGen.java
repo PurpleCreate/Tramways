@@ -3,11 +3,14 @@ package purplecreate.tramways.datagen;
 import com.tterrag.registrate.providers.ProviderType;
 import net.minecraft.data.DataProvider;
 import purplecreate.tramways.Tramways;
+import purplecreate.tramways.content.announcements.config.AnnouncementEvent;
 
 import java.util.function.Function;
 
 public class DataGen {
   public static void register() {
+    AnnouncementEvent.registerLang();
+
     Tramways.REGISTRATE.addDataGenerator(ProviderType.LANG, GenLang::generator);
     Tramways.REGISTRATE.addDataGenerator(ProviderType.RECIPE, GenRecipes::generator);
   }

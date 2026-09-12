@@ -12,6 +12,8 @@
   "tramways.sign_demand.arrow_aux.left": "Left",
   "tramways.sign_demand.arrow_aux.right": "Right",
 
+  "tramways.display_source.station_speaker": "Station Speaker Source",
+  "tramways.display_source.signal": "Advanced Signal Source",
   "tramways.display_target.speaker": "Speaker",
 
   "tramways.request_stop.stopping": "Stopping!",
@@ -27,6 +29,49 @@
 
   "tramways.schedule.instruction.set_primary_limit": "Set Primary Speed Limit",
   "create.schedule.instruction.set_primary_limit.summary": "Set Primary Speed Limit to %1$s",
+
+  "tramways.schedule.instruction.configure_announcements": "Configure Announcements",
+  "tramways.schedule.instruction.configure_announcements.button": "Configure...",
+
+  "tramways.announcements.variant_label": "Variant %d",
+  "tramways.announcements.variant_count.singular": "%d variant",
+  "tramways.announcements.variant_count.plural": "%d variants",
+  "tramways.announcements.title": "Configure Announcements",
+  "tramways.announcements.file_manager.title": "File Manager",
+  "tramways.announcements.file_manager.admin.title": "File Manager (Admin)",
+  "tramways.announcements.file_manager.uploaded_by": "Uploaded by %s",
+  "tramways.announcements.file_manager.file_deleted": "Deleted!",
+  "tramways.announcements.file_manager.upload_history": "Upload History",
+  "tramways.announcements.file_manager.your_files": "Your Files",
+  "tramways.announcements.file_manager.others_files": "Other's Files",
+  "tramways.announcements.file_manager.status.queued": "Queued",
+  "tramways.announcements.file_manager.status.queued.tooltip": "Upload Queued",
+  "tramways.announcements.file_manager.status.progressing.tooltip": "Uploading... %s",
+  "tramways.announcements.file_manager.status.failed": "Failed!",
+  "tramways.announcements.file_manager.status.failed.tooltip": "Upload Failed: %s",
+  "tramways.announcements.file_manager.status.finished": "Done!",
+  "tramways.announcements.file_manager.status.finished.tooltip": "Upload Finished!",
+  "tramways.announcements.file_manager.details.too_many_files": "You have exceeded your upload allowance of %d files",
+  "tramways.announcements.file_manager.details.file_too_big": "This file exceeds the size limit of %dKB",
+  "tramways.announcements.file_manager.details.file_exists_same_name": "This file already exists",
+  "tramways.announcements.file_manager.details.file_exists_diff_name": "This file already exists as %s",
+  "tramways.announcements.file_manager.details.corrupted": "This file became corrupt whilst in transit",
+  "tramways.announcements.file_manager.details.internal_error": "An internal error occurred",
+  "tramways.announcements.file_manager.details.client_read_error": "Could not read file",
+  "tramways.announcements.file_manager.details.client_invalid_type": "Invalid file type",
+
+  "tramways.announcements.instruction.play_file": "Play File",
+  "tramways.announcements.instruction.play_file.input": "File Name",
+
+  "tramways.announcements.instruction.play_tts": "Play TTS",
+  "tramways.announcements.instruction.play_tts.input": "Message Content",
+
+  "tramways.announcements.instruction.set_announcer": "Set Announcer",
+
+  "tramways.announcements.instruction.play_file_for_each": "Play File For Each",
+  "tramways.announcements.instruction.play_file_for_each.input_1": "Source List",
+  "tramways.announcements.instruction.play_file_for_each.input_2_1": "File Name",
+  "tramways.announcements.instruction.play_file_for_each.input_2_2": "Use %x% to reference the current value",
 
   "tramways.ponder.tram_switches.header": "Tram Signals with Track Switches",
   "tramways.ponder.tram_switches.text_1": "Tram Signals can also show a track switch's state"

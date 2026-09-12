@@ -4,15 +4,23 @@
   "package": "purplecreate.tramways.mixins",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
+    "AbstractContraptionEntityAccessor",
+    "CreateAccessor",
+    "DisplayLinkConfigurationPacketMixin",
     "GirderCTBehaviourMixin",
+    "ModularGuiLineBuilderAccessor",
     "NavigationMixin",
     "ScheduleRuntimeMixin",
+    "ServerLevelMixin",
     "StationBlockMixin",
     "TrackTargetingClientMixin",
-    "TrainMixin"
+    "TrainDataMixin",
+    "TrainMixin",
+    "VariableManagerAccessor"
   ],
   "client": [
-    "ChannelMixin"
+    "ChannelAccessor",
+    "ScheduleScreenAccessor"
   ],
   "injectors": {
     "defaultRequire": 1

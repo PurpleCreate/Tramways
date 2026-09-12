@@ -2,6 +2,7 @@ package purplecreate.tramways;
 
 import com.tterrag.registrate.util.entry.BlockEntityEntry;
 
+import purplecreate.tramways.content.announcements.SpeakerBlockEntity;
 import purplecreate.tramways.content.requestStop.station.RequestStopButtonBlockEntity;
 import purplecreate.tramways.content.signals.TramSignalBlockEntity;
 import purplecreate.tramways.content.signs.TramSignBlockEntity;
@@ -30,6 +31,11 @@ public class TBlockEntities {
     Tramways.REGISTRATE.blockEntity("station_name_sign", NameSignBlockEntity::new)
       .validBlocks(TBlocks.STATION_NAME_SIGNS.toArray())
       .renderer(() -> NameSignRenderer::new)
+      .register();
+
+  public static final BlockEntityEntry<SpeakerBlockEntity> SPEAKER =
+    Tramways.REGISTRATE.blockEntity("speaker", SpeakerBlockEntity::new)
+      .validBlocks(TBlocks.SPEAKER)
       .register();
 
   public static void register() {}

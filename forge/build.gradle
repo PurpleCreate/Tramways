@@ -41,6 +41,10 @@ dependencies {
   modCompileOnly("dev.engine-room.flywheel:flywheel-forge-api-${minecraft_version}:${flywheel_forge_version}")
   modRuntimeOnly("dev.engine-room.flywheel:flywheel-forge-${minecraft_version}:${flywheel_forge_version}")
 
+  // Compat
+  modImplementation("de.mrjulsen.crn:createrailwaysnavigator-forge:${minecraft_version}-${crn_version}")
+  modImplementation("de.mrjulsen.mcdragonlib:dragonlib-forge:${minecraft_version}-${dragonlib_version}")
+
   // Development QOL
   modLocalRuntime("mezz.jei:jei-${minecraft_version}-forge:${jei_version}") { transitive = false }
 }
@@ -53,6 +57,7 @@ processResources {
     "minecraft_version", minecraft_version,
     "create_version", create_forge_version.split("-")[0],
     "create_version_range", create_forge_version_range,
+    "crn_version_range", crn_forge_version_range
   )
   properties.forEach((k, v) -> inputs.property(k, v))
 
@@ -114,8 +119,7 @@ publishMods {
     modLoaders.add("forge")
 
     requires("create")
-    optional("create-steam-n-rails")
-    optional("create-railways-navigator")
+    requires("create-railways-navigator")
   }
 
   modrinth {
@@ -126,7 +130,6 @@ publishMods {
     modLoaders.add("forge")
 
     requires("create")
-    optional("create-steam-n-rails")
-    optional("create-railways-navigator")
+    requires("create-railways-navigator")
   }
 }
