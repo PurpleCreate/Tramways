@@ -11,7 +11,6 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider.Context;
 import net.minecraft.core.Direction;
 import purplecreate.tramways.content.signals.base.Aspect;
-import purplecreate.tramways.content.signals.base.SignalType;
 import purplecreate.tramways.content.signals.base.StateHolder;
 
 public class SignalRenderer extends SmartBlockEntityRenderer<SignalBlockEntity> {

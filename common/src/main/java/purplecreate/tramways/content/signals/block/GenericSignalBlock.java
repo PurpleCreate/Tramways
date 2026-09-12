@@ -14,7 +14,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import purplecreate.tramways.content.signals.base.SignalType;
+import purplecreate.tramways.content.signs.SignAttachedToPoleBlock;
 
 public class SignalBlock extends SignAttachedToPoleBlock implements IBE<SignalBlockEntity> {
   private final SignalType signalType;

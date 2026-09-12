@@ -14,20 +14,21 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 import purplecreate.tramways.TTags;
 import purplecreate.tramways.content.signals.SignalDisplaySource;
-import purplecreate.tramways.content.signals.base.Aspect;
 import purplecreate.tramways.content.signals.base.ExtendedSignalState;
 import purplecreate.tramways.content.signals.base.JunctionState;
+import purplecreate.tramways.content.signals.render.SignalType;
+import purplecreate.tramways.content.signals.render.SignalTypes;
 import purplecreate.tramways.mixinInterfaces.IRoutedSignal;
 
 import java.util.*;
 
 public class SignalBlockEntity extends SmartBlockEntity {
-  List<Aspect<?>> aspects;
-
   @Nullable private DisplayLinkBlockEntity boundDisplayLink;
-  @Nullable private BlockPos boundSignal;
+  
+  private SignalType signalType;
   private ExtendedSignalState signalState = ExtendedSignalState.INVALID;
   @Nullable private JunctionState junctionState;
+  @Nullable private BlockPos boundSignal;
 
   public SignalBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
     super(type, pos, state);
@@ -122,6 +123,7 @@ public class SignalBlockEntity extends SmartBlockEntity {
   protected void read(CompoundTag tag, boolean clientPacket) {
     super.read(tag, clientPacket);
 
+    signalType = SignalTypes.get(NBTHelper.readResourceLocation(tag, "SignalType"));
     boundSignal = tag.contains("BoundSignal", 10) ? NbtUtils.readBlockPos(tag.getCompound("BoundSignal")) : null;
     junctionState = tag.contains("JunctionState", 10) ? JunctionState.fromNbt(tag.getCompound("JunctionState")) : null;
     signalState = NBTHelper.readEnum(tag, "SignalState", ExtendedSignalState.class);
@@ -130,6 +132,8 @@ public class SignalBlockEntity extends SmartBlockEntity {
   @Override
   protected void write(CompoundTag tag, boolean clientPacket) {
     super.write(tag, clientPacket);
+
+    NBTHelper.writeResourceLocation(tag, "SignalType", signalType.getId());
 
     if (boundSignal != null) {
       tag.put("BoundSignal", NbtUtils.writeBlockPos(boundSignal));
