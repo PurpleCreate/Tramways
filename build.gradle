@@ -1,125 +1,168 @@
 plugins {
-  id "architectury-plugin" version "3.4-SNAPSHOT"
-  id "dev.architectury.loom" version "1.7-SNAPSHOT" apply false
-  id "io.github.p03w.machete" version "1.+" // automatic jar compressing on build
-  id "me.modmuss50.mod-publish-plugin" version "0.7.4" apply false
+  id "java"
+  id "idea"
+  id "maven-publish"
+  id "net.neoforged.gradle.userdev" version "7.0.170"
+  id "com.github.johnrengelman.shadow" version "7.1.2"
+  id "me.modmuss50.mod-publish-plugin" version "0.7.4"
 }
 
-architectury {
-  minecraft = rootProject.minecraft_version
+archivesBaseName = mod_id
+group = mod_group_id
+
+String buildNumber = System.getenv("GITHUB_RUN_NUMBER")
+version = "${mod_version}-mc${minecraft_version}" + (buildNumber != null ? "-${buildNumber}" : "")
+
+// mod gradle
+runs {
+  configureEach {
+    systemProperty "forge.logging.markers", "REGISTRIES"
+    systemProperty "forge.logging.console.level", "debug"
+
+    modSource project.sourceSets.main
+  }
+
+  client {
+    systemProperty "forge.enabledGameTestNamespaces", project.mod_id
+  }
+
+  server {
+    systemProperty "forge.enabledGameTestNamespaces", project.mod_id
+    argument "--nogui"
+  }
+
+  gameTestServer {
+    systemProperty "forge.enabledGameTestNamespaces", project.mod_id
+  }
+
+  data {
+    argument "--all"
+    arguments.addAll "--mod", project.mod_id
+    arguments.addAll "--output", file("src/generated/resources/").getAbsolutePath()
+    arguments.addAll "--existing", file("src/main/resources/").getAbsolutePath()
+    arguments.addAll "--existing-mod", "create"
+  }
 }
 
-subprojects {
-  apply plugin: "dev.architectury.loom"
-  apply plugin: "me.modmuss50.mod-publish-plugin"
-  apply plugin: "maven-publish"
+configurations {
+  additional
+  implementation.extendsFrom additional
+  runtimeClasspath.extendsFrom localRuntime
+}
 
-  loom {
-    silentMojangMappingsLicense()
+// dependencies
+repositories {
+  mavenCentral()
+  maven { url = "https://maven.createmod.net" } // create, flywheel, ponder
+  maven { url = "https://maven.ithundxr.dev/snapshots" } // registrate
+  maven { url = "https://maven.mrjulsen.net" } // crn, dragonlib
+  maven { url = "https://api.modrinth.com/maven" } // snr
+  maven { url = "https://maven.architectury.dev" } // arch api
+  maven { url = "https://raw.githubusercontent.com/Fuzss/modresources/main/maven" } // forge config api port
+}
+
+dependencies {
+  // minecraft
+  implementation("net.neoforged:neoforge:${neo_version}")
+
+  // create
+  implementation("com.simibubi.create:create-${minecraft_version}:${create_version}:slim") { transitive = false }
+  implementation("net.createmod.ponder:ponder-neoforge:${ponder_version}+mc${minecraft_version}")
+  compileOnly("dev.engine-room.flywheel:flywheel-neoforge-api-${minecraft_version}:${flywheel_version}")
+  runtimeOnly("dev.engine-room.flywheel:flywheel-neoforge-${minecraft_version}:${flywheel_version}")
+  implementation("com.tterrag.registrate:Registrate:${registrate_version}")
+
+  // compat
+  implementation("maven.modrinth:create-steam-n-rails-1.21.1:${snr_version}")
+  implementation("de.mrjulsen.crn:createrailwaysnavigator-neoforge:${minecraft_version}-${crn_version}")
+  implementation("de.mrjulsen.mcdragonlib:dragonlib-neoforge:${minecraft_version}-${dragonlib_version}")
+
+  // additional libs
+  additional(shadow("javazoom:jlayer:${jlayer_version}"))
+}
+
+// publishing
+publishing {
+  publications {
+    mavenJava(MavenPublication) {
+      artifactId = mod_id + "-neoforge"
+      from components.java
+    }
   }
 
   repositories {
-    mavenCentral()
-    maven { url = "https://maven.shedaniel.me/" } // Cloth Config, REI
-    maven { url = "https://maven.blamejared.com/" } // JEI
-    maven { url = "https://maven.parchmentmc.org" } // Parchment mappings
-    maven { url = "https://maven.quiltmc.org/repository/release" } // Quilt Mappings
-    maven { // Flywheel
-      url = "https://maven.tterrag.com/"
-      content {
-        // need to be specific here due to version overlaps
-        includeGroup("com.jozufozu.flywheel")
-      }
-    }
-  }
-
-  dependencies {
-    minecraft "com.mojang:minecraft:${minecraft_version}"
-    // layered mappings - Mojmap names, parchment and QM docs and parameters
-    mappings(loom.layered {
-      it.officialMojangMappings()
-      it.parchment("org.parchmentmc.data:parchment-${minecraft_version}:${parchment_version}@zip")
-    })
-  }
-
-  publishing {
-    publications {
-      mavenJava(MavenPublication) {
-        artifactId = rootProject.mod_id + "-" + project.name
-        from components.java
-      }
-    }
-
-    repositories {
-      maven {
-        name = "Github"
-        url = "file://${System.getProperty('user.home')}/Documents/purplecreatemaven"
-      }
+    maven {
+      name = "Github"
+      url = "file://${System.getProperty('user.home')}/Documents/purplecreatemaven"
     }
   }
 }
 
-allprojects {
-  apply plugin: "java"
-  apply plugin: "architectury-plugin"
-  apply plugin: "maven-publish"
+publishMods {
+  type = STABLE
+  //file = tasks.remapJar.archiveFile
+  version.set(mod_version)
+  changelog = file("CHANGELOG.md").text
 
-  archivesBaseName = rootProject.mod_id
-  group = rootProject.mod_group_id
+  curseforge {
+    displayName = "${mod_version} for Neoforge 1.21.1"
+    projectId = curseforge_id
+    accessToken = System.getenv("CURSEFORGE_TOKEN")
+    minecraftVersions.add(minecraft_version)
+    modLoaders.add("neoforge")
 
-  String buildNumber = System.getenv("GITHUB_RUN_NUMBER")
-  version = "${mod_version}-mc${minecraft_version}-${project.name}" + (buildNumber != null ? "-${buildNumber}" : "")
-
-  repositories {
-    maven { url = "https://maven.createmod.net/" }
-    maven { url = "https://maven.tterrag.com" }
-    maven { url = "https://mvn.devos.one/snapshots/" }
-    maven { url = "https://mvn.devos.one/releases/" }
-    maven { url = "https://api.modrinth.com/maven" }
-    maven { url = "https://cursemaven.com" }
-    maven { url = "https://jitpack.io/" }
-    maven { url = "https://maven.jamieswhiteshirt.com/libs-release" }
-    maven { url = "https://maven.terraformersmc.com/releases/" }
-    maven { url = "https://raw.githubusercontent.com/Fuzss/modresources/main/maven/" }
-    maven { url = "https://maven.mrjulsen.net" }
-
-    //maven { url = "https://maven.theillusivec4.top/" }
+    requires("create")
+    requires("create-railways-navigator")
   }
 
-  tasks.withType(JavaCompile) {
+  modrinth {
+    displayName = "${mod_version} for Neoforge 1.21.1"
+    projectId = modrinth_id
+    accessToken = System.getenv("MODRINTH_TOKEN")
+    minecraftVersions.add(minecraft_version)
+    modLoaders.add("neoforge")
+
+    requires("create")
+    requires("create-railways-navigator")
+  }
+}
+
+// neoforge.mods.toml
+tasks.withType(ProcessResources).configureEach {
+  var replaceProperties = [
+    mod_id: mod_id,
+    mod_version: mod_version,
+    neo_version_range: neo_version_range,
+    minecraft_version: minecraft_version,
+    create_version_range: create_version_range,
+    crn_version_range: crn_version_range
+  ]
+
+  inputs.properties replaceProperties
+  filesMatching(['META-INF/neoforge.mods.toml']) {
+    expand replaceProperties
+  }
+}
+
+// java
+java.toolchain.languageVersion = JavaLanguageVersion.of(21)
+
+shadowJar {
+  archiveClassifier = "dev-shadow"
+  relocate("javazoom.jl", "purplecreate.tramways.javazoom.jl")
+}
+
+sourceSets.main.resources {
+  srcDir "src/generated/resources"
+}
+
+tasks.withType(JavaCompile).configureEach {
     options.encoding = "UTF-8"
-  }
-
-  java {
-    withSourcesJar()
-  }
-
-  machete {
-    // disable machete locally for faster builds
-    enabled = buildNumber != null
-  }
 }
 
-tasks.create("publishTramways") {
-  var platform = System.getenv("PLATFORM")
-
-  switch (platform) {
-    case "all":
-      dependsOn tasks.build, ":fabric:publishMods", ":forge:publishMods"
-      break
-    case "fabric":
-    case "forge":
-      dependsOn "${platform}:build", "${platform}:publishMods"
-      break
-  }
-}
-
-tasks.register('javadocAll', Javadoc) {
-  source subprojects.collect { project -> project.sourceSets.main.allJava }
-  classpath = files(subprojects.collect { project -> project.sourceSets.main.compileClasspath })
-  destinationDir = rootProject.file("docs")
-
-  options {
-    encoding = "UTF-8"
-  }
+idea {
+    module {
+        downloadSources = true
+        downloadJavadoc = true
+    }
 }

@@ -1,0 +1,186 @@
+package purplecreate.tramways.content.signs.demands;
+
+import dev.engine_room.flywheel.lib.model.baked.PartialModel;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.simibubi.create.content.trains.entity.Train;
+import com.simibubi.create.foundation.gui.ModularGuiLineBuilder;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
+import purplecreate.tramways.TPartialModels;
+import purplecreate.tramways.content.signs.TramSignBlock;
+
+import javax.annotation.Nullable;
+import java.util.HashMap;
+import java.util.Map;
+
+public abstract class SignDemand {
+  /**
+   * INTERNAL USE ONLY!
+   * @hidden
+   */
+  public static final Map<ResourceLocation, SignDemand> demands = new HashMap<>();
+
+  /**
+   * Use this to register a demand. You should probably use this
+   * at the common setup event.
+   *
+   * @param location A unique id for your demand
+   * @param demand A new instance of your demand
+   */
+  public static void register(ResourceLocation location, SignDemand demand) {
+    demand.id = location;
+    demands.put(location, demand);
+  }
+
+  /**
+   * Check if a train is being driven manually
+   *
+   * @param train The train to check
+   * @return True if the train is manually driven
+   */
+  public static boolean isManual(Train train) {
+    return train.runtime.getSchedule() == null || train.runtime.paused;
+  }
+
+  /**
+   * Render text in the center of the sign
+   *
+   * @param text The text to be rendered
+   * @param color The color of the text as an int
+   * @param scale The scale of the text (something like .4f/16f is good)
+   * @param ms The PoseStack given by SignDemand#render
+   * @param buffer The MultiBufferSource given by SignDemand#render
+   * @param light The int light given by SignDemand#render
+   */
+  public static void renderTextInCenter(String text, int color, float scale, PoseStack ms, MultiBufferSource buffer, int light) {
+    Font fontRenderer = Minecraft.getInstance().font;
+
+    float x = fontRenderer.width(text) / -2f;
+    float y = fontRenderer.lineHeight / -2f;
+
+    ms.pushPose();
+
+    ms.translate(.5, .5, 0);
+    ms.scale(scale, scale, scale);
+    ms.scale(1, -1, 1);
+    ms.translate(.5, .5, 0);
+
+    fontRenderer.drawInBatch(
+      text,
+      x,
+      y,
+      color,
+      false,
+      ms.last().pose(),
+      buffer,
+      Font.DisplayMode.NORMAL,
+      0,
+      light
+    );
+
+    ms.popPose();
+  }
+
+  // ---
+
+  /**
+   * INTERNAL USE ONLY!
+   * @hidden
+   */
+  public ResourceLocation id;
+
+  /**
+   * @return true if the sign demand should be for auxiliary blocks
+   */
+  public boolean isAuxiliary() {
+    return false;
+  }
+
+  /**
+   * @return an icon to be shown in the settings menu
+   */
+  @OnlyIn(Dist.CLIENT)
+  abstract public ItemStack getIcon();
+
+  @OnlyIn(Dist.CLIENT)
+  public PartialModel getSignFace(TramSignBlock.SignType signType) {
+    if (signType == TramSignBlock.SignType.RAILWAY) {
+      return TPartialModels.RED_RAILWAY_FACE;
+    } else {
+      return TPartialModels.TRAM_FACE;
+    }
+  }
+
+  /**
+   * Set up the settings menu for your demand
+   *
+   * @param builder Add elements using the builder
+   */
+  @OnlyIn(Dist.CLIENT)
+  public void initSettingsGUI(ModularGuiLineBuilder builder) {}
+
+  /**
+   * Validate settings sent over the network
+   *
+   * @param received For reading settings from network
+   * @param disk For writing validated settings
+   */
+  public void validateSettings(CompoundTag received, CompoundTag disk) {}
+
+  /**
+   * Set up the default settings for your demand
+   *
+   * @param tag Write the defaults to tag
+   */
+  public void setDefaultSettings(CompoundTag tag) {}
+
+  /**
+   * This function is ran every tick on the run-up to and whilst the train
+   * runs over the track point
+   *
+   * @param tag The settings for your demand
+   * @param train The train running past the sign
+   */
+  @Nullable
+  public Result execute(CompoundTag tag, Train train, double distance) {
+    return null;
+  }
+
+  /**
+   * <p>Use this to render text or symbols on the sign</p>
+   *
+   * <p>Tip: You can use <code>SignDemand.renderTextInCenter</code>
+   * if you just need something simple</p>
+   *
+   * @param tag The settings for your demand
+   */
+  @OnlyIn(Dist.CLIENT)
+  public void render(TramSignBlock.SignType signType, CompoundTag tag, PoseStack ms, MultiBufferSource buffer, int light, int overlay) {}
+
+  public static class Result {
+    public Double permanent = null;
+    public Double temporary = null;
+    public boolean restorePermanent = false;
+
+    public Result setPermanent(double throttle) {
+      this.permanent = throttle;
+      return this;
+    }
+
+    public Result startTemporary(double throttle) {
+      this.temporary = throttle;
+      return this;
+    }
+
+    public Result restorePermanent() {
+      this.restorePermanent = true;
+      return this;
+    }
+  }
+}

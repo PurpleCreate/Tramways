@@ -1,0 +1,14 @@
+{
+  "values": [
+    "tramways:tram_signal",
+    "tramways:tram_sign",
+    "tramways:railway_sign",
+    "create:metal_girder",
+    "create:metal_girder_encased_shaft",
+    {
+      "id": "railways:semaphore",
+      "required": false
+    },
+    "#minecraft:fences"
+  ]
+}

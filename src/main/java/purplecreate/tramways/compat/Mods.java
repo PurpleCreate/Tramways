@@ -1,0 +1,50 @@
+package purplecreate.tramways.compat;
+
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.fml.ModList;
+
+import java.util.Locale;
+import java.util.function.Supplier;
+
+public enum Mods {
+  CREATERAILWAYSNAVIGATOR,
+  RAILWAYS;
+
+  public final String id;
+
+  Mods() {
+    id = name().toLowerCase(Locale.ROOT);
+  }
+
+  public static boolean modLoaded(String id) {
+    return ModList.get().isLoaded(id);
+  }
+
+  public boolean loaded() {
+    return modLoaded(id);
+  }
+
+  public void ifLoadedRun(Supplier<Runnable> supplier) {
+    if (loaded())
+      supplier.get().run();
+  }
+
+  public ResourceLocation rl(String path) {
+    return ResourceLocation.fromNamespaceAndPath(id, path);
+  }
+
+  public Block getBlock(String path) {
+    return BuiltInRegistries.BLOCK.get(rl(path));
+  }
+
+  public boolean isBlock(String path, BlockState state) {
+    return isBlock(path, state.getBlock());
+  }
+
+  public boolean isBlock(String path, Block block) {
+    return loaded() && getBlock(path) == block;
+  }
+}
