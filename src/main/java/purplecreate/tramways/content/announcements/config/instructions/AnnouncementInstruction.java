@@ -1,12 +1,12 @@
 package purplecreate.tramways.content.announcements.config.instructions;
 
-import de.mrjulsen.crn.data.train.portable.StationDisplayData;
-import de.mrjulsen.crn.data.train.portable.TrainDisplayData;
+import de.mrjulsen.crn.api.core.snapshot.BoardEntry;
 import de.mrjulsen.mcdragonlib.client.gui.widgets.base.DLGuiComponent;
 import net.minecraft.client.sounds.AudioStream;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import purplecreate.tramways.content.announcements.config.AnnouncementVariant;
+import purplecreate.tramways.content.announcements.train.TrainEntry;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -37,8 +37,8 @@ public abstract class AnnouncementInstruction {
     AnnouncementVariant variant,
     int playIndex,
     CompoundTag data,
-    TrainDisplayData trainData,
-    StationDisplayData stationData
+    TrainEntry trainData,
+    BoardEntry stationData
   ) {
     public boolean isTrain() {
       return trainData != null;

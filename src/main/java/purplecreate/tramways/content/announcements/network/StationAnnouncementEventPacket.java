@@ -1,6 +1,6 @@
 package purplecreate.tramways.content.announcements.network;
 
-import de.mrjulsen.crn.data.train.portable.StationDisplayData;
+import de.mrjulsen.crn.api.core.snapshot.BoardEntry;
 import io.netty.buffer.ByteBuf;
 import net.createmod.catnip.net.base.ClientboundPacketPayload;
 import net.minecraft.client.player.LocalPlayer;
@@ -12,7 +12,7 @@ import purplecreate.tramways.TNetworking;
 import purplecreate.tramways.content.announcements.config.AnnouncementVariant;
 import purplecreate.tramways.content.announcements.engine.SoundEngine;
 
-public record StationAnnouncementEventPacket(BlockPos speakerPos, AnnouncementVariant variant, StationDisplayData data) implements ClientboundPacketPayload {
+public record StationAnnouncementEventPacket(BlockPos speakerPos, AnnouncementVariant variant, BoardEntry data) implements ClientboundPacketPayload {
   public static final StreamCodec<ByteBuf, StationAnnouncementEventPacket> STREAM_CODEC = StreamCodec.composite(
     BlockPos.STREAM_CODEC, StationAnnouncementEventPacket::speakerPos,
     ByteBufCodecs.COMPOUND_TAG, p -> p.variant.toNbt(),
@@ -21,7 +21,7 @@ public record StationAnnouncementEventPacket(BlockPos speakerPos, AnnouncementVa
   );
 
   private static StationAnnouncementEventPacket deserializeNbt(BlockPos speakerPos, CompoundTag variant, CompoundTag data) {
-    return new StationAnnouncementEventPacket(speakerPos, AnnouncementVariant.fromNbt(variant), StationDisplayData.fromNbt(data));
+    return new StationAnnouncementEventPacket(speakerPos, AnnouncementVariant.fromNbt(variant), BoardEntry.fromNbt(data));
   }
 
   @Override

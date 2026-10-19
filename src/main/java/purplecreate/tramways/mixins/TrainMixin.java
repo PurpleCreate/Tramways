@@ -5,7 +5,8 @@ import com.simibubi.create.content.trains.entity.Navigation;
 import com.simibubi.create.content.trains.graph.DimensionPalette;
 import com.simibubi.create.content.trains.graph.TrackGraph;
 import com.simibubi.create.content.trains.schedule.ScheduleRuntime;
-import de.mrjulsen.crn.data.train.portable.TrainDisplayData;
+import de.mrjulsen.crn.core.TrainManager;
+import de.mrjulsen.crn.core.train.TrackedTrain;
 import net.createmod.catnip.data.Pair;
 import net.createmod.catnip.nbt.NBTHelper;
 import net.createmod.catnip.platform.CatnipServices;
@@ -20,6 +21,7 @@ import purplecreate.tramways.content.announcements.config.AnnouncementConfig;
 import purplecreate.tramways.content.announcements.config.AnnouncementEvent;
 import purplecreate.tramways.content.announcements.config.AnnouncementVariant;
 import purplecreate.tramways.content.announcements.network.TrainAnnouncementEventPacket;
+import purplecreate.tramways.content.announcements.train.TrainEntry;
 import purplecreate.tramways.content.signs.TramSignPoint;
 import com.simibubi.create.content.trains.entity.Train;
 import org.spongepowered.asm.mixin.Mixin;
@@ -69,8 +71,12 @@ public class TrainMixin implements ITram {
     AnnouncementVariant variant = config.getVariantFor(event);
     if (variant == null || variant.count() < 1) return;
 
-    TrainDisplayData data = TrainDisplayData.of((Train)(Object)this);
-    CatnipServices.NETWORK.sendToAllClients(new TrainAnnouncementEventPacket(id, variant, data));
+    Optional<TrackedTrain> tracked = TrainManager.getInstance().getTrain(id);
+
+    if (tracked.isPresent()) {
+      TrainEntry data = TrainEntry.of(tracked.get());
+      CatnipServices.NETWORK.sendToAllClients(new TrainAnnouncementEventPacket(id, variant, data));
+    }
   }
 
   @Inject(method = "tick", at = @At(value = "INVOKE", target = "Lcom/simibubi/create/content/trains/entity/Navigation;tick(Lnet/minecraft/world/level/Level;)V", shift = At.Shift.AFTER), remap = true)

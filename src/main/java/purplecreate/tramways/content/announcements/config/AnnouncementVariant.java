@@ -1,7 +1,6 @@
 package purplecreate.tramways.content.announcements.config;
 
-import de.mrjulsen.crn.data.train.portable.StationDisplayData;
-import de.mrjulsen.crn.data.train.portable.TrainDisplayData;
+import de.mrjulsen.crn.api.core.snapshot.BoardEntry;
 import net.createmod.catnip.nbt.NBTHelper;
 import net.minecraft.client.sounds.AudioStream;
 import net.minecraft.nbt.CompoundTag;
@@ -9,6 +8,7 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.Nullable;
 import purplecreate.tramways.content.announcements.config.instructions.AnnouncementInstruction;
+import purplecreate.tramways.content.announcements.train.TrainEntry;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -62,7 +62,7 @@ public class AnnouncementVariant {
     return instructions.get(i).getCompound("Data");
   }
 
-  public List<AudioStream> play(TrainDisplayData train, StationDisplayData station) throws IOException {
+  public List<AudioStream> play(TrainEntry train, BoardEntry station) throws IOException {
     List<AudioStream> streams = new ArrayList<>();
 
     for (int i = 0; i < count(); i++) {
