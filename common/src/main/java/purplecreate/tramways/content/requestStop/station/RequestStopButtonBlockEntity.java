@@ -6,8 +6,8 @@ import com.simibubi.create.content.trains.station.GlobalStation;
 import com.simibubi.create.content.trains.station.StationBlockEntity;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
-import de.mrjulsen.crn.data.train.TrainData;
-import de.mrjulsen.crn.data.train.TrainListener;
+import de.mrjulsen.crn.api.core.RailwayBackendApi;
+import de.mrjulsen.crn.api.core.snapshot.TrainSnapshot;
 import net.createmod.catnip.lang.LangBuilder;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -66,10 +66,10 @@ public class RequestStopButtonBlockEntity extends SmartBlockEntity implements IH
     }
 
     Train train = getLinkedStation().getNearestTrain();
-    TrainData data = TrainListener.getTrainData(train).orElse(null);
+    TrainSnapshot data = RailwayBackendApi.getTrain(train.id).orElse(null);
     if (data == null) return;
 
-    String destination = data.getCurrentSection().getDestinationStationName();
+    String destination = data.destinationText();
 
     boolean changed =
       !nearestTrain

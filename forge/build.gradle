@@ -44,6 +44,9 @@ dependencies {
   // Compat
   modImplementation("de.mrjulsen.crn:createrailwaysnavigator-forge:${minecraft_version}-${crn_version}")
   modImplementation("de.mrjulsen.mcdragonlib:dragonlib-forge:${minecraft_version}-${dragonlib_version}")
+  forgeRuntimeLibrary("org.eclipse.jetty:jetty-server:${crn_jetty_version}")
+  forgeRuntimeLibrary("org.eclipse.jetty.compression:jetty-compression-server:${crn_jetty_version}")
+  forgeRuntimeLibrary("org.eclipse.jetty.compression:jetty-compression-gzip:${crn_jetty_version}")
 
   // Development QOL
   modLocalRuntime("mezz.jei:jei-${minecraft_version}-forge:${jei_version}") { transitive = false }

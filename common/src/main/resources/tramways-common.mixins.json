@@ -14,7 +14,7 @@
     "ServerLevelMixin",
     "StationBlockMixin",
     "TrackTargetingClientMixin",
-    "TrainDataMixin",
+    "TravelSectionInstructionMixin",
     "TrainMixin",
     "VariableManagerAccessor"
   ],

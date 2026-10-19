@@ -5,9 +5,10 @@ import com.simibubi.create.content.trains.entity.Train;
 import com.simibubi.create.content.trains.schedule.ScheduleRuntime;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
-import de.mrjulsen.crn.data.train.TrainStop;
-import de.mrjulsen.crn.data.train.TrainUtils;
-import de.mrjulsen.crn.data.train.portable.StationDisplayData;
+import de.mrjulsen.crn.api.core.RailwayBackendApi;
+import de.mrjulsen.crn.api.core.query.BoardQuery;
+import de.mrjulsen.crn.api.core.snapshot.BoardEntry;
+import de.mrjulsen.crn.util.ModUtils;
 import net.createmod.catnip.data.Pair;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -45,28 +46,32 @@ public class SpeakerBlockEntity extends SmartBlockEntity {
   public void lazyTick() {
     if (level == null || level.isClientSide || filter == null || config == null) return;
 
-    for (TrainStop prediction : TrainUtils.getDeparturesAtStationName(filter, null, false, false)) {
-      Train train = Create.RAILWAYS.trains.get(prediction.getTrainId());
+    BoardQuery query = BoardQuery
+      .defaults()
+      .withLimit(16)
+      .withCancelled(true);
+
+    for (BoardEntry entry : RailwayBackendApi.getBoard(filter, query)) {
+      Train train = Create.RAILWAYS.trains.get(entry.trainId());
       UUID tripId = ExtendedTrainData.getTripId(train);
-      StationDisplayData displayData = StationDisplayData.of(prediction);
 
       AnnouncementEvent event = null;
 
-      String platform = prediction.getRealTimeStationTag().info().platform();
+      String platform = entry.platform();
       String lastPlatform = announcedPlatform.get(tripId);
 
-      if (displayData.getTrainData().isCancelled()) {
+      if (entry.isCancelled()) {
         event = AnnouncementEvent.TRAIN_CANCELLED;
-      } else if (prediction.isDepartureDelayed()) {
+      } else if (entry.isDelayed()) {
         event = AnnouncementEvent.TRAIN_DELAYED;
       } else if (
-        displayData.isLastStop()
+        entry.terminus()
           && train.runtime.state == ScheduleRuntime.State.POST_TRANSIT
-          && train.runtime.currentEntry == prediction.getScheduleIndex()
+          && train.runtime.currentEntry == entry.entryIndex()
       ) {
         event = AnnouncementEvent.TERMINATING_TRAIN_STANDING;
-      } else if (prediction.getTicksUntilArrival() <= 60 * 20) {
-        event = displayData.isLastStop()
+      } else if (entry.realtime().arrivalIn(ModUtils.getTransformedWorldTime()) <= 60 * 20) {
+        event = entry.terminus()
           ? AnnouncementEvent.TERMINATING_TRAIN_APPROACH
           : AnnouncementEvent.THROUGH_TRAIN_APPROACH;
       } else if (!Objects.equals(platform, lastPlatform)) {
@@ -84,7 +89,7 @@ public class SpeakerBlockEntity extends SmartBlockEntity {
       }
 
       TNetworking.sendToNear(
-        new StationAnnouncementEventS2CPacket(worldPosition, variant, displayData),
+        new StationAnnouncementEventS2CPacket(worldPosition, variant, entry),
         worldPosition.getCenter(), 50, level.dimension()
       );
     }

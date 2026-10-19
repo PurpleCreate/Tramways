@@ -5,10 +5,9 @@ import com.simibubi.create.content.contraptions.StructureTransform;
 import com.simibubi.create.content.trains.entity.Carriage;
 import com.simibubi.create.content.trains.entity.CarriageContraptionEntity;
 import com.simibubi.create.content.trains.entity.Train;
-import de.mrjulsen.crn.data.train.portable.StationDisplayData;
-import de.mrjulsen.crn.data.train.portable.TrainDisplayData;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import de.mrjulsen.crn.api.core.snapshot.BoardEntry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.sounds.AudioStream;
 import net.minecraft.core.BlockPos;
@@ -17,6 +16,7 @@ import org.jetbrains.annotations.Nullable;
 import purplecreate.tramways.TBlocks;
 import purplecreate.tramways.Tramways;
 import purplecreate.tramways.content.announcements.config.AnnouncementVariant;
+import purplecreate.tramways.content.announcements.train.TrainEntry;
 import purplecreate.tramways.mixins.AbstractContraptionEntityAccessor;
 import purplecreate.tramways.mixins.ChannelAccessor;
 
@@ -78,7 +78,7 @@ public class SoundEngine {
     return PREVIEW == null || PREVIEW.stopped();
   }
 
-  public static void enqueue(BlockPos speakerPos, AnnouncementVariant variant, StationDisplayData data) {
+  public static void enqueue(BlockPos speakerPos, AnnouncementVariant variant, BoardEntry data) {
     THREAD.submit(() -> {
       try {
         List<AudioStream> queue = STATION_QUEUE.computeIfAbsent(speakerPos, $ -> new ArrayList<>());
@@ -90,7 +90,7 @@ public class SoundEngine {
     });
   }
 
-  public static void enqueue(Train train, AnnouncementVariant variant, TrainDisplayData data) {
+  public static void enqueue(Train train, AnnouncementVariant variant, TrainEntry data) {
     THREAD.submit(() -> {
       try {
         List<AudioStream> queue = TRAIN_QUEUE.computeIfAbsent(train, $ -> new ArrayList<>());

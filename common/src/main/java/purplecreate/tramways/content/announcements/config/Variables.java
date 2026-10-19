@@ -1,10 +1,9 @@
 package purplecreate.tramways.content.announcements.config;
 
-import com.simibubi.create.Create;
 import com.simibubi.create.content.trains.schedule.ScheduleRuntime;
-import de.mrjulsen.crn.data.train.ETrainStopState;
-import de.mrjulsen.crn.data.train.portable.StationDisplayData;
-import de.mrjulsen.crn.data.train.portable.TrainDisplayData;
+import de.mrjulsen.crn.api.core.snapshot.StopSnapshot;
+import de.mrjulsen.crn.api.core.snapshot.BoardEntry;
+import purplecreate.tramways.content.announcements.train.TrainEntry;
 import purplecreate.tramways.mixins.VariableManagerAccessor;
 
 import java.util.List;
@@ -44,61 +43,64 @@ public class Variables {
     return output.toString();
   }
 
-  public static String replace(TrainDisplayData data, String input) {
+  public static String replace(TrainEntry data, String input) {
     return replace(input, variable -> {
-      boolean stopped = Create.RAILWAYS.trains.get(data.getTrainData().getId()).runtime.state != ScheduleRuntime.State.IN_TRANSIT;
+      boolean stopped = data.getTrain().runtime.state != ScheduleRuntime.State.IN_TRANSIT;
+
+      List<StopSnapshot> service = data.journeySnapshot().stops();
+      List<StopSnapshot> stopovers = data.getStopovers();
 
       if (variable.equals("via")) {
-        return data.getStopovers().stream().reduce("", (a, b) -> a + ", " + b.getRealTimeStation().tagName(), (a, b) -> a + ", " + b);
+        return stopovers.stream().reduce("", (a, b) -> a + ", " + b.station().displayName(), (a, b) -> a + ", " + b);
       } else if (variable.equals("line")) {
-        return data.getTrainData().getName(ETrainStopState.beforeArrival(!data.isWaitingAtStation()));
+        return data.getTrainDisplayName();
       } else if (variable.equals("carriages")) {
-        return "" + data.getTrainData().getCarriages();
+        return "" + data.trainSnapshot().carriageCount();
       } else if (variable.startsWith("origin.")) {
-        return VariableManagerAccessor.tramways$handleStopover(data.getAllStops(), 0, variable.substring(7));
+        return VariableManagerAccessor.tramways$handleStopover(service, 0, variable.substring(7));
       } else if (variable.startsWith("destination.")) {
-        return VariableManagerAccessor.tramways$handleStopover(data.getAllStops(), data.getAllStops().size() - 1, variable.substring(12));
+        return VariableManagerAccessor.tramways$handleStopover(service, service.size() - 1, variable.substring(12));
       } else if (variable.startsWith("next.")) {
         int i = stopped ? 1 : 0;
         if (data.getStopovers().size() == i)
-          return VariableManagerAccessor.tramways$handleStopover(data.getAllStops(), data.getAllStops().size() - 1, variable.substring(5));
-        return VariableManagerAccessor.tramways$handleStopover(data.getStopovers(), i, variable.substring(5));
+          return VariableManagerAccessor.tramways$handleStopover(service, service.size() - 1, variable.substring(5));
+        return VariableManagerAccessor.tramways$handleStopover(stopovers, i, variable.substring(5));
       } else if (variable.startsWith("this.")) {
         if (!stopped)
           return "";
         if (data.getStopovers().isEmpty())
-          return VariableManagerAccessor.tramways$handleStopover(data.getAllStops(), data.getAllStops().size() - 1, variable.substring(5));
-        return VariableManagerAccessor.tramways$handleStopover(data.getStopovers(), 0, variable.substring(5));
+          return VariableManagerAccessor.tramways$handleStopover(service, service.size() - 1, variable.substring(5));
+        return VariableManagerAccessor.tramways$handleStopover(stopovers, 0, variable.substring(5));
       }
 
       return null;
     });
   }
 
-  public static List<String> iterate(TrainDisplayData data, String key, String input) {
+  public static List<String> iterate(TrainEntry data, String key, String input) {
     if ("via".equals(key)) {
       return data
         .getStopovers()
         .stream()
-        .map(v -> replace(data, input.replaceAll("%x%", v.getRealTimeStation().tagName())))
+        .map(v -> replace(data, input.replaceAll("%x%", v.station().displayName())))
         .toList();
     }
 
     return List.of(replace(data, input));
   }
 
-  public static String replace(StationDisplayData data, String input) {
+  public static String replace(BoardEntry data, String input) {
     return replace(input, variable ->
       VariableManagerAccessor.tramways$handleTrainEntry(data, variable)
     );
   }
 
-  public static List<String> iterate(StationDisplayData data, String key, String input) {
+  public static List<String> iterate(BoardEntry data, String key, String input) {
     if ("via".equals(key)) {
       return data
-        .getStopovers()
+        .stopovers()
         .stream()
-        .map(v -> replace(data, input.replaceAll("%x%", v)))
+        .map(v -> replace(data, input.replaceAll("%x%", v.displayName())))
         .toList();
     }
 

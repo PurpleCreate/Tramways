@@ -1,6 +1,6 @@
 package purplecreate.tramways.content.announcements.network;
 
-import de.mrjulsen.crn.data.train.portable.StationDisplayData;
+import de.mrjulsen.crn.api.core.snapshot.BoardEntry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
@@ -11,9 +11,9 @@ import purplecreate.tramways.util.S2CPacket;
 public class StationAnnouncementEventS2CPacket implements S2CPacket {
   private final BlockPos speakerPos;
   private final AnnouncementVariant variant;
-  private final StationDisplayData data;
+  private final BoardEntry data;
 
-  public StationAnnouncementEventS2CPacket(BlockPos speakerPos, AnnouncementVariant variant, StationDisplayData data) {
+  public StationAnnouncementEventS2CPacket(BlockPos speakerPos, AnnouncementVariant variant, BoardEntry data) {
     this.speakerPos = speakerPos;
     this.variant = variant;
     this.data = data;
@@ -23,7 +23,7 @@ public class StationAnnouncementEventS2CPacket implements S2CPacket {
     return new StationAnnouncementEventS2CPacket(
       buf.readBlockPos(),
       AnnouncementVariant.fromNbt(buf.readNbt()),
-      StationDisplayData.fromNbt(buf.readNbt())
+      BoardEntry.fromNbt(buf.readNbt())
     );
   }
 
