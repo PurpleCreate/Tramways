@@ -34,6 +34,7 @@ public class Tramways {
     TTags.register();
     TConfigs.register(container);
     TCreativeTabs.register(modEventBus);
+    TExtras.register();
 
     modEventBus.addListener(this::commonSetup);
     modEventBus.addListener(this::clientSetup);
@@ -46,7 +47,6 @@ public class Tramways {
   public void commonSetup(FMLCommonSetupEvent event) {
     event.enqueueWork(() -> {
       TNetworking.register();
-      TExtras.registerCommon();
     });
   }
 
