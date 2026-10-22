@@ -23,6 +23,7 @@ public class Tramways {
     TBlocks.register();
     TBlockEntities.register();
     TTags.register();
+    TExtras.register();
 
     Env.unsafeRunWhenOn(Env.CLIENT, () ->
       TPartialModels::register
@@ -31,7 +32,6 @@ public class Tramways {
 
   public static void commonSetup() {
     TNetworking.register();
-    TExtras.registerCommon();
   }
 
   public static void clientSetup() {

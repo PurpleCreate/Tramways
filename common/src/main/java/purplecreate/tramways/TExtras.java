@@ -118,11 +118,12 @@ public class TExtras {
     public static void register() {}
   }
 
-  // runs in Tramways#commonSetup
-  public static void registerCommon() {
+  public static void register() {
     Schedule.register();
     EdgePointTypes.register();
     SignDemands.register();
     AnnouncementInstructions.register();
+    DisplayTargets.register();
+    DisplaySources.register();
   }
 }
