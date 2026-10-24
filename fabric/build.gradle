@@ -133,6 +133,8 @@ publishMods {
     accessToken = System.getenv("CURSEFORGE_TOKEN")
     minecraftVersions.add(minecraft_version)
     modLoaders.add("fabric")
+    client = true
+    server = true
 
     requires("create-fabric")
     requires("create-railways-navigator")

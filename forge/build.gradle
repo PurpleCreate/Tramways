@@ -121,6 +121,8 @@ publishMods {
     accessToken = System.getenv("CURSEFORGE_TOKEN")
     minecraftVersions.add(minecraft_version)
     modLoaders.add("forge")
+    client = true
+    server = true
 
     requires("create")
     requires("create-railways-navigator")
