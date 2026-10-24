@@ -70,8 +70,5 @@
   "tramways.announcements.instruction.play_file_for_each": "Play File For Each",
   "tramways.announcements.instruction.play_file_for_each.input_1": "Source List",
   "tramways.announcements.instruction.play_file_for_each.input_2_1": "File Name",
-  "tramways.announcements.instruction.play_file_for_each.input_2_2": "Use %x% to reference the current value",
-
-  "tramways.ponder.tram_switches.header": "Tram Signals with Track Switches",
-  "tramways.ponder.tram_switches.text_1": "Tram Signals can also show a track switch's state"
+  "tramways.announcements.instruction.play_file_for_each.input_2_2": "Use %x% to reference the current value"
 }

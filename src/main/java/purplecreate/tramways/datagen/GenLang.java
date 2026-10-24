@@ -4,12 +4,14 @@ import com.google.gson.JsonElement;
 import net.createmod.ponder.foundation.PonderIndex;
 import com.simibubi.create.foundation.utility.FilesHelper;
 import com.tterrag.registrate.providers.RegistrateLangProvider;
+import purplecreate.tramways.TPonders;
 import purplecreate.tramways.Tramways;
 
 import java.util.Map;
 
 public class GenLang {
   public static void generator(RegistrateLangProvider provider) {
+    PonderIndex.addPlugin(new TPonders());
     PonderIndex.getLangAccess().provideLang(Tramways.ID, provider::add);
 
     // defaults

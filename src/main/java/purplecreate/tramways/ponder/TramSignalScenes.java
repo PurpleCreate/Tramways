@@ -1,7 +1,7 @@
 package purplecreate.tramways.ponder;
 
-//import com.railwayteam.railways.content.switches.TrackSwitchBlock;
-//import com.railwayteam.railways.content.switches.TrackSwitchBlockEntity;
+import com.railwayteam.railways.content.switches.TrackSwitchBlock;
+import com.railwayteam.railways.content.switches.TrackSwitchBlockEntity;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.content.trains.signal.SignalBlockEntity;
 import com.simibubi.create.foundation.ponder.CreateSceneBuilder;
@@ -13,7 +13,8 @@ import net.createmod.ponder.api.scene.SceneBuildingUtil;
 import net.createmod.ponder.api.element.ParrotElement;
 import net.createmod.ponder.api.element.WorldSectionElement;
 import net.createmod.ponder.api.scene.Selection;
-//import net.createmod.ponder.foundation.instruction.PonderInstruction;
+import net.createmod.ponder.foundation.PonderScene;
+import net.createmod.ponder.foundation.instruction.PonderInstruction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.Blocks;
@@ -27,7 +28,7 @@ import java.util.Optional;
 
 public class TramSignalScenes {
   // https://github.com/Layers-of-Railways/Railway/blob/ac1937f95bdaa6f6463dda547f73a5d5b279ac42/common/src/main/java/com/railwayteam/railways/ponder/TrainScenes.java#L652
-  /*private static void setSwitchState(SceneBuilder scene, BlockPos switchPos, TrackSwitchBlock.SwitchState state) {
+  private static void setSwitchState(SceneBuilder scene, BlockPos switchPos, TrackSwitchBlock.SwitchState state) {
     scene.addInstruction(new PonderInstruction() {
       @Override
       public boolean isComplete() {
@@ -56,7 +57,7 @@ public class TramSignalScenes {
         });
       }
     });
-  }*/
+  }
 
   private static void setTramSignalState(SceneBuilder scene, BlockPos tramSignal, TramSignalState next) {
     scene.world().modifyBlock(
@@ -150,7 +151,7 @@ public class TramSignalScenes {
     scene.idle(80);
   }
 
-  /*public static void trackSwitches(SceneBuilder scene, SceneBuildingUtil util) {
+  public static void trackSwitches(SceneBuilder scene, SceneBuildingUtil util) {
     scene.title("tram_switches", "Tram Signals with Track Switches");
     scene.scaleSceneView(.6f);
     scene.showBasePlate();
@@ -201,5 +202,5 @@ public class TramSignalScenes {
     setSwitchState(scene, trackSwitch, TrackSwitchBlock.SwitchState.REVERSE_LEFT);
     setTramSignalState(scene, tramSignal, TramSignalState.LEFT);
     scene.idle(40);
-  }*/
+  }
 }
