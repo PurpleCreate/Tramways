@@ -5,6 +5,7 @@ import com.tterrag.registrate.util.entry.RegistryEntry;
 import net.createmod.ponder.api.registration.PonderPlugin;
 import net.createmod.ponder.api.registration.PonderSceneRegistrationHelper;
 import net.minecraft.resources.ResourceLocation;
+import purplecreate.tramways.compat.Mods;
 import purplecreate.tramways.ponder.SpeakerScenes;
 import purplecreate.tramways.ponder.TramSignScenes;
 import purplecreate.tramways.ponder.TramSignalScenes;
@@ -23,10 +24,10 @@ public class TPonders implements PonderPlugin {
       .forComponents(TBlocks.TRAM_SIGNAL)
       .addStoryBoard("tram_signal/track_signals", TramSignalScenes::trackSignals);
 
-    /*if (Mods.RAILWAYS.loaded())
+    if (Mods.RAILWAYS.loaded())
       HELPER
         .forComponents(TBlocks.TRAM_SIGNAL)
-        .addStoryBoard("tram_signal/track_switches", TramSignalScenes::trackSwitches);*/
+        .addStoryBoard("tram_signal/track_switches", TramSignalScenes::trackSwitches);
 
     HELPER
       .forComponents(TBlocks.TRAM_SIGN, TBlocks.RAILWAY_SIGN)
