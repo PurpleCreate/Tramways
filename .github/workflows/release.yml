@@ -1,14 +1,6 @@
 name: Release
 on:
-  workflow_dispatch:
-    inputs:
-      platform:
-        type: choice
-        description: Platform
-        options:
-          - all
-          - fabric
-          - forge
+  - workflow_dispatch
 
 permissions:
   contents: write
@@ -27,8 +19,7 @@ jobs:
           key: "${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}"
           restore-keys: "${{ runner.os }}-gradle-"
       - run: chmod +x ./gradlew
-      - run: ./gradlew publishTramways
+      - run: ./gradlew publishMods
         env:
           CURSEFORGE_TOKEN: ${{ secrets.CURSEFORGE_TOKEN }}
           MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
-          PLATFORM: ${{ inputs.platform }}

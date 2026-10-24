@@ -100,7 +100,7 @@ publishing {
 
 publishMods {
   type = STABLE
-  //file = tasks.remapJar.archiveFile
+  file = tasks.jar.archiveFile
   version.set(mod_version)
   changelog = file("CHANGELOG.md").text
 

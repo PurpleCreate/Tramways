@@ -46,11 +46,8 @@ use the git software, the Github platform, how to program in java, etc.
 
 ## Guidance for translators
 
-- You can find a complete and up to date English lang file
-  [here](https://github.com/PurpleCreate/Tramways/blob/main/common/src/generated/resources/assets/tramways/lang/en_us.json).
-- Please place your completed lang file in
-  `common/src/main/resources/assets/tramways/lang/`, and not in the folder where
-  you got the source English lang file from.
+- Please don't submit translations through pull requests, instead use the
+  project's [Crowdin page](https://crowdin.com/project/create-tramways).
 
 ## Questions
 
