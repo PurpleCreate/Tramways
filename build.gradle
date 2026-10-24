@@ -4,7 +4,7 @@ plugins {
   id "maven-publish"
   id "net.neoforged.gradle.userdev" version "7.0.170"
   id "com.github.johnrengelman.shadow" version "7.1.2"
-  id "me.modmuss50.mod-publish-plugin" version "0.7.4"
+  id "me.modmuss50.mod-publish-plugin" version "2.2.1"
 }
 
 archivesBaseName = mod_id
@@ -110,6 +110,8 @@ publishMods {
     accessToken = System.getenv("CURSEFORGE_TOKEN")
     minecraftVersions.add(minecraft_version)
     modLoaders.add("neoforge")
+    client = true
+    server = true
 
     requires("create")
     requires("create-railways-navigator")
