@@ -1,1 +1,22 @@
-{}
+{
+  "tramways.announcements.file_manager.file_deleted": "Видалено!",
+  "tramways.announcements.file_manager.others_files": "Файли інших",
+  "tramways.announcements.file_manager.status.failed": "Не вдалося!",
+  "tramways.announcements.file_manager.status.failed.tooltip": "Публікування не вдалось: %s",
+  "tramways.announcements.file_manager.status.finished": "Вдалось!",
+  "tramways.announcements.file_manager.status.finished.tooltip": "Публікування завершено!",
+  "tramways.announcements.file_manager.status.progressing.tooltip": "Публікування... %s",
+  "tramways.announcements.file_manager.status.queued": "В черзі",
+  "tramways.announcements.instruction.play_file_for_each.input_2_1": "Назва файлу",
+  "tramways.announcements.instruction.play_file_for_each.input_2_2": "Використовуйте %x% для отримання значення",
+  "tramways.announcements.instruction.play_tts": "Програти TTS",
+  "tramways.announcements.instruction.play_tts.input": "Зміст повідомлення",
+  "tramways.announcements.instruction.set_announcer": "Поставити оголошувача",
+  "tramways.announcements.title": "Налаштувати оголошувача",
+  "tramways.announcements.variant_count.plural": "%d варіанти",
+  "tramways.announcements.variant_count.singular": "%d варіант",
+  "tramways.announcements.variant_label": "Варіант %d",
+  "tramways.creative_tab.main": "Create: Tramways",
+  "tramways.display_source.station_speaker": "Джерело станційного динаміка",
+  "tramways.display_target.speaker": "Динамік"
+}
